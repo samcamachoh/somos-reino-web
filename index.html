@@ -3,107 +3,48 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sermones — Somos Reino</title>
+  <title>Somos Reino — Kissimmee, FL</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet" />
 
   <style>
+    /* ── RESET & ROOT ── */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --sand:             #F7F2EA;
-      --sand-dark:        #EDE5D8;
-      --terracotta:       #B5623E;
+      --sand:      #F7F2EA;
+      --sand-dark: #EDE5D8;
+      --terracotta:#B5623E;
       --terracotta-light: #D4845F;
-      --sienna:           #7A3B2E;
-      --charcoal:         #1E1A18;
-      --warm-gray:        #6B6560;
-      --cream:            #FDFAF5;
-      --gold:             #C9963A;
-      --text:             #2C2420;
-      --muted:            #8A7F78;
+      --sienna:    #7A3B2E;
+      --olive:     #5C6B3A;
+      --olive-light:#8A9E5A;
+      --charcoal:  #1E1A18;
+      --warm-gray: #6B6560;
+      --cream:     #FDFAF5;
+      --gold:      #C9963A;
+      --text:      #2C2420;
+      --muted:     #8A7F78;
+
+      --section-pad: 100px 0;
+      --content-max: 1200px;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
       font-family: 'DM Sans', sans-serif;
-      background: var(--sand);
+      background: var(--cream);
       color: var(--text);
       overflow-x: hidden;
     }
 
+    /* ── UTILITY ── */
     .container {
-      max-width: 1200px;
+      max-width: var(--content-max);
       margin: 0 auto;
       padding: 0 48px;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 20px 0;
-      background: rgba(247,242,234,0.95);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(44,36,32,0.08);
-      transition: padding 0.3s;
-    }
-
-    nav .container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .nav-logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.5rem;
-      letter-spacing: 0.15em;
-      color: var(--charcoal);
-      text-decoration: none;
-    }
-
-    .nav-back {
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--warm-gray);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: color 0.3s;
-    }
-
-    .nav-back::before { content: '←'; }
-    .nav-back:hover { color: var(--terracotta); }
-
-    /* ── HERO ── */
-    .page-hero {
-      padding: 140px 0 60px;
-      background: var(--charcoal);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .page-hero::before {
-      content: 'SERMONES';
-      position: absolute;
-      top: -20px; right: -20px;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 18vw;
-      color: rgba(253,250,245,0.03);
-      letter-spacing: 0.05em;
-      pointer-events: none;
-      line-height: 1;
-    }
-
-    .page-hero .container {
-      position: relative;
-      z-index: 1;
     }
 
     .section-label {
@@ -114,138 +55,435 @@
       letter-spacing: 0.28em;
       text-transform: uppercase;
       font-weight: 500;
-      color: var(--terracotta-light);
+      color: var(--terracotta);
       margin-bottom: 20px;
     }
 
     .section-label::before {
       content: '';
       display: block;
-      width: 28px; height: 1px;
-      background: var(--terracotta-light);
+      width: 28px;
+      height: 1px;
+      background: var(--terracotta);
     }
 
-    .page-hero h1 {
+    h2.display {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(3rem, 6vw, 5rem);
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--charcoal);
+    }
+
+    h2.display em {
+      font-style: italic;
+      color: var(--terracotta);
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.45s; }
+
+    /* ────────────────────────────────────────
+       NAV
+    ──────────────────────────────────────── */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      transition: background 0.4s, box-shadow 0.4s, padding 0.4s;
+      padding: 28px 0;
+    }
+
+    #nav.scrolled {
+      background: rgba(253,250,245,0.96);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 rgba(44,36,32,0.1);
+      padding: 16px 0;
+    }
+
+    #nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.15em;
+      color: var(--cream);
+      text-decoration: none;
+      transition: color 0.4s;
+    }
+
+    #nav.scrolled .nav-logo { color: var(--charcoal); }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      font-weight: 400;
+      color: rgba(253,250,245,0.8);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    #nav.scrolled .nav-links a { color: var(--warm-gray); }
+    .nav-links a:hover,
+    #nav.scrolled .nav-links a:hover { color: var(--terracotta); }
+
+    .nav-btn {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      background: var(--sand);
+      border: none;
+      padding: 12px 24px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.2s;
+      display: inline-block;
+    }
+
+    #nav.scrolled .nav-btn {
+      background: var(--terracotta);
+      color: white;
+    }
+
+    .nav-btn:hover { transform: translateY(-1px); opacity: 0.9; }
+
+    /* Mobile hamburger */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--cream);
+      transition: background 0.4s;
+    }
+
+    #nav.scrolled .nav-hamburger span { background: var(--charcoal); }
+
+    /* ────────────────────────────────────────
+       HERO
+    ──────────────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('IMG_0204.jpg');
+      background-size: cover;
+      background-position: center top;
+      animation: heroZoom 16s ease-out forwards;
+    }
+
+    @keyframes heroZoom {
+      from { transform: scale(1.07); }
+      to   { transform: scale(1.0); }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(110deg, rgba(30,18,12,0.88) 0%, rgba(30,18,12,0.55) 50%, rgba(30,18,12,0.3) 100%),
+        linear-gradient(to top, rgba(30,18,12,0.9) 0%, transparent 50%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      padding: 120px 0 100px;
+    }
+
+    .hero-content .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 60px;
+    }
+
+    .hero-left {}
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease-out 0.4s forwards;
+    }
+
+    .hero-eyebrow-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 8vw, 6.5rem);
       font-weight: 900;
       line-height: 1.0;
       color: var(--cream);
-      margin-bottom: 20px;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 1s ease-out 0.65s forwards;
     }
 
-    .page-hero h1 em {
+    .hero-title .line2 {
+      display: block;
       font-style: italic;
       color: var(--terracotta-light);
     }
 
-    .page-hero p {
-      font-size: 1rem;
-      line-height: 1.7;
-      color: rgba(253,250,245,0.55);
-      max-width: 480px;
+    .hero-body {
+      font-size: 1.1rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(253,250,245,0.75);
+      max-width: 420px;
+      margin-bottom: 44px;
+      opacity: 0;
+      animation: fadeUp 0.9s ease-out 0.9s forwards;
     }
 
-    /* ── FILTERS ── */
-    .filters-bar {
-      padding: 32px 0;
-      background: var(--sand-dark);
-      border-bottom: 1px solid rgba(44,36,32,0.08);
-      position: sticky;
-      top: 61px;
-      z-index: 50;
-    }
-
-    .filters-inner {
+    .hero-actions {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
       gap: 16px;
       flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.9s ease-out 1.1s forwards;
     }
 
-    .filter-count {
+    .btn-primary {
       font-size: 0.75rem;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-    }
-
-    .filter-count span {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--terracotta);
-      margin-right: 6px;
-    }
-
-    .yt-link {
-      font-size: 0.72rem;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       font-weight: 500;
       color: white;
       background: var(--terracotta);
-      padding: 10px 20px;
+      padding: 16px 36px;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      background: var(--sienna);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(181,98,62,0.4);
+    }
+
+    .btn-outline {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 400;
+      color: var(--cream);
+      background: transparent;
+      border: 1px solid rgba(253,250,245,0.35);
+      padding: 15px 32px;
+      text-decoration: none;
+      transition: border-color 0.3s, color 0.3s, transform 0.2s;
+      display: inline-block;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    /* Hero right — service card */
+    .hero-right {
+      display: flex;
+      justify-content: flex-end;
+      opacity: 0;
+      animation: fadeIn 1s ease-out 1.4s forwards;
+    }
+
+    .service-card {
+      background: rgba(253,250,245,0.1);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(253,250,245,0.2);
+      padding: 40px 44px;
+      max-width: 300px;
+      width: 100%;
+    }
+
+    .service-card-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .service-item {
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(253,250,245,0.15);
+    }
+
+    .service-item:last-child { border-bottom: none; }
+
+    .service-day {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--cream);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .service-time {
+      font-size: 0.78rem;
+      color: rgba(253,250,245,0.6);
+      letter-spacing: 0.1em;
+    }
+
+    .service-note {
+      font-size: 0.7rem;
+      color: var(--terracotta-light);
+      margin-top: 3px;
+      display: block;
+    }
+
+    /* ── HERO TICKER ── */
+    .hero-ticker {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: var(--sand);
+      padding: 14px 0;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .ticker-track {
+      display: flex;
+      gap: 80px;
+      animation: ticker 28s linear infinite;
+      white-space: nowrap;
+    }
+
+    .ticker-track span {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--sienna);
+      flex-shrink: 0;
+    }
+
+    .ticker-track .dot {
+      font-style: normal;
+      color: rgba(122,59,46,0.4);
+    }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── SHARED ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ────────────────────────────────────────
+       SERMONES
+    ──────────────────────────────────────── */
+    #sermones {
+      padding: var(--section-pad);
+      background: var(--cream);
+    }
+
+    #sermones .container > .row-top {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 56px;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .link-arrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--terracotta);
       text-decoration: none;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      transition: background 0.3s;
+      transition: gap 0.3s;
     }
 
-    .yt-link:hover { background: var(--sienna); }
-
-    /* ── GRID ── */
-    .sermons-section {
-      padding: 60px 0 100px;
-    }
+    .link-arrow::after { content: '→'; }
+    .link-arrow:hover { gap: 14px; }
 
     .sermons-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 24px;
     }
 
-    /* Loading */
-    .loading-state {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 80px 0;
-    }
-
-    .spinner {
-      width: 44px; height: 44px;
-      border: 2px solid rgba(44,36,32,0.1);
-      border-top-color: var(--terracotta);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto 20px;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .loading-text {
-      font-size: 0.82rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-    }
-
-    /* Error */
-    .error-state {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 80px 0;
-    }
-
-    /* Sermon card */
     .sermon-card {
-      background: white;
+      background: var(--sand);
       overflow: hidden;
       cursor: pointer;
       transition: transform 0.3s, box-shadow 0.3s;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: cardReveal 0.5s ease forwards;
     }
 
     .sermon-card:hover {
@@ -253,85 +491,432 @@
       box-shadow: 0 20px 50px rgba(44,36,32,0.12);
     }
 
-    @keyframes cardReveal {
-      to { opacity: 1; transform: translateY(0); }
+    .sermon-card.featured {
+      grid-row: span 2;
+      display: flex;
+      flex-direction: column;
     }
 
     .sermon-thumb {
-      position: relative;
       width: 100%;
       aspect-ratio: 16/9;
-      overflow: hidden;
       background: var(--charcoal);
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
     }
 
-    .sermon-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.4s ease;
+    .sermon-card.featured .sermon-thumb {
+      aspect-ratio: 4/3;
     }
 
-    .sermon-card:hover .sermon-thumb img {
-      transform: scale(1.04);
-    }
-
-    .sermon-thumb-fallback {
+    .sermon-thumb-bg {
       position: absolute;
       inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .play-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(30,26,24,0);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.3s;
     }
 
-    .sermon-card:hover .play-overlay {
-      background: rgba(30,26,24,0.45);
+    .sermon-thumb-gradient {
+      position: absolute;
+      inset: 0;
     }
 
-    .play-btn {
-      width: 56px; height: 56px;
+    .sermon-play {
+      width: 52px; height: 52px;
       border-radius: 50%;
       background: rgba(253,250,245,0.15);
-      border: 1px solid rgba(253,250,245,0.4);
+      border: 1px solid rgba(253,250,245,0.35);
       display: flex;
       align-items: center;
       justify-content: center;
-      opacity: 0;
-      transform: scale(0.8);
-      transition: opacity 0.3s, transform 0.3s, background 0.3s;
       backdrop-filter: blur(4px);
+      transition: background 0.3s, transform 0.3s;
+      position: relative;
+      z-index: 2;
     }
 
-    .sermon-card:hover .play-btn {
-      opacity: 1;
-      transform: scale(1);
+    .sermon-card:hover .sermon-play {
       background: var(--terracotta);
       border-color: var(--terracotta);
+      transform: scale(1.1);
     }
 
-    .play-btn svg {
-      width: 20px; height: 20px;
+    .sermon-play svg {
+      width: 18px; height: 18px;
       fill: white;
       margin-left: 3px;
     }
 
     .sermon-body {
-      padding: 20px 22px 24px;
+      padding: 24px 28px 28px;
+      flex: 1;
     }
 
-    .sermon-label {
-      font-size: 0.6rem;
+    .sermon-series {
+      font-size: 0.65rem;
       letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      font-weight: 500;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .sermon-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--charcoal);
+      margin-bottom: 10px;
+    }
+
+    .sermon-card.featured .sermon-title { font-size: 1.55rem; }
+    .sermon-card:not(.featured) .sermon-title { font-size: 1.1rem; }
+
+    .sermon-meta {
+      font-size: 0.73rem;
+      color: var(--muted);
+      display: flex;
+      gap: 16px;
+    }
+
+    /* ────────────────────────────────────────
+       EVENTOS
+    ──────────────────────────────────────── */
+    #eventos {
+      padding: var(--section-pad);
+      background: var(--charcoal);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decorative large text */
+    #eventos::before {
+      content: 'EVENTOS';
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18vw;
+      color: rgba(255,255,255,0.02);
+      letter-spacing: 0.05em;
+      pointer-events: none;
+      line-height: 1;
+    }
+
+    #eventos .row-top {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    #eventos .section-label { color: var(--terracotta-light); }
+    #eventos .section-label::before { background: var(--terracotta-light); }
+    #eventos h2.display { color: var(--cream); }
+    #eventos h2.display em { color: var(--terracotta-light); }
+    #eventos .link-arrow { color: var(--gold); }
+
+    .events-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .event-row {
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      align-items: center;
+      gap: 32px;
+      padding: 32px 0;
+      border-bottom: 1px solid rgba(253,250,245,0.08);
+      cursor: pointer;
+      transition: padding-left 0.3s;
+      position: relative;
+    }
+
+    .event-row::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 0;
+      background: var(--terracotta);
+      opacity: 0.1;
+      transition: width 0.4s ease;
+    }
+
+    .event-row:hover { padding-left: 16px; }
+    .event-row:hover::before { width: 4px; }
+
+    .event-row:first-child { border-top: 1px solid rgba(253,250,245,0.08); }
+
+    .event-date-box {
+      text-align: center;
+    }
+
+    .event-date-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--terracotta-light);
+      line-height: 1;
+      display: block;
+    }
+
+    .event-date-month {
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-top: 4px;
+    }
+
+    .event-info {}
+
+    .event-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+
+    .event-details {
+      font-size: 0.78rem;
+      color: rgba(253,250,245,0.45);
+      letter-spacing: 0.06em;
+    }
+
+    .event-tag {
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 8px 16px;
+      border: 1px solid rgba(253,250,245,0.15);
+      color: rgba(253,250,245,0.5);
+      transition: border-color 0.3s, color 0.3s;
+      white-space: nowrap;
+    }
+
+    .event-row:hover .event-tag {
+      border-color: var(--terracotta-light);
+      color: var(--terracotta-light);
+    }
+
+    /* ────────────────────────────────────────
+       DAR / OFRENDAS
+    ──────────────────────────────────────── */
+    #dar {
+      padding: var(--section-pad);
+      background: var(--sand-dark);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dar-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .dar-left {}
+
+    .dar-scripture {
+      margin: 32px 0 40px;
+      padding: 24px 28px;
+      background: white;
+      border-left: 3px solid var(--terracotta);
+    }
+
+    .dar-scripture p {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: var(--charcoal);
+      margin-bottom: 12px;
+    }
+
+    .dar-scripture cite {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-style: normal;
+    }
+
+    .dar-body {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--warm-gray);
+      margin-bottom: 36px;
+    }
+
+    /* Giving card */
+    .dar-right {}
+
+    .giving-card {
+      background: var(--charcoal);
+      padding: 48px 44px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .giving-card::after {
+      content: '♡';
+      position: absolute;
+      right: -10px;
+      bottom: -30px;
+      font-size: 12rem;
+      color: rgba(181,98,62,0.06);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .giving-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 8px;
+    }
+
+    .giving-card-sub {
+      font-size: 0.85rem;
+      color: rgba(253,250,245,0.45);
+      margin-bottom: 40px;
+    }
+
+    .giving-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .giving-option {
+      padding: 20px;
+      border: 1px solid rgba(253,250,245,0.12);
+      cursor: pointer;
+      transition: border-color 0.3s, background 0.3s;
+      text-align: center;
+    }
+
+    .giving-option:hover,
+    .giving-option.active {
+      border-color: var(--terracotta);
+      background: rgba(181,98,62,0.1);
+    }
+
+    .giving-option-amount {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--cream);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .giving-option-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(253,250,245,0.4);
+    }
+
+    .giving-divider {
+      text-align: center;
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(253,250,245,0.3);
+      margin-bottom: 28px;
+    }
+
+    .giving-methods {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .giving-method-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 16px 20px;
+      background: rgba(253,250,245,0.06);
+      border: 1px solid rgba(253,250,245,0.1);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      text-align: left;
+    }
+
+    .giving-method-btn:hover {
+      background: rgba(253,250,245,0.1);
+      transform: translateX(4px);
+    }
+
+    .giving-method-btn .method-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--terracotta);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 0.85rem;
+    }
+
+    /* ────────────────────────────────────────
+       CONTACTO
+    ──────────────────────────────────────── */
+    #contacto {
+      padding: var(--section-pad);
+      background: var(--cream);
+    }
+
+    .contacto-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .contacto-left {}
+
+    .contacto-intro {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--warm-gray);
+      margin: 24px 0 48px;
+      max-width: 420px;
+    }
+
+    .info-blocks {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .info-block {}
+
+    .info-block-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
       text-transform: uppercase;
       color: var(--terracotta);
       font-weight: 500;
@@ -339,218 +924,750 @@
       display: block;
     }
 
-    .sermon-title {
+    .info-block-value {
       font-family: 'Playfair Display', serif;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
+      color: var(--charcoal);
+      line-height: 1.5;
+    }
+
+    .info-block-sub {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* Contact form */
+    .contacto-form {
+      background: var(--sand);
+      padding: 48px 44px;
+    }
+
+    .form-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
       font-weight: 700;
       color: var(--charcoal);
-      line-height: 1.3;
-      margin-bottom: 10px;
+      margin-bottom: 32px;
     }
 
-    .sermon-meta {
-      font-size: 0.72rem;
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
       color: var(--muted);
-      display: flex;
-      gap: 10px;
-      align-items: center;
+      display: block;
+      margin-bottom: 8px;
     }
 
-    .sermon-meta-dot {
-      width: 3px; height: 3px;
-      border-radius: 50%;
-      background: var(--muted);
-      opacity: 0.5;
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 14px 16px;
+      background: white;
+      border: 1px solid rgba(44,36,32,0.12);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.3s;
     }
 
-    /* ── FOOTER ── */
-    footer {
-      background: var(--charcoal);
-      padding: 40px 0;
-      border-top: 1px solid rgba(253,250,245,0.06);
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--terracotta);
     }
 
-    .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
+    .form-textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 16px;
     }
 
+    .form-submit {
+      width: 100%;
+      padding: 18px;
+      background: var(--terracotta);
+      color: white;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .form-submit:hover {
+      background: var(--sienna);
+      transform: translateY(-1px);
+    }
+
+    /* ────────────────────────────────────────
+       FOOTER
+    ──────────────────────────────────────── */
+    footer {
+      background: var(--charcoal);
+      padding: 64px 0 32px;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 56px;
+    }
+
+    .footer-brand {}
+
     .footer-logo {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.3rem;
+      font-size: 2rem;
       letter-spacing: 0.15em;
-      color: var(--gold);
+      color: var(--cream);
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .footer-tagline {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: rgba(253,250,245,0.45);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 12px;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(253,250,245,0.5);
+      text-decoration: none;
+      transition: color 0.3s, transform 0.2s;
+    }
+
+    .social-link svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .social-link:hover {
+      color: var(--terracotta-light);
+      transform: translateY(-2px);
+    }
+
+    .footer-col-title {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--terracotta-light);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-links a {
+      font-size: 0.85rem;
+      color: rgba(253,250,245,0.5);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: var(--cream); }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(253,250,245,0.08);
+      padding-top: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
     .footer-copy {
       font-size: 0.72rem;
       color: rgba(253,250,245,0.25);
+      letter-spacing: 0.06em;
     }
 
-    .footer-yt {
-      font-size: 0.72rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: rgba(253,250,245,0.4);
-      text-decoration: none;
-      transition: color 0.3s;
+    .footer-verse {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.78rem;
+      color: rgba(253,250,245,0.25);
     }
 
-    .footer-yt:hover { color: var(--terracotta-light); }
-
-    /* Responsive */
+    /* ────────────────────────────────────────
+       RESPONSIVE
+    ──────────────────────────────────────── */
     @media (max-width: 900px) {
       .container { padding: 0 24px; }
-      .sermons-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+
+      #nav { padding: 20px 0; }
+
+      .nav-links, .nav-btn { display: none; }
+      .nav-hamburger { display: flex; }
+
+      .hero-content .container {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-right { justify-content: flex-start; }
+      .service-card { max-width: 100%; }
+
+      .sermons-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sermon-card.featured { grid-row: auto; }
+
+      .event-row {
+        grid-template-columns: 80px 1fr;
+      }
+
+      .event-tag { display: none; }
+
+      .dar-inner,
+      .contacto-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
     }
 
     @media (max-width: 600px) {
-      .sermons-grid { grid-template-columns: 1fr; }
-      .page-hero { padding: 120px 0 48px; }
+      .footer-top { grid-template-columns: 1fr; }
+      .giving-options { grid-template-columns: 1fr 1fr; }
+      .form-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
+  <!-- ── NAV ── -->
+  <nav id="nav">
     <div class="container">
-      <a href="somos-reino-website.html" class="nav-logo">Somos Reino</a>
-      <a href="somos-reino-website.html" class="nav-back">Inicio</a>
+      <a href="/" class="nav-logo">Somos Reino</a>
+      <ul class="nav-links">
+        <li><a href="#sermones">Sermones</a></li>
+        <li><a href="#eventos">Eventos</a></li>
+        <li><a href="#dar">Dar</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <a href="#contacto" class="nav-btn">Visítanos</a>
+      <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="page-hero">
-    <div class="container">
-      <span class="section-label">Palabra de Vida</span>
-      <h1>Sermones <em>recientes</em></h1>
-      <p>Cada mensaje es una invitación a encontrarte con Dios. Escucha, reflexiona y crece en tu fe.</p>
+  <!-- ── HERO ── -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content" style="width:100%;">
+      <div class="container">
+        <div class="hero-left">
+          <div class="hero-eyebrow">
+            <div class="hero-eyebrow-dot"></div>
+            Kissimmee, Florida
+          </div>
+
+          <h1 class="hero-title">
+            Una familia<br>
+            <span class="line2">de reino.</span>
+          </h1>
+
+          <p class="hero-body">
+            Somos una comunidad que adora a Dios en espíritu y en verdad, 
+            construye relaciones genuinas y transforma su ciudad con el amor de Cristo.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#contacto" class="btn-primary">Planifica Tu Visita</a>
+            <a href="#sermones" class="btn-outline">Ver Sermones</a>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="service-card">
+            <span class="service-card-label">Servicios Regulares</span>
+            <div class="service-item">
+              <span class="service-day">Domingo</span>
+              <span class="service-time">11:00 AM · Celebración</span>
+              <span class="service-note">En español · Niños disponible</span>
+            </div>
+            <div class="service-item">
+              <span class="service-day">Miércoles</span>
+              <span class="service-time">7:30 PM · Formación</span>
+              <span class="service-note">Estudio bíblico y adoración</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ticker -->
+    <div class="hero-ticker">
+      <div class="ticker-track">
+        <span>Bienvenidos a Somos Reino</span>
+        <span class="dot">·</span>
+        <span>Kissimmee, Florida</span>
+        <span class="dot">·</span>
+        <span>Domingos 11:00 AM · Celebración</span>
+        <span class="dot">·</span>
+        <span>Miércoles 7:30 PM · Formación</span>
+        <span class="dot">·</span>
+        <span>Una familia de reino</span>
+        <span class="dot">·</span>
+        <span>Adoración · Comunidad · Propósito</span>
+        <span class="dot">·</span>
+        <!-- Duplicate for seamless loop -->
+        <span>Bienvenidos a Somos Reino</span>
+        <span class="dot">·</span>
+        <span>2824 Michigan Ave Unit F, Kissimmee, FL 34744</span>
+        <span class="dot">·</span>
+        <span>Domingos 11:00 AM · Celebración</span>
+        <span class="dot">·</span>
+        <span>Miércoles 7:30 PM · Formación</span>
+        <span class="dot">·</span>
+        <span>Una familia de reino</span>
+        <span class="dot">·</span>
+        <span>Adoración · Comunidad · Propósito</span>
+        <span class="dot">·</span>
+      </div>
     </div>
   </section>
 
-  <!-- FILTERS BAR -->
-  <div class="filters-bar">
+  <!-- ── SERMONES ── -->
+  <section id="sermones">
     <div class="container">
-      <div class="filters-inner">
-        <p class="filter-count"><span id="video-count">—</span> sermones disponibles</p>
-        <a href="https://youtube.com/@somosreinofl?si=o2pavfWMVryrC4az" target="_blank" class="yt-link">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-          Ver en YouTube
-        </a>
+      <div class="row-top reveal">
+        <div>
+          <span class="section-label">Palabra de Vida</span>
+          <h2 class="display">Sermones <em>recientes</em></h2>
+        </div>
+        <a href="https://youtube.com/playlist?list=PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7" target="_blank" class="link-arrow">Ver todos en YouTube</a>
+      </div>
+
+      <!-- Loading state -->
+      <div id="sermons-loading" style="text-align:center;padding:60px 0;">
+        <div style="width:40px;height:40px;border:2px solid var(--sand-dark);border-top-color:var(--terracotta);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;"></div>
+        <p style="font-size:0.85rem;color:var(--muted);letter-spacing:0.1em;">Cargando sermones...</p>
+      </div>
+
+      <!-- Error / fallback -->
+      <div id="sermons-error" style="display:none;text-align:center;padding:60px 0;">
+        <p style="font-size:0.9rem;color:var(--muted);margin-bottom:20px;">Mira nuestros sermones directamente en YouTube.</p>
+        <a href="https://youtube.com/playlist?list=PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7" target="_blank" class="btn-primary" style="display:inline-block;">Ver Playlist →</a>
+      </div>
+
+  <!-- ── EVENTOS ── -->
+  <section id="eventos">
+    <div class="container">
+      <div class="row-top reveal">
+        <div>
+          <span class="section-label">Próximas Fechas</span>
+          <h2 class="display">Lo que viene<br><em>este mes</em></h2>
+        </div>
+        <a href="https://www.churchtrac.com/public_calendar?ui=3637D3FD" target="_blank" class="link-arrow" style="color:var(--gold);">Ver calendario completo</a>
+      </div>
+
+      <!-- Loading state -->
+      <div id="events-loading" style="text-align:center;padding:40px 0;">
+        <div style="width:36px;height:36px;border:2px solid rgba(253,250,245,0.1);border-top-color:var(--terracotta-light);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 14px;"></div>
+        <p style="font-size:0.82rem;color:rgba(253,250,245,0.35);letter-spacing:0.1em;">Cargando eventos...</p>
+      </div>
+
+      <!-- Events list injected by JS -->
+      <div class="events-list" id="events-list" style="display:none;"></div>
+
+      <!-- Fallback -->
+      <div id="events-error" style="display:none;text-align:center;padding:40px 0;">
+        <a href="https://www.churchtrac.com/public_calendar?ui=3637D3FD" target="_blank" class="link-arrow" style="color:var(--gold);">Ver todos los eventos →</a>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- SERMONS GRID -->
-  <section class="sermons-section">
+  <!-- ── DAR ── -->
+  <section id="dar">
     <div class="container">
-      <div class="sermons-grid" id="sermons-grid">
-        <div class="loading-state">
-          <div class="spinner"></div>
-          <p class="loading-text">Cargando sermones...</p>
+      <div class="dar-inner">
+        <div class="dar-left reveal">
+          <span class="section-label">Mayordomía</span>
+          <h2 class="display">Dar es<br><em>un acto de fe</em></h2>
+
+          <blockquote class="dar-scripture">
+            <p>"Cada uno dé como propuso en su corazón: no con tristeza, ni por necesidad, porque Dios ama al dador alegre."</p>
+            <cite>2 Corintios 9:7</cite>
+          </blockquote>
+
+          <p class="dar-body">
+            Tu generosidad hace posible que sigamos predicando el evangelio, sirviendo a nuestra comunidad y formando a la próxima generación de líderes. Cada ofrenda es una semilla sembrada con propósito eterno.
+          </p>
+        </div>
+
+        <div class="dar-right reveal reveal-delay-2">
+          <iframe
+            src="https://www.churchtrac.com/give?ui=3637D3FD"
+            width="100%"
+            height="600"
+            frameborder="0"
+            scrolling="auto"
+            style="width:100%;height:600px;border:none;display:block;">
+          </iframe>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- ── CONTACTO ── -->
+  <section id="contacto">
+    <div class="container">
+      <div class="contacto-inner">
+
+        <div class="contacto-left reveal">
+          <span class="section-label">Estamos Aquí</span>
+          <h2 class="display">Nos encanta<br><em>conocerte</em></h2>
+
+          <p class="contacto-intro">
+            Si es tu primera vez, si tienes preguntas, o simplemente quieres conectar — estamos aquí. No tienes que venir solo.
+          </p>
+
+          <div class="info-blocks">
+            <div class="info-block">
+              <span class="info-block-label">Ubicación</span>
+              <div class="info-block-value">2824 Michigan Ave Unit F<br>Kissimmee, FL 34744</div>
+            </div>
+            <div class="info-block">
+              <span class="info-block-label">Horarios de Servicio</span>
+              <div class="info-block-value">Domingo 11:00 AM · Celebración<br>Miércoles 7:30 PM · Formación</div>
+            </div>
+            <div class="info-block">
+              <span class="info-block-label">Escríbenos</span>
+              <div class="info-block-value">hola@somosreino.org</div>
+              <div class="info-block-sub">Respondemos en menos de 24 horas</div>
+            </div>
+            <div class="info-block">
+              <span class="info-block-label">Síguenos</span>
+              <div style="display:flex;gap:12px;margin-top:8px;">
+                <a href="https://www.instagram.com/somosreinofl?igsh=MWx5dWt4NzJmY3Z5cg%3D%3D&utm_source=qr" target="_blank" class="social-link" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+                <a href="#" target="_blank" class="social-link" aria-label="YouTube"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+                <a href="https://www.facebook.com/share/1CkYP7Dpob/?mibextid=wwXIfr" target="_blank" class="social-link" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+                <a href="https://www.tiktok.com/@somosreinofl?_r=1&_t=ZT-95coSNg4ni2" target="_blank" class="social-link" aria-label="TikTok"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contacto-right reveal reveal-delay-2">
+          <div class="contacto-form">
+            <h3 class="form-title">Planifica tu visita</h3>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Nombre</label>
+                <input class="form-input" type="text" placeholder="Tu nombre" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Apellido</label>
+                <input class="form-input" type="text" placeholder="Tu apellido" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Correo electrónico</label>
+              <input class="form-input" type="email" placeholder="tu@correo.com" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Teléfono (opcional)</label>
+              <input class="form-input" type="tel" placeholder="(407) 000-0000" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">¿Cómo podemos ayudarte?</label>
+              <select class="form-select">
+                <option value="">Selecciona una opción</option>
+                <option>Primera visita — quiero conocerlos</option>
+                <option>Información sobre ministerios</option>
+                <option>Petición de oración</option>
+                <option>Tengo una pregunta</option>
+                <option>Otro</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Mensaje (opcional)</label>
+              <textarea class="form-textarea" placeholder="Cuéntanos algo sobre ti..."></textarea>
+            </div>
+
+            <button class="form-submit">Enviar Mensaje →</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
   <footer>
     <div class="container">
-      <div class="footer-inner">
-        <span class="footer-logo">Somos Reino</span>
-        <span class="footer-copy">© 2025 Somos Reino · Kissimmee, FL</span>
-        <a href="https://youtube.com/@somosreinofl?si=o2pavfWMVryrC4az" target="_blank" class="footer-yt">Ver canal completo →</a>
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="footer-logo">Somos Reino</span>
+          <p class="footer-tagline">"Busquen primeramente el reino de Dios<br>y su justicia." — Mateo 6:33</p>
+          <div class="footer-social">
+            <a href="https://www.instagram.com/somosreinofl?igsh=MWx5dWt4NzJmY3Z5cg%3D%3D&utm_source=qr" target="_blank" class="social-link" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+            <a href="#" target="_blank" class="social-link" aria-label="YouTube"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+            <a href="https://www.facebook.com/share/1CkYP7Dpob/?mibextid=wwXIfr" target="_blank" class="social-link" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+            <a href="https://www.tiktok.com/@somosreinofl?_r=1&_t=ZT-95coSNg4ni2" target="_blank" class="social-link" aria-label="TikTok"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg></a>
+          </div>
+        </div>
+
+        <div>
+          <span class="footer-col-title">Navegación</span>
+          <ul class="footer-links">
+            <li><a href="#hero">Inicio</a></li>
+            <li><a href="#sermones">Sermones</a></li>
+            <li><a href="#eventos">Eventos</a></li>
+            <li><a href="#dar">Dar</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <span class="footer-col-title">Servicios</span>
+          <ul class="footer-links">
+            <li><a href="#">Domingo 11:00 AM · Celebración</a></li>
+            <li><a href="#">Miércoles 7:30 PM · Formación</a></li>
+            <li><a href="#">Ministerio de Niños</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <span class="footer-col-title">Recursos</span>
+          <ul class="footer-links">
+            <li><a href="#">Podcast — Esencial</a></li>
+            <li><a href="#">Petición de Oración</a></li>
+            <li><a href="#">Plan de Salvación</a></li>
+            <li><a href="#">Dar en Línea</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2025 Somos Reino Church · Kissimmee, FL · Todos los derechos reservados</span>
+        <span class="footer-verse">Una familia que transforma su ciudad</span>
       </div>
     </div>
   </footer>
 
+  <!-- ── SCRIPTS ── -->
   <script>
-    const PLAYLIST_ID = 'PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7';
-    const RSS_URL = `https://www.youtube.com/feeds/videos.xml?playlist_id=${PLAYLIST_ID}`;
-    const PROXY = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}&count=50`;
+    // Nav scroll effect
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
 
-    const grid = document.getElementById('sermons-grid');
-    const countEl = document.getElementById('video-count');
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
 
-    const gradients = [
-      'linear-gradient(135deg,#3D1A14,#B5623E)',
-      'linear-gradient(135deg,#1E3A2E,#3A6B4E)',
-      'linear-gradient(135deg,#2E2A1A,#6B5A2E)',
-      'linear-gradient(135deg,#1A1E3A,#3A4580)',
-      'linear-gradient(135deg,#2A1A3A,#5A3A80)',
-      'linear-gradient(135deg,#1A2E2A,#3A6B5A)',
-    ];
-
-    function getVideoId(item) {
-      return item.guid || item.videoId || '';
+    // Giving amount toggle
+    function selectAmount(el) {
+      document.querySelectorAll('.giving-option').forEach(o => o.classList.remove('active'));
+      el.classList.add('active');
     }
 
-    function formatDate(dateStr) {
-      return dateStr || '';
-    }
+    // ── CHURCHTRAC ICAL EVENTS LOADER ──
+    (function() {
+      const ICAL_URL = 'https://www.churchtrac.com/ical?ui=3637D3FD';
+      const PROXY = 'https://api.allorigins.win/get?url=' + encodeURIComponent(ICAL_URL);
+      const SKIP = ['celebración', 'formación', 'celebracion', 'formacion'];
 
-    function buildCard(item, index) {
-      const videoId = getVideoId(item);
-      const title = item.title || 'Sermón';
-      const date = formatDate(item.pubDate);
-      const thumb = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-      const url = `https://www.youtube.com/watch?v=${videoId}`;
-      const grad = gradients[index % gradients.length];
-      const delay = (index % 9) * 0.07;
+      const MONTHS_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+      const DAYS_ES   = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 
-      return `
-        <a href="${url}" target="_blank" class="sermon-card" style="text-decoration:none;animation-delay:${delay}s;">
-          <div class="sermon-thumb">
-            <img
-              src="${thumb}"
-              alt="${title}"
-              onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
-            />
-            <div class="sermon-thumb-fallback" style="background:${grad};">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="rgba(253,250,245,0.2)"><path d="M12 3v10.55A4 4 0 1014 17V7h4V3h-6z"/></svg>
+      function parseICalDate(str) {
+        // Format: 20260424T193000 or 20260424
+        const s = str.replace(/[TZ]/g, '');
+        const y = +s.slice(0,4), m = +s.slice(4,6)-1, d = +s.slice(6,8);
+        const h = s.length >= 12 ? +s.slice(8,10) : 0;
+        const min = s.length >= 14 ? +s.slice(10,12) : 0;
+        return new Date(y, m, d, h, min);
+      }
+
+      function formatTime(date) {
+        let h = date.getHours(), min = date.getMinutes();
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        h = h % 12 || 12;
+        return `${h}:${String(min).padStart(2,'0')} ${ampm}`;
+      }
+
+      function parseICal(text) {
+        const events = [];
+        const blocks = text.split('BEGIN:VEVENT').slice(1);
+        for (const block of blocks) {
+          const get = (key) => {
+            const m = block.match(new RegExp(key + '[^:]*:([^\r\n]+)'));
+            return m ? m[1].trim() : '';
+          };
+          const summary = get('SUMMARY');
+          const dtstart = get('DTSTART');
+          if (!summary || !dtstart) continue;
+          if (SKIP.some(s => summary.toLowerCase().includes(s))) continue;
+          const date = parseICalDate(dtstart);
+          if (date < new Date()) continue;
+          events.push({ summary, date });
+        }
+        events.sort((a, b) => a.date - b.date);
+        return events.slice(0, 3);
+      }
+
+      function buildEventRow(ev, index) {
+        const delays = ['reveal-delay-1','reveal-delay-2','reveal-delay-3'];
+        return `
+          <div class="event-row reveal ${delays[index]}">
+            <div class="event-date-box">
+              <span class="event-date-num">${String(ev.date.getDate()).padStart(2,'0')}</span>
+              <span class="event-date-month">${MONTHS_ES[ev.date.getMonth()]}</span>
             </div>
-            <div class="play-overlay">
-              <div class="play-btn">
-                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <div class="event-info">
+              <h3 class="event-title">${ev.summary}</h3>
+              <p class="event-details">${DAYS_ES[ev.date.getDay()]} · ${formatTime(ev.date)}</p>
+            </div>
+            <span class="event-tag">Evento</span>
+          </div>`;
+      }
+
+      fetch(PROXY)
+        .then(r => r.json())
+        .then(data => {
+          const events = parseICal(data.contents);
+          if (!events.length) throw new Error('No events');
+          const list = document.getElementById('events-list');
+          list.innerHTML = events.map((ev, i) => buildEventRow(ev, i)).join('');
+          document.getElementById('events-loading').style.display = 'none';
+          list.style.display = 'flex';
+          list.style.flexDirection = 'column';
+          list.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        })
+        .catch(() => {
+          document.getElementById('events-loading').style.display = 'none';
+          document.getElementById('events-error').style.display = 'block';
+        });
+    })();
+
+    // ── YOUTUBE PLAYLIST LOADER ──
+    (function() {
+      const PLAYLIST_ID = 'PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7';
+
+      // These are the 3 most recent video IDs from your playlist.
+      // Update these whenever you want to refresh which videos show.
+      // To find a video ID: open the video on YouTube, copy the part after "v=" in the URL.
+      const videos = [
+        { id: null, title: null }, // slot 1 — most recent
+        { id: null, title: null }, // slot 2
+        { id: null, title: null }, // slot 3
+      ];
+
+      const loading = document.getElementById('sermons-loading');
+      const grid = document.getElementById('sermons-grid');
+      const error = document.getElementById('sermons-error');
+
+      function buildCard(video, index) {
+        const isFirst = index === 0;
+        const title = video.title.split('|')[0].trim();
+        return `
+          <a href="${video.url}" target="_blank" class="sermon-card ${isFirst ? 'featured' : ''} reveal" style="text-decoration:none;">
+            <div class="sermon-thumb" style="position:relative;aspect-ratio:16/9;overflow:hidden;">
+              <img
+                src="${video.thumbnail}"
+                alt="${title}"
+                onerror="this.src='https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg'"
+                style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease;"
+                onmouseover="this.style.transform='scale(1.04)'"
+                onmouseout="this.style.transform='scale(1)'"
+              />
+            </div>
+            <div class="sermon-body">
+              <span class="sermon-series">Somos Reino</span>
+              <h3 class="sermon-title" style="font-size:${isFirst ? '1.3rem' : '1rem'};">${title}</h3>
+              <div class="sermon-meta">
+                <span>${video.date}</span>
+                <span>·</span>
+                <span style="color:var(--terracotta);">Ver en YouTube →</span>
               </div>
             </div>
-          </div>
-          <div class="sermon-body">
-            <span class="sermon-label">Somos Reino</span>
-            <h3 class="sermon-title">${title}</h3>
-            <div class="sermon-meta">
-              <span>${date}</span>
-              <span class="sermon-meta-dot"></span>
-              <span>Ver en YouTube</span>
-            </div>
-          </div>
-        </a>`;
-    }
+          </a>`;
+      }
 
-    fetch('https://somos-reino-api.vercel.app/api/videos')
-      .then(r => r.json())
-      .then(data => {
-        if (!data.videos?.length) throw new Error('No videos');
-        const videos = data.videos;
-        countEl.textContent = videos.length;
-        grid.innerHTML = videos.map((v, i) => buildCard({
-          title: v.title,
-          guid: v.videoId,
-          pubDate: v.date,
-        }, i)).join('');
-      })
-      .catch(() => {
-        countEl.textContent = '—';
-        grid.innerHTML = `
-          <div class="error-state">
-            <p style="font-size:0.9rem;color:var(--muted);margin-bottom:20px;">No se pudieron cargar los sermones.</p>
-            <a href="https://youtube.com/@somosreinofl" target="_blank" style="display:inline-block;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;color:white;background:var(--terracotta);padding:14px 28px;text-decoration:none;">Ver en YouTube →</a>
-          </div>`;
-      });
+      fetch('https://somos-reino-api.vercel.app/api/videos')
+        .then(r => r.json())
+        .then(data => {
+          if (!data.videos?.length) throw new Error('No videos');
+          grid.innerHTML = data.videos.slice(0,3).map((v, i) => buildCard(v, i)).join('');
+          loading.style.display = 'none';
+          grid.style.display = 'grid';
+          grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        })
+        .catch(() => {
+          loading.style.display = 'none';
+          error.style.display = 'block';
+        });
+    })();
+
+    // Mobile menu (basic toggle)
+    document.getElementById('hamburger').addEventListener('click', () => {
+      const links = document.querySelector('.nav-links');
+      if (links.style.display === 'flex') {
+        links.style.display = '';
+      } else {
+        links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(253,250,245,0.98);padding:24px 24px;gap:20px;backdrop-filter:blur(12px);';
+        links.querySelectorAll('a').forEach(a => { a.style.color = 'var(--charcoal)'; });
+      }
+    });
   </script>
 
 </body>
