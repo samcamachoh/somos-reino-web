@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sermones — Somos Reino</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --sand:             #F7F2EA;
+      --sand-dark:        #EDE5D8;
+      --terracotta:       #B5623E;
+      --terracotta-light: #D4845F;
+      --sienna:           #7A3B2E;
+      --charcoal:         #1E1A18;
+      --warm-gray:        #6B6560;
+      --cream:            #FDFAF5;
+      --gold:             #C9963A;
+      --text:             #2C2420;
+      --muted:            #8A7F78;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--sand);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 0;
+      background: rgba(247,242,234,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(44,36,32,0.08);
+      transition: padding 0.3s;
+    }
+
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.15em;
+      color: var(--charcoal);
+      text-decoration: none;
+    }
+
+    .nav-back {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.3s;
+    }
+
+    .nav-back::before { content: '←'; }
+    .nav-back:hover { color: var(--terracotta); }
+
+    /* ── HERO ── */
+    .page-hero {
+      padding: 140px 0 60px;
+      background: var(--charcoal);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-hero::before {
+      content: 'SERMONES';
+      position: absolute;
+      top: -20px; right: -20px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18vw;
+      color: rgba(253,250,245,0.03);
+      letter-spacing: 0.05em;
+      pointer-events: none;
+      line-height: 1;
+    }
+
+    .page-hero .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.68rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--terracotta-light);
+      margin-bottom: 20px;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 28px; height: 1px;
+      background: var(--terracotta-light);
+    }
+
+    .page-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 900;
+      line-height: 1.0;
+      color: var(--cream);
+      margin-bottom: 20px;
+    }
+
+    .page-hero h1 em {
+      font-style: italic;
+      color: var(--terracotta-light);
+    }
+
+    .page-hero p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: rgba(253,250,245,0.55);
+      max-width: 480px;
+    }
+
+    /* ── FILTERS ── */
+    .filters-bar {
+      padding: 32px 0;
+      background: var(--sand-dark);
+      border-bottom: 1px solid rgba(44,36,32,0.08);
+      position: sticky;
+      top: 61px;
+      z-index: 50;
+    }
+
+    .filters-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .filter-count {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    .filter-count span {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--terracotta);
+      margin-right: 6px;
+    }
+
+    .yt-link {
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: white;
+      background: var(--terracotta);
+      padding: 10px 20px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.3s;
+    }
+
+    .yt-link:hover { background: var(--sienna); }
+
+    /* ── GRID ── */
+    .sermons-section {
+      padding: 60px 0 100px;
+    }
+
+    .sermons-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    /* Loading */
+    .loading-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 80px 0;
+    }
+
+    .spinner {
+      width: 44px; height: 44px;
+      border: 2px solid rgba(44,36,32,0.1);
+      border-top-color: var(--terracotta);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text {
+      font-size: 0.82rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* Error */
+    .error-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 80px 0;
+    }
+
+    /* Sermon card */
+    .sermon-card {
+      background: white;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: cardReveal 0.5s ease forwards;
+    }
+
+    .sermon-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(44,36,32,0.12);
+    }
+
+    @keyframes cardReveal {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .sermon-thumb {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      background: var(--charcoal);
+    }
+
+    .sermon-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .sermon-card:hover .sermon-thumb img {
+      transform: scale(1.04);
+    }
+
+    .sermon-thumb-fallback {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .play-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(30,26,24,0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s;
+    }
+
+    .sermon-card:hover .play-overlay {
+      background: rgba(30,26,24,0.45);
+    }
+
+    .play-btn {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: rgba(253,250,245,0.15);
+      border: 1px solid rgba(253,250,245,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.3s, transform 0.3s, background 0.3s;
+      backdrop-filter: blur(4px);
+    }
+
+    .sermon-card:hover .play-btn {
+      opacity: 1;
+      transform: scale(1);
+      background: var(--terracotta);
+      border-color: var(--terracotta);
+    }
+
+    .play-btn svg {
+      width: 20px; height: 20px;
+      fill: white;
+      margin-left: 3px;
+    }
+
+    .sermon-body {
+      padding: 20px 22px 24px;
+    }
+
+    .sermon-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      font-weight: 500;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .sermon-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+
+    .sermon-meta {
+      font-size: 0.72rem;
+      color: var(--muted);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .sermon-meta-dot {
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--muted);
+      opacity: 0.5;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--charcoal);
+      padding: 40px 0;
+      border-top: 1px solid rgba(253,250,245,0.06);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+    }
+
+    .footer-copy {
+      font-size: 0.72rem;
+      color: rgba(253,250,245,0.25);
+    }
+
+    .footer-yt {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(253,250,245,0.4);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-yt:hover { color: var(--terracotta-light); }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .container { padding: 0 24px; }
+      .sermons-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    }
+
+    @media (max-width: 600px) {
+      .sermons-grid { grid-template-columns: 1fr; }
+      .page-hero { padding: 120px 0 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="container">
+      <a href="somos-reino-website.html" class="nav-logo">Somos Reino</a>
+      <a href="somos-reino-website.html" class="nav-back">Inicio</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-label">Palabra de Vida</span>
+      <h1>Sermones <em>recientes</em></h1>
+      <p>Cada mensaje es una invitación a encontrarte con Dios. Escucha, reflexiona y crece en tu fe.</p>
+    </div>
+  </section>
+
+  <!-- FILTERS BAR -->
+  <div class="filters-bar">
+    <div class="container">
+      <div class="filters-inner">
+        <p class="filter-count"><span id="video-count">—</span> sermones disponibles</p>
+        <a href="https://youtube.com/@somosreinofl?si=o2pavfWMVryrC4az" target="_blank" class="yt-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          Ver en YouTube
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERMONS GRID -->
+  <section class="sermons-section">
+    <div class="container">
+      <div class="sermons-grid" id="sermons-grid">
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <p class="loading-text">Cargando sermones...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-logo">Somos Reino</span>
+        <span class="footer-copy">© 2025 Somos Reino · Kissimmee, FL</span>
+        <a href="https://youtube.com/@somosreinofl?si=o2pavfWMVryrC4az" target="_blank" class="footer-yt">Ver canal completo →</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const PLAYLIST_ID = 'PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7';
+    const RSS_URL = `https://www.youtube.com/feeds/videos.xml?playlist_id=${PLAYLIST_ID}`;
+    const PROXY = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}&count=50`;
+
+    const grid = document.getElementById('sermons-grid');
+    const countEl = document.getElementById('video-count');
+
+    const gradients = [
+      'linear-gradient(135deg,#3D1A14,#B5623E)',
+      'linear-gradient(135deg,#1E3A2E,#3A6B4E)',
+      'linear-gradient(135deg,#2E2A1A,#6B5A2E)',
+      'linear-gradient(135deg,#1A1E3A,#3A4580)',
+      'linear-gradient(135deg,#2A1A3A,#5A3A80)',
+      'linear-gradient(135deg,#1A2E2A,#3A6B5A)',
+    ];
+
+    function getVideoId(item) {
+      return item.guid || item.videoId || '';
+    }
+
+    function formatDate(dateStr) {
+      return dateStr || '';
+    }
+
+    function buildCard(item, index) {
+      const videoId = getVideoId(item);
+      const title = item.title || 'Sermón';
+      const date = formatDate(item.pubDate);
+      const thumb = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+      const url = `https://www.youtube.com/watch?v=${videoId}`;
+      const grad = gradients[index % gradients.length];
+      const delay = (index % 9) * 0.07;
+
+      return `
+        <a href="${url}" target="_blank" class="sermon-card" style="text-decoration:none;animation-delay:${delay}s;">
+          <div class="sermon-thumb">
+            <img
+              src="${thumb}"
+              alt="${title}"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+            />
+            <div class="sermon-thumb-fallback" style="background:${grad};">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="rgba(253,250,245,0.2)"><path d="M12 3v10.55A4 4 0 1014 17V7h4V3h-6z"/></svg>
+            </div>
+            <div class="play-overlay">
+              <div class="play-btn">
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="sermon-body">
+            <span class="sermon-label">Somos Reino</span>
+            <h3 class="sermon-title">${title}</h3>
+            <div class="sermon-meta">
+              <span>${date}</span>
+              <span class="sermon-meta-dot"></span>
+              <span>Ver en YouTube</span>
+            </div>
+          </div>
+        </a>`;
+    }
+
+    fetch('https://somos-reino-api.vercel.app/api/videos')
+      .then(r => r.json())
+      .then(data => {
+        if (!data.videos?.length) throw new Error('No videos');
+        const videos = data.videos;
+        countEl.textContent = videos.length;
+        grid.innerHTML = videos.map((v, i) => buildCard({
+          title: v.title,
+          guid: v.videoId,
+          pubDate: v.date,
+        }, i)).join('');
+      })
+      .catch(() => {
+        countEl.textContent = '—';
+        grid.innerHTML = `
+          <div class="error-state">
+            <p style="font-size:0.9rem;color:var(--muted);margin-bottom:20px;">No se pudieron cargar los sermones.</p>
+            <a href="https://youtube.com/@somosreinofl" target="_blank" style="display:inline-block;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;color:white;background:var(--terracotta);padding:14px 28px;text-decoration:none;">Ver en YouTube →</a>
+          </div>`;
+      });
+  </script>
+
+</body>
+</html>
