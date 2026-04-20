@@ -1520,74 +1520,28 @@
       el.classList.add('active');
     }
 
-    // ── CHURCHTRAC ICAL EVENTS LOADER ──
+    // ── EVENTS LOADER ──
     (function() {
-      const ICAL_URL = 'https://www.churchtrac.com/ical?ui=3637D3FD';
-      const PROXY = 'https://api.allorigins.win/get?url=' + encodeURIComponent(ICAL_URL);
-      const SKIP = ['celebración', 'formación', 'celebracion', 'formacion'];
-
-      const MONTHS_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-      const DAYS_ES   = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-
-      function parseICalDate(str) {
-        // Format: 20260424T193000 or 20260424
-        const s = str.replace(/[TZ]/g, '');
-        const y = +s.slice(0,4), m = +s.slice(4,6)-1, d = +s.slice(6,8);
-        const h = s.length >= 12 ? +s.slice(8,10) : 0;
-        const min = s.length >= 14 ? +s.slice(10,12) : 0;
-        return new Date(y, m, d, h, min);
-      }
-
-      function formatTime(date) {
-        let h = date.getHours(), min = date.getMinutes();
-        const ampm = h >= 12 ? 'PM' : 'AM';
-        h = h % 12 || 12;
-        return `${h}:${String(min).padStart(2,'0')} ${ampm}`;
-      }
-
-      function parseICal(text) {
-        const events = [];
-        const blocks = text.split('BEGIN:VEVENT').slice(1);
-        for (const block of blocks) {
-          const get = (key) => {
-            const m = block.match(new RegExp(key + '[^:]*:([^\r\n]+)'));
-            return m ? m[1].trim() : '';
-          };
-          const summary = get('SUMMARY');
-          const dtstart = get('DTSTART');
-          if (!summary || !dtstart) continue;
-          if (SKIP.some(s => summary.toLowerCase().includes(s))) continue;
-          const date = parseICalDate(dtstart);
-          if (date < new Date()) continue;
-          events.push({ summary, date });
-        }
-        events.sort((a, b) => a.date - b.date);
-        return events.slice(0, 3);
-      }
-
-      function buildEventRow(ev, index) {
-        const delays = ['reveal-delay-1','reveal-delay-2','reveal-delay-3'];
-        return `
-          <div class="event-row reveal ${delays[index]}">
-            <div class="event-date-box">
-              <span class="event-date-num">${String(ev.date.getDate()).padStart(2,'0')}</span>
-              <span class="event-date-month">${MONTHS_ES[ev.date.getMonth()]}</span>
-            </div>
-            <div class="event-info">
-              <h3 class="event-title">${ev.summary}</h3>
-              <p class="event-details">${DAYS_ES[ev.date.getDay()]} · ${formatTime(ev.date)}</p>
-            </div>
-            <span class="event-tag">Evento</span>
-          </div>`;
-      }
-
-      fetch(PROXY)
+      fetch('https://somos-reino-api.vercel.app/api/events')
         .then(r => r.json())
         .then(data => {
-          const events = parseICal(data.contents);
-          if (!events.length) throw new Error('No events');
+          if (!data.events?.length) throw new Error('No events');
           const list = document.getElementById('events-list');
-          list.innerHTML = events.map((ev, i) => buildEventRow(ev, i)).join('');
+          list.innerHTML = data.events.map((ev, i) => {
+            const delays = ['reveal-delay-1','reveal-delay-2','reveal-delay-3','reveal-delay-4'];
+            return `
+              <div class="event-row reveal ${delays[i] || ''}">
+                <div class="event-date-box">
+                  <span class="event-date-num">${ev.day}</span>
+                  <span class="event-date-month">${ev.month}</span>
+                </div>
+                <div class="event-info">
+                  <h3 class="event-title">${ev.title}</h3>
+                  <p class="event-details">${ev.weekday} · ${ev.time}</p>
+                </div>
+                <span class="event-tag">Evento</span>
+              </div>`;
+          }).join('');
           document.getElementById('events-loading').style.display = 'none';
           list.style.display = 'flex';
           list.style.flexDirection = 'column';
