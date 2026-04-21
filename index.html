@@ -92,10 +92,227 @@
       transform: translateY(0);
     }
 
+    /* ── CURSOR GLOW ── */
+    .cursor-glow {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(181,98,62,0.08) 0%, transparent 70%);
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s;
+    }
+
+    /* ── SMOOTH SCROLL PROGRESS ── */
+    .scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      background: var(--terracotta);
+      z-index: 9999;
+      transition: width 0.1s linear;
+      width: 0%;
+    }
+
+    /* ── ENHANCED REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
     .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.45s; }
+    .reveal-delay-2 { transition-delay: 0.22s; }
+    .reveal-delay-3 { transition-delay: 0.34s; }
+    .reveal-delay-4 { transition-delay: 0.46s; }
+
+    /* ── MAGNETIC BUTTONS ── */
+    .btn-primary, .btn-ghost, .btn-outline {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::after, .btn-ghost::after, .btn-outline::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.1);
+      transform: translateX(-100%);
+      transition: transform 0.4s ease;
+    }
+
+    .btn-primary:hover::after, .btn-ghost:hover::after, .btn-outline:hover::after {
+      transform: translateX(0);
+    }
+
+    /* ── SECTION DIVIDERS ── */
+    .section-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(44,36,32,0.12), transparent);
+      margin: 0;
+    }
+
+    /* ── FLOATING ORBS ── */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    /* ── COUNTER ANIMATION ── */
+    @keyframes countUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── GLITCH TEXT ── */
+    @keyframes glitch {
+      0%, 100% { clip-path: inset(0 0 100% 0); }
+      20% { clip-path: inset(20% 0 50% 0); transform: translate(-2px); }
+      40% { clip-path: inset(50% 0 20% 0); transform: translate(2px); }
+      60% { clip-path: inset(10% 0 80% 0); transform: translate(-1px); }
+      80% { clip-path: inset(80% 0 10% 0); transform: translate(1px); }
+    }
+
+    /* ── SHIMMER LOADING ── */
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    .shimmer {
+      background: linear-gradient(90deg, var(--sand-dark) 25%, var(--sand) 50%, var(--sand-dark) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    /* ── CARD HOVER 3D ── */
+    .sermon-card {
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease;
+      transform-style: preserve-3d;
+    }
+
+    .sermon-card:hover {
+      transform: translateY(-8px) rotateX(2deg);
+      box-shadow: 0 24px 60px rgba(44,36,32,0.15), 0 8px 20px rgba(181,98,62,0.1);
+    }
+
+    /* ── EVENT ROW HOVER ── */
+    .event-row {
+      transition: padding-left 0.4s cubic-bezier(0.16,1,0.3,1), background 0.3s ease;
+    }
+
+    .event-row:hover {
+      padding-left: 20px;
+      background: rgba(253,250,245,0.04);
+    }
+
+    /* ── GRADIENT TEXT ── */
+    .gradient-text {
+      background: linear-gradient(135deg, var(--terracotta), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── SECTION BACKGROUNDS ── */
+    #sermones {
+      position: relative;
+    }
+
+    #sermones::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(181,98,62,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    #dar {
+      position: relative;
+      overflow: hidden;
+    }
+
+    #dar::before {
+      content: '';
+      position: absolute;
+      bottom: -100px; left: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(201,150,58,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── SMOOTH IMAGE REVEAL ── */
+    .sermon-thumb img {
+      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .sermon-card:hover .sermon-thumb img {
+      transform: scale(1.06);
+    }
+
+    /* ── NAV LINK UNDERLINE ── */
+    .nav-links a {
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ── SOCIAL LINK HOVER ── */
+    .social-link {
+      transition: color 0.3s, transform 0.3s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .social-link:hover {
+      transform: translateY(-3px) scale(1.15);
+    }
+
+    /* ── TICKER PAUSE ON HOVER ── */
+    .hero-ticker:hover .ticker-track {
+      animation-play-state: paused;
+    }
 
     /* ────────────────────────────────────────
        NAV
@@ -160,6 +377,7 @@
       background: var(--sand);
       border: none;
       padding: 12px 24px;
+      border-radius: 6px;
       cursor: pointer;
       text-decoration: none;
       transition: background 0.3s, transform 0.2s;
@@ -306,6 +524,7 @@
       background: var(--terracotta);
       padding: 16px 36px;
       text-decoration: none;
+      border-radius: 6px;
       transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
       display: inline-block;
     }
@@ -326,6 +545,7 @@
       border: 1px solid rgba(253,250,245,0.35);
       padding: 15px 32px;
       text-decoration: none;
+      border-radius: 6px;
       transition: border-color 0.3s, color 0.3s, transform 0.2s;
       display: inline-block;
     }
@@ -1175,6 +1395,12 @@
 </head>
 <body>
 
+  <!-- Cursor glow -->
+  <div class="cursor-glow" id="cursor-glow"></div>
+
+  <!-- Scroll progress bar -->
+  <div class="scroll-progress" id="scroll-progress"></div>
+
   <!-- ── NAV ── -->
   <nav id="nav">
     <div class="container">
@@ -1458,14 +1684,31 @@
 
   <!-- ── SCRIPTS ── -->
   <script>
+    // ── CURSOR GLOW ──
+    const cursorGlow = document.getElementById('cursor-glow');
+    document.addEventListener('mousemove', e => {
+      cursorGlow.style.left = e.clientX + 'px';
+      cursorGlow.style.top = e.clientY + 'px';
+    });
+    document.addEventListener('mouseleave', () => { cursorGlow.style.opacity = '0'; });
+    document.addEventListener('mouseenter', () => { cursorGlow.style.opacity = '1'; });
+
+    // ── SCROLL PROGRESS ──
+    const progressBar = document.getElementById('scroll-progress');
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = (scrollTop / docHeight * 100) + '%';
+    });
+
     // Nav scroll effect
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     });
 
-    // Scroll reveal
-    const revealEls = document.querySelectorAll('.reveal');
+    // ── ENHANCED SCROLL REVEAL ──
+    const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -1473,7 +1716,7 @@
           observer.unobserve(e.target);
         }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
     revealEls.forEach(el => observer.observe(el));
 
     // Giving amount toggle
@@ -1482,7 +1725,35 @@
       el.classList.add('active');
     }
 
-    // ── LIVE CHECK ──
+    // ── HERO PARALLAX ──
+    window.addEventListener('scroll', () => {
+      const heroBg = document.querySelector('.hero-bg');
+      if (heroBg) {
+        heroBg.style.transform = `scale(1) translateY(${window.scrollY * 0.3}px)`;
+      }
+    });
+
+    // ── STAGGER SERMON CARDS ──
+    function staggerCards(cards) {
+      cards.forEach((card, i) => {
+        card.style.transitionDelay = `${i * 0.1}s`;
+        observer.observe(card);
+      });
+    }
+
+    // ── HOVER TILT ON SERVICE CARD ──
+    const serviceCard = document.querySelector('.service-card');
+    if (serviceCard) {
+      serviceCard.addEventListener('mousemove', e => {
+        const rect = serviceCard.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        serviceCard.style.transform = `perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+      });
+      serviceCard.addEventListener('mouseleave', () => {
+        serviceCard.style.transform = 'perspective(600px) rotateY(0) rotateX(0)';
+      });
+    }
     fetch('https://somos-reino-api.vercel.app/api/live')
       .then(r => r.json())
       .then(data => {
