@@ -432,8 +432,9 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes fadeIn {
-      to { opacity: 1; }
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
     }
 
     @keyframes spin {
@@ -1201,6 +1202,12 @@
     <div class="hero-content" style="width:100%;">
       <div class="container">
         <div class="hero-left">
+          <!-- Live badge — hidden by default, shown when live -->
+          <div id="live-badge" style="display:none;align-items:center;gap:10px;margin-bottom:20px;">
+            <div style="width:10px;height:10px;border-radius:50%;background:#E53E3E;animation:livePulse 1.5s ease-in-out infinite;"></div>
+            <span style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;color:#E53E3E;">En Vivo Ahora</span>
+          </div>
+
           <div class="hero-eyebrow">
             <div class="hero-eyebrow-dot"></div>
             Kissimmee, Florida
@@ -1218,7 +1225,7 @@
 
           <div class="hero-actions">
             <a href="#contacto" class="btn-primary">Planifica Tu Visita</a>
-            <a href="#sermones" class="btn-outline">Ver Sermones</a>
+            <a id="live-btn" href="#sermones" class="btn-outline">Ver Sermones</a>
           </div>
         </div>
 
@@ -1474,6 +1481,25 @@
       document.querySelectorAll('.giving-option').forEach(o => o.classList.remove('active'));
       el.classList.add('active');
     }
+
+    // ── LIVE CHECK ──
+    fetch('https://somos-reino-api.vercel.app/api/live')
+      .then(r => r.json())
+      .then(data => {
+        if (data.live) {
+          // Show live badge
+          const badge = document.getElementById('live-badge');
+          badge.style.display = 'flex';
+          // Swap "Ver Sermones" button to "Ver En Vivo"
+          const btn = document.getElementById('live-btn');
+          btn.textContent = '🔴 Ver En Vivo';
+          btn.href = data.url;
+          btn.target = '_blank';
+          btn.style.borderColor = '#E53E3E';
+          btn.style.color = '#E53E3E';
+        }
+      })
+      .catch(() => {});
 
     // ── EVENTS LOADER ──
     (function() {
