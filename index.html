@@ -631,7 +631,7 @@
     .ticker-track span {
       font-family: 'Playfair Display', serif;
       font-style: italic;
-      font-size: 0.95rem;
+      font-size: 1.15rem;
       color: var(--sienna);
       flex-shrink: 0;
     }
@@ -1345,51 +1345,206 @@
     }
 
     /* ────────────────────────────────────────
-       RESPONSIVE
+       RESPONSIVE — TABLET (max 1024px)
     ──────────────────────────────────────── */
-    @media (max-width: 900px) {
-      .container { padding: 0 24px; }
-
-      #nav { padding: 20px 0; }
-
-      .nav-links, .nav-btn { display: none; }
-      .nav-hamburger { display: flex; }
-
+    @media (max-width: 1024px) {
       .hero-content .container {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
       }
-
-      .hero-right { justify-content: flex-start; }
-      .service-card { max-width: 100%; }
 
       .sermons-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
       }
 
-      .sermon-card.featured { grid-row: auto; }
-
-      .event-row {
-        grid-template-columns: 80px 1fr;
+      .sermon-card.featured {
+        grid-column: span 2;
       }
 
-      .event-tag { display: none; }
-
-      .dar-inner,
-      .contacto-inner {
-        grid-template-columns: 1fr;
+      .dar-inner {
         gap: 40px;
       }
 
       .footer-top {
         grid-template-columns: 1fr 1fr;
-        gap: 32px;
+        gap: 40px;
+      }
+
+      /* Esencial section */
+      #esencial .container > div {
+        gap: 48px;
       }
     }
 
+    /* ────────────────────────────────────────
+       RESPONSIVE — MOBILE (max 900px)
+    ──────────────────────────────────────── */
+    @media (max-width: 900px) {
+      :root { --section-pad: 72px 0; }
+
+      .container { padding: 0 24px; }
+
+      #nav { padding: 16px 0; }
+      .nav-links, .nav-btn { display: none; }
+      .nav-hamburger { display: flex; }
+
+      /* Hero */
+      .hero-content .container {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .hero-right { justify-content: flex-start; }
+      .service-card { max-width: 100%; }
+
+      .hero-title { font-size: clamp(3rem, 10vw, 5rem); }
+      .hero-body { font-size: 0.95rem; }
+
+      /* Sermones */
+      .sermons-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .sermon-card.featured { grid-row: auto; grid-column: auto; }
+
+      /* Eventos */
+      .event-row {
+        grid-template-columns: 70px 1fr;
+        gap: 16px;
+        padding: 20px 0;
+      }
+
+      .event-date-num { font-size: 2.2rem; }
+      .event-title { font-size: 1.2rem; }
+      .event-tag { display: none; }
+
+      /* Esencial */
+      #esencial .container > div {
+        grid-template-columns: 1fr !important;
+        gap: 48px;
+      }
+
+      #esencial .container > div > div:last-child {
+        align-items: flex-start;
+      }
+
+      /* Dar */
+      .dar-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      /* Contacto */
+      .contacto-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      /* Footer */
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+      }
+
+      /* Section headings */
+      h2.display { font-size: clamp(2rem, 7vw, 3rem); }
+    }
+
+    /* ────────────────────────────────────────
+       RESPONSIVE — SMALL MOBILE (max 600px)
+    ──────────────────────────────────────── */
     @media (max-width: 600px) {
-      .footer-top { grid-template-columns: 1fr; }
-      .giving-options { grid-template-columns: 1fr 1fr; }
-      .form-row { grid-template-columns: 1fr; }
+      :root { --section-pad: 60px 0; }
+
+      .container { padding: 0 20px; }
+
+      /* Hero */
+      .hero-title { font-size: clamp(2.5rem, 12vw, 4rem); }
+
+      .hero-actions {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .hero-actions a {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+      }
+
+      /* Service card */
+      .service-card { padding: 28px 24px; }
+
+      /* Ticker */
+      .ticker-track span { font-size: 0.95rem; }
+
+      /* Sermones */
+      .sermons-grid { gap: 16px; }
+      .sermon-body { padding: 16px 18px 20px; }
+      .sermon-title { font-size: 1rem !important; }
+
+      /* Eventos */
+      .event-row { grid-template-columns: 60px 1fr; gap: 12px; }
+      .event-date-num { font-size: 1.8rem; }
+      .event-title { font-size: 1.1rem; }
+
+      /* Esencial podcast cover */
+      #esencial [style*="width:280px"] {
+        width: 220px !important;
+        height: 220px !important;
+      }
+
+      /* Dar section */
+      .dar-scripture { padding: 18px 20px; }
+
+      /* Footer */
+      .footer-top { grid-template-columns: 1fr; gap: 28px; }
+      .footer-logo { font-size: 1.6rem; }
+
+      /* Nav logo */
+      .nav-logo img { height: 32px !important; }
+
+      /* Buttons */
+      .btn-primary, .btn-outline, .btn-ghost {
+        font-size: 0.7rem;
+        padding: 14px 28px;
+      }
+
+      /* Section labels */
+      .section-label { font-size: 0.62rem; }
+
+      /* Cursor glow — hide on mobile */
+      .cursor-glow { display: none; }
+    }
+
+    /* ────────────────────────────────────────
+       RESPONSIVE — EXTRA SMALL (max 400px)
+    ──────────────────────────────────────── */
+    @media (max-width: 400px) {
+      .hero-title { font-size: 2.2rem; }
+      .event-row { grid-template-columns: 55px 1fr; }
+      .event-date-num { font-size: 1.6rem; }
+    }
+
+    /* ────────────────────────────────────────
+       RESPONSIVE — LARGE DESKTOP (min 1400px)
+    ──────────────────────────────────────── */
+    @media (min-width: 1400px) {
+      :root { --content-max: 1320px; }
+
+      .hero-title { font-size: 7rem; }
+
+      .sermons-grid {
+        grid-template-columns: 1.6fr 1fr 1fr;
+        gap: 32px;
+      }
     }
   </style>
 </head>
@@ -1410,6 +1565,7 @@
       <ul class="nav-links">
         <li><a href="#sermones">Sermones</a></li>
         <li><a href="#eventos">Eventos</a></li>
+        <li><a href="#esencial">Esencial</a></li>
         <li><a href="#dar">Dar</a></li>
         <li><a href="#contacto">Contacto</a></li>
       </ul>
@@ -1558,6 +1714,97 @@
     </div>
   </section>
 
+  <!-- ── ESENCIAL PODCAST ── -->
+  <section id="esencial" style="padding:100px 0;background:var(--charcoal);position:relative;overflow:hidden;">
+
+    <!-- Background orb -->
+    <div style="position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(181,98,62,0.1) 0%,transparent 70%);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-100px;left:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(201,150,58,0.07) 0%,transparent 70%);pointer-events:none;"></div>
+
+    <div class="container" style="position:relative;z-index:1;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;">
+
+        <!-- Left: Podcast info -->
+        <div class="reveal-left">
+          <span class="section-label" style="color:var(--terracotta-light);">
+            <span style="width:28px;height:1px;background:var(--terracotta-light);display:inline-block;"></span>
+            Un Podcast de Somos Reino
+          </span>
+
+          <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(3.5rem,8vw,6rem);font-weight:900;line-height:0.9;color:var(--cream);margin:16px 0 24px;letter-spacing:-0.02em;">
+            Esen<br><span style="color:var(--terracotta-light);">cial</span>
+          </h2>
+
+          <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.15rem;color:rgba(253,250,245,0.55);line-height:1.6;margin-bottom:40px;">
+            Conversaciones de fe y vida cotidiana.<br>Para el que camina, duda, cree y sigue adelante.
+          </p>
+
+          <!-- Platform links -->
+          <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:40px;">
+
+            <a href="https://open.spotify.com/show/7hPqVVCSXma0FkD6zP0R1G?si=clq1VjnhSemF-9fD8qQT2g" target="_blank" style="display:flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(253,250,245,0.04);border:1px solid rgba(253,250,245,0.08);text-decoration:none;border-radius:6px;transition:background 0.3s;" onmouseover="this.style.background='rgba(253,250,245,0.08)'" onmouseout="this.style.background='rgba(253,250,245,0.04)'">
+              <div style="width:40px;height:40px;border-radius:10px;background:#1DB954;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="white"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+              </div>
+              <div>
+                <span style="font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;color:var(--cream);display:block;">Spotify</span>
+                <span style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(253,250,245,0.35);">Escuchar ahora →</span>
+              </div>
+            </a>
+
+            <a href="https://podcasts.apple.com/us/podcast/esencial-principios-del-reino/id1894268031" target="_blank" style="display:flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(253,250,245,0.04);border:1px solid rgba(253,250,245,0.08);text-decoration:none;border-radius:6px;transition:background 0.3s;" onmouseover="this.style.background='rgba(253,250,245,0.08)'" onmouseout="this.style.background='rgba(253,250,245,0.04)'">
+              <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#F452FF,#832BC1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="white"><path d="M18.5 12c0 3.59-2.91 6.5-6.5 6.5S5.5 15.59 5.5 12 8.41 5.5 12 5.5s6.5 2.91 6.5 6.5zm1.5 0c0-4.42-3.58-8-8-8s-8 3.58-8 8 3.58 8 8 8 8-3.58 8-8zm-8-3c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+              </div>
+              <div>
+                <span style="font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;color:var(--cream);display:block;">Apple Podcasts</span>
+                <span style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(253,250,245,0.35);">Escuchar ahora →</span>
+              </div>
+            </a>
+
+            <a href="https://youtube.com/playlist?list=PLsHpz1KAchvpaUhBiFyCSsFPlWAw8ZF16&si=7uUmU4VSB26cqvlE" target="_blank" style="display:flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(253,250,245,0.04);border:1px solid rgba(253,250,245,0.08);text-decoration:none;border-radius:6px;transition:background 0.3s;" onmouseover="this.style.background='rgba(253,250,245,0.08)'" onmouseout="this.style.background='rgba(253,250,245,0.04)'">
+              <div style="width:40px;height:40px;border-radius:10px;background:#FF0000;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="white"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              </div>
+              <div>
+                <span style="font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;color:var(--cream);display:block;">YouTube</span>
+                <span style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(253,250,245,0.35);">Ver ahora →</span>
+              </div>
+            </a>
+
+          </div>
+        </div>
+
+        <!-- Right: Cover art -->
+        <div class="reveal-right" style="display:flex;flex-direction:column;align-items:center;gap:32px;">
+
+          <!-- Podcast cover -->
+          <div style="position:relative;width:280px;height:280px;flex-shrink:0;">
+            <div style="position:absolute;inset:0;background:linear-gradient(135deg,#3D1A14 0%,#7A3B2E 40%,#B5623E 100%);border-radius:16px;"></div>
+            <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(253,250,245,0.02) 40px,rgba(253,250,245,0.02) 41px);border-radius:16px;"></div>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;">
+              <span style="font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(253,250,245,0.4);margin-bottom:16px;">Podcast</span>
+              <span style="font-family:'Playfair Display',serif;font-style:italic;font-size:3.5rem;font-weight:900;color:var(--cream);line-height:1;margin-bottom:16px;">Esencial</span>
+              <div style="width:40px;height:1px;background:rgba(253,250,245,0.3);margin-bottom:16px;"></div>
+              <span style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(253,250,245,0.4);">Somos Reino</span>
+            </div>
+            <!-- Glow -->
+            <div style="position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);width:200px;height:30px;background:rgba(181,98,62,0.3);filter:blur(20px);border-radius:50%;"></div>
+          </div>
+
+          <!-- Scripture -->
+          <div style="padding:20px 24px;border-left:3px solid var(--terracotta);background:rgba(253,250,245,0.04);max-width:280px;">
+            <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:0.95rem;line-height:1.7;color:rgba(253,250,245,0.7);margin:0 0 8px;">
+              "No solo de pan vivirá el hombre, sino de toda palabra que sale de la boca de Dios."
+            </p>
+            <cite style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(253,250,245,0.35);font-style:normal;">Mateo 4:4</cite>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ── DAR ── -->
   <section id="dar">
     <div class="container">
@@ -1650,6 +1897,7 @@
             <li><a href="#hero">Inicio</a></li>
             <li><a href="#sermones">Sermones</a></li>
             <li><a href="#eventos">Eventos</a></li>
+            <li><a href="#esencial">Esencial</a></li>
             <li><a href="#dar">Dar</a></li>
             <li><a href="#contacto">Contacto</a></li>
           </ul>
@@ -1864,14 +2112,20 @@
         });
     })();
 
-    // Mobile menu (basic toggle)
+    // Mobile menu
     document.getElementById('hamburger').addEventListener('click', () => {
       const links = document.querySelector('.nav-links');
       if (links.style.display === 'flex') {
         links.style.display = '';
       } else {
-        links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(253,250,245,0.98);padding:24px 24px;gap:20px;backdrop-filter:blur(12px);';
-        links.querySelectorAll('a').forEach(a => { a.style.color = 'var(--charcoal)'; });
+        links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:72px;left:0;right:0;background:rgba(30,26,24,0.98);padding:32px 24px;gap:24px;backdrop-filter:blur(12px);z-index:99;';
+        links.querySelectorAll('a').forEach(a => {
+          a.style.color = 'var(--cream)';
+          a.style.fontSize = '1.1rem';
+          a.style.fontFamily = "'Playfair Display', serif";
+          a.style.fontStyle = 'italic';
+          a.addEventListener('click', () => { links.style.display = ''; });
+        });
       }
     });
   </script>
