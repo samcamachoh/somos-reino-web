@@ -6,36 +6,35 @@
   <title>Somos Reino — Kissimmee, FL</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
     /* ── RESET & ROOT ── */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --sand:      #F7F2EA;
-      --sand-dark: #EDE5D8;
-      --terracotta:#B5623E;
-      --terracotta-light: #D4845F;
-      --sienna:    #7A3B2E;
-      --olive:     #5C6B3A;
-      --olive-light:#8A9E5A;
-      --charcoal:  #1E1A18;
-      --warm-gray: #6B6560;
-      --cream:     #FDFAF5;
-      --gold:      #C9963A;
-      --text:      #2C2420;
-      --muted:     #8A7F78;
+      --black:      #111111;
+      --near-black: #1A1816;
+      --white:      #FFFFFF;
+      --cream:      #F6F4F1;
+      --gray-100:   #ECE9E4;
+      --line:       rgba(17,17,17,0.1);
+      --line-dark:  rgba(255,255,255,0.12);
+      --orange:     #E8481E;
+      --orange-dark:#BE3510;
+      --text:       #171412;
+      --muted:      #6E6862;
+      --muted-dark: rgba(255,255,255,0.5);
 
-      --section-pad: 100px 0;
+      --section-pad: 108px 0;
       --content-max: 1200px;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--cream);
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
       color: var(--text);
       overflow-x: hidden;
     }
@@ -50,34 +49,37 @@
     .section-label {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
-      font-size: 0.68rem;
-      letter-spacing: 0.28em;
+      gap: 10px;
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      font-weight: 500;
-      color: var(--terracotta);
+      font-weight: 700;
+      color: var(--orange);
       margin-bottom: 20px;
     }
 
     .section-label::before {
       content: '';
       display: block;
-      width: 28px;
-      height: 1px;
-      background: var(--terracotta);
+      width: 8px;
+      height: 8px;
+      background: var(--orange);
+      border-radius: 2px;
     }
 
     h2.display {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Archivo', sans-serif;
       font-size: clamp(2.4rem, 5vw, 4rem);
-      font-weight: 700;
-      line-height: 1.1;
-      color: var(--charcoal);
+      font-weight: 900;
+      letter-spacing: -0.01em;
+      line-height: 1.05;
+      color: var(--black);
     }
 
     h2.display em {
-      font-style: italic;
-      color: var(--terracotta);
+      font-style: normal;
+      color: var(--orange);
     }
 
     /* Scroll reveal */
@@ -94,10 +96,10 @@
 
     /* ── CURSOR GLOW ── */
     .cursor-glow {
-      width: 300px;
-      height: 300px;
+      width: 320px;
+      height: 320px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(181,98,62,0.08) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(232,72,30,0.10) 0%, transparent 70%);
       position: fixed;
       pointer-events: none;
       z-index: 9999;
@@ -109,25 +111,14 @@
     .scroll-progress {
       position: fixed;
       top: 0; left: 0;
-      height: 2px;
-      background: var(--terracotta);
+      height: 3px;
+      background: var(--orange);
       z-index: 9999;
       transition: width 0.1s linear;
       width: 0%;
     }
 
     /* ── ENHANCED REVEAL ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
     .reveal-left {
       opacity: 0;
       transform: translateX(-40px);
@@ -155,241 +146,169 @@
     .reveal-delay-3 { transition-delay: 0.34s; }
     .reveal-delay-4 { transition-delay: 0.46s; }
 
-    /* ── MAGNETIC BUTTONS ── */
-    .btn-primary, .btn-ghost, .btn-outline {
-      position: relative;
-      overflow: hidden;
+    /* ── BUTTONS (pill, bold, flat) ── */
+    .btn-primary, .btn-outline, .btn-ghost {
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 100px;
+      display: inline-block;
+      transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, color 0.25s ease;
     }
 
-    .btn-primary::after, .btn-ghost::after, .btn-outline::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(255,255,255,0.1);
-      transform: translateX(-100%);
-      transition: transform 0.4s ease;
+    .btn-primary {
+      color: var(--white);
+      background: var(--orange);
+      padding: 17px 38px;
+      border: 1px solid var(--orange);
     }
 
-    .btn-primary:hover::after, .btn-ghost:hover::after, .btn-outline:hover::after {
-      transform: translateX(0);
+    .btn-primary:hover {
+      background: var(--orange-dark);
+      border-color: var(--orange-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(232,72,30,0.35);
+    }
+
+    .btn-outline {
+      color: var(--white);
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.4);
+      padding: 15.5px 34px;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--white);
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-2px);
     }
 
     /* ── SECTION DIVIDERS ── */
     .section-divider {
       width: 100%;
       height: 1px;
-      background: linear-gradient(to right, transparent, rgba(44,36,32,0.12), transparent);
+      background: var(--line);
       margin: 0;
     }
 
-    /* ── FLOATING ORBS ── */
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(60px);
-      pointer-events: none;
-      opacity: 0.6;
+    /* ── COUNTER / FADE ANIMATION ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ── COUNTER ANIMATION ── */
-    @keyframes countUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
     }
 
-    /* ── GLITCH TEXT ── */
-    @keyframes glitch {
-      0%, 100% { clip-path: inset(0 0 100% 0); }
-      20% { clip-path: inset(20% 0 50% 0); transform: translate(-2px); }
-      40% { clip-path: inset(50% 0 20% 0); transform: translate(2px); }
-      60% { clip-path: inset(10% 0 80% 0); transform: translate(-1px); }
-      80% { clip-path: inset(80% 0 10% 0); transform: translate(1px); }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
 
-    /* ── SHIMMER LOADING ── */
-    @keyframes shimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
-
-    .shimmer {
-      background: linear-gradient(90deg, var(--sand-dark) 25%, var(--sand) 50%, var(--sand-dark) 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
-    }
-
-    /* ── CARD HOVER 3D ── */
+    /* ── CARD HOVER ── */
     .sermon-card {
-      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease;
-      transform-style: preserve-3d;
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s ease;
     }
 
     .sermon-card:hover {
-      transform: translateY(-8px) rotateX(2deg);
-      box-shadow: 0 24px 60px rgba(44,36,32,0.15), 0 8px 20px rgba(181,98,62,0.1);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(17,17,17,0.14);
     }
 
     /* ── EVENT ROW HOVER ── */
     .event-row {
-      transition: padding-left 0.4s cubic-bezier(0.16,1,0.3,1), background 0.3s ease;
+      transition: padding-left 0.35s cubic-bezier(0.16,1,0.3,1), background 0.3s ease;
     }
 
     .event-row:hover {
       padding-left: 20px;
-      background: rgba(253,250,245,0.04);
+      background: rgba(255,255,255,0.03);
     }
 
-    /* ── GRADIENT TEXT ── */
-    .gradient-text {
-      background: linear-gradient(135deg, var(--terracotta), var(--gold));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* ── SECTION BACKGROUNDS ── */
-    #sermones {
-      position: relative;
-    }
-
-    #sermones::after {
-      content: '';
-      position: absolute;
-      top: 0; right: 0;
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(181,98,62,0.05) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    #dar {
-      position: relative;
-      overflow: hidden;
-    }
-
-    #dar::before {
-      content: '';
-      position: absolute;
-      bottom: -100px; left: -100px;
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(201,150,58,0.06) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    /* ── SMOOTH IMAGE REVEAL ── */
-    .sermon-thumb img {
-      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
-    }
-
-    .sermon-card:hover .sermon-thumb img {
-      transform: scale(1.06);
-    }
-
-    /* ── NAV LINK UNDERLINE ── */
-    .nav-links a {
-      position: relative;
-    }
-
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -2px; left: 0;
-      width: 0; height: 1px;
-      background: var(--gold);
-      transition: width 0.3s ease;
-    }
-
-    .nav-links a:hover::after { width: 100%; }
-
-    /* ── SOCIAL LINK HOVER ── */
-    .social-link {
-      transition: color 0.3s, transform 0.3s cubic-bezier(0.16,1,0.3,1);
-    }
-
-    .social-link:hover {
-      transform: translateY(-3px) scale(1.15);
-    }
-
-    /* ── TICKER PAUSE ON HOVER ── */
-    .hero-ticker:hover .ticker-track {
-      animation-play-state: paused;
-    }
-
-    /* ────────────────────────────────────────
-       NAV
-    ──────────────────────────────────────── */
+    /* ── NAV ── */
     #nav {
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 200;
-      transition: background 0.4s, box-shadow 0.4s, padding 0.4s;
-      padding: 28px 0;
+      background: rgba(17,17,17,0.0);
+      transition: background 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease;
+      padding: 26px 0;
     }
 
     #nav.scrolled {
-      background: rgba(30,26,24,0.97);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 1px 0 rgba(44,36,32,0.1);
+      background: var(--black);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.06);
       padding: 16px 0;
     }
+
+    #nav::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(17,17,17,0.55), transparent);
+      z-index: -1;
+      opacity: 1;
+      transition: opacity 0.4s ease;
+    }
+
+    #nav.scrolled::before { opacity: 0; }
 
     #nav .container {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 32px;
     }
 
     .nav-logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.6rem;
-      letter-spacing: 0.15em;
-      color: var(--cream);
       text-decoration: none;
-      transition: color 0.4s;
+      display: block;
     }
-
-    #nav.scrolled .nav-logo { color: var(--cream); }
 
     .nav-links {
       display: flex;
-      gap: 36px;
+      gap: 34px;
       list-style: none;
+      margin-right: auto;
+      margin-left: 48px;
     }
 
     .nav-links a {
+      font-family: 'Archivo', sans-serif;
       font-size: 0.78rem;
-      letter-spacing: 0.1em;
-      font-weight: 400;
-      color: rgba(253,250,245,0.8);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: rgba(255,255,255,0.78);
       text-decoration: none;
       transition: color 0.3s;
     }
 
-    #nav.scrolled .nav-links a { color: rgba(253,250,245,0.8); }
-    .nav-links a:hover,
-    #nav.scrolled .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover { color: var(--orange); }
 
     .nav-btn {
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      font-weight: 500;
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      font-weight: 700;
       text-transform: uppercase;
-      color: var(--charcoal);
-      background: var(--sand);
+      color: var(--white);
+      background: var(--orange);
       border: none;
-      padding: 12px 24px;
-      border-radius: 6px;
+      padding: 12px 26px;
+      border-radius: 100px;
       cursor: pointer;
       text-decoration: none;
       transition: background 0.3s, transform 0.2s;
       display: inline-block;
+      flex-shrink: 0;
     }
 
-    #nav.scrolled .nav-btn {
-      background: var(--gold);
-      color: var(--charcoal);
-    }
-
-    .nav-btn:hover { transform: translateY(-1px); opacity: 0.9; }
+    .nav-btn:hover { background: var(--orange-dark); transform: translateY(-1px); }
 
     /* Mobile hamburger */
     .nav-hamburger {
@@ -406,11 +325,8 @@
       display: block;
       width: 24px;
       height: 2px;
-      background: var(--cream);
-      transition: background 0.4s;
+      background: var(--white);
     }
-
-    #nav.scrolled .nav-hamburger span { background: var(--cream); }
 
     /* ────────────────────────────────────────
        HERO
@@ -421,6 +337,7 @@
       display: flex;
       align-items: center;
       overflow: hidden;
+      background: var(--black);
     }
 
     .hero-bg {
@@ -441,67 +358,69 @@
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(110deg, rgba(30,18,12,0.88) 0%, rgba(30,18,12,0.55) 50%, rgba(30,18,12,0.3) 100%),
-        linear-gradient(to top, rgba(30,18,12,0.9) 0%, transparent 50%);
+        linear-gradient(110deg, rgba(17,17,17,0.92) 0%, rgba(17,17,17,0.62) 48%, rgba(17,17,17,0.32) 100%),
+        linear-gradient(to top, rgba(17,17,17,0.9) 0%, transparent 45%);
     }
 
     .hero-content {
       position: relative;
       z-index: 10;
-      padding: 120px 0 100px;
+      padding: 130px 0 110px;
     }
 
     .hero-content .container {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.15fr 0.85fr;
       align-items: center;
       gap: 60px;
     }
-
-    .hero-left {}
 
     .hero-eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 12px;
-      font-size: 0.68rem;
-      letter-spacing: 0.3em;
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.24em;
       text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 24px;
+      font-weight: 700;
+      color: var(--orange);
+      margin-bottom: 26px;
       opacity: 0;
       animation: fadeUp 0.8s ease-out 0.4s forwards;
     }
 
     .hero-eyebrow-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--gold);
+      width: 8px; height: 8px;
+      border-radius: 2px;
+      background: var(--orange);
     }
 
     .hero-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(3.5rem, 8vw, 6.5rem);
+      font-family: 'Archivo', sans-serif;
+      font-size: clamp(3.4rem, 7.5vw, 6.2rem);
       font-weight: 900;
-      line-height: 1.0;
-      color: var(--cream);
-      margin-bottom: 24px;
+      letter-spacing: -0.02em;
+      line-height: 0.98;
+      color: var(--white);
+      margin-bottom: 28px;
       opacity: 0;
       animation: fadeUp 1s ease-out 0.65s forwards;
+      text-transform: uppercase;
     }
 
     .hero-title .line2 {
       display: block;
-      font-style: italic;
-      color: var(--terracotta-light);
+      font-style: normal;
+      color: var(--orange);
     }
 
     .hero-body {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 300;
-      line-height: 1.75;
-      color: rgba(253,250,245,0.75);
-      max-width: 420px;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.78);
+      max-width: 440px;
       margin-bottom: 44px;
       opacity: 0;
       animation: fadeUp 0.9s ease-out 0.9s forwards;
@@ -515,99 +434,61 @@
       animation: fadeUp 0.9s ease-out 1.1s forwards;
     }
 
-    .btn-primary {
-      font-size: 0.75rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-weight: 500;
-      color: white;
-      background: var(--terracotta);
-      padding: 16px 36px;
-      text-decoration: none;
-      border-radius: 6px;
-      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
-      display: inline-block;
-    }
-
-    .btn-primary:hover {
-      background: var(--sienna);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 32px rgba(181,98,62,0.4);
-    }
-
-    .btn-outline {
-      font-size: 0.75rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-weight: 400;
-      color: var(--cream);
-      background: transparent;
-      border: 1px solid rgba(253,250,245,0.35);
-      padding: 15px 32px;
-      text-decoration: none;
-      border-radius: 6px;
-      transition: border-color 0.3s, color 0.3s, transform 0.2s;
-      display: inline-block;
-    }
-
-    .btn-outline:hover {
-      border-color: var(--gold);
-      color: var(--gold);
-      transform: translateY(-2px);
-    }
-
     /* Hero right — service card */
     .hero-right {
       display: flex;
       justify-content: flex-end;
       opacity: 0;
-      animation: fadeIn 1s ease-out 1.4s forwards;
+      animation: fadeUp 1s ease-out 1.4s forwards;
     }
 
     .service-card {
-      background: rgba(253,250,245,0.1);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(253,250,245,0.2);
-      padding: 40px 44px;
-      max-width: 300px;
+      background: var(--near-black);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-top: 4px solid var(--orange);
+      border-radius: 20px;
+      padding: 40px 40px 36px;
+      max-width: 320px;
       width: 100%;
     }
 
     .service-card-label {
-      font-size: 0.62rem;
-      letter-spacing: 0.28em;
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 24px;
+      font-weight: 700;
+      color: var(--orange);
+      margin-bottom: 26px;
       display: block;
     }
 
     .service-item {
       padding: 18px 0;
-      border-bottom: 1px solid rgba(253,250,245,0.15);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
-    .service-item:last-child { border-bottom: none; }
+    .service-item:last-child { border-bottom: none; padding-bottom: 0; }
 
     .service-day {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.35rem;
-      font-weight: 700;
-      color: var(--cream);
+      font-family: 'Archivo', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--white);
       display: block;
       margin-bottom: 4px;
     }
 
     .service-time {
-      font-size: 0.78rem;
-      color: rgba(253,250,245,0.6);
-      letter-spacing: 0.1em;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+      font-weight: 500;
     }
 
     .service-note {
-      font-size: 0.7rem;
-      color: var(--terracotta-light);
-      margin-top: 3px;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.4);
+      margin-top: 4px;
       display: block;
     }
 
@@ -615,30 +496,31 @@
     .hero-ticker {
       position: absolute;
       bottom: 0; left: 0; right: 0;
-      background: var(--sand);
-      padding: 14px 0;
+      background: var(--orange);
+      padding: 15px 0;
       overflow: hidden;
       z-index: 10;
     }
 
     .ticker-track {
       display: flex;
-      gap: 80px;
+      gap: 60px;
       animation: ticker 28s linear infinite;
       white-space: nowrap;
     }
 
     .ticker-track span {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: 1.15rem;
-      color: var(--sienna);
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--white);
       flex-shrink: 0;
     }
 
     .ticker-track .dot {
-      font-style: normal;
-      color: rgba(122,59,46,0.4);
+      color: rgba(255,255,255,0.5);
     }
 
     @keyframes ticker {
@@ -646,27 +528,12 @@
       to   { transform: translateX(-50%); }
     }
 
-    /* ── SHARED ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(28px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes livePulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
     /* ────────────────────────────────────────
        SERMONES
     ──────────────────────────────────────── */
     #sermones {
       padding: var(--section-pad);
-      background: var(--cream);
+      background: var(--white);
     }
 
     #sermones .container > .row-top {
@@ -679,11 +546,12 @@
     }
 
     .link-arrow {
-      font-size: 0.75rem;
-      letter-spacing: 0.16em;
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      font-weight: 500;
-      color: var(--terracotta);
+      font-weight: 700;
+      color: var(--orange);
       text-decoration: none;
       display: inline-flex;
       align-items: center;
@@ -701,15 +569,10 @@
     }
 
     .sermon-card {
-      background: var(--sand);
+      background: var(--cream);
+      border-radius: 18px;
       overflow: hidden;
       cursor: pointer;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .sermon-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 50px rgba(44,36,32,0.12);
     }
 
     .sermon-card.featured {
@@ -721,7 +584,7 @@
     .sermon-thumb {
       width: 100%;
       aspect-ratio: 16/9;
-      background: var(--charcoal);
+      background: var(--black);
       position: relative;
       overflow: hidden;
       flex-shrink: 0;
@@ -731,36 +594,19 @@
       aspect-ratio: 4/3;
     }
 
-    .sermon-thumb-bg {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .sermon-thumb-gradient {
-      position: absolute;
-      inset: 0;
-    }
-
     .sermon-play {
-      width: 52px; height: 52px;
+      width: 54px; height: 54px;
       border-radius: 50%;
-      background: rgba(253,250,245,0.15);
-      border: 1px solid rgba(253,250,245,0.35);
+      background: var(--orange);
       display: flex;
       align-items: center;
       justify-content: center;
-      backdrop-filter: blur(4px);
-      transition: background 0.3s, transform 0.3s;
+      transition: transform 0.3s;
       position: relative;
       z-index: 2;
     }
 
     .sermon-card:hover .sermon-play {
-      background: var(--terracotta);
-      border-color: var(--terracotta);
       transform: scale(1.1);
     }
 
@@ -771,36 +617,38 @@
     }
 
     .sermon-body {
-      padding: 24px 28px 28px;
+      padding: 26px 28px 30px;
       flex: 1;
     }
 
     .sermon-series {
-      font-size: 0.65rem;
-      letter-spacing: 0.22em;
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--terracotta);
-      font-weight: 500;
-      margin-bottom: 10px;
+      color: var(--orange);
+      font-weight: 700;
+      margin-bottom: 12px;
       display: block;
     }
 
     .sermon-title {
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      line-height: 1.3;
-      color: var(--charcoal);
-      margin-bottom: 10px;
+      font-family: 'Archivo', sans-serif;
+      font-weight: 800;
+      line-height: 1.25;
+      color: var(--black);
+      margin-bottom: 12px;
     }
 
-    .sermon-card.featured .sermon-title { font-size: 1.55rem; }
+    .sermon-card.featured .sermon-title { font-size: 1.6rem; }
     .sermon-card:not(.featured) .sermon-title { font-size: 1.1rem; }
 
     .sermon-meta {
-      font-size: 0.73rem;
+      font-size: 0.78rem;
       color: var(--muted);
       display: flex;
       gap: 16px;
+      font-weight: 500;
     }
 
     /* ────────────────────────────────────────
@@ -808,23 +656,9 @@
     ──────────────────────────────────────── */
     #eventos {
       padding: var(--section-pad);
-      background: var(--charcoal);
+      background: var(--black);
       position: relative;
       overflow: hidden;
-    }
-
-    /* Decorative large text */
-    #eventos::before {
-      content: 'EVENTOS';
-      position: absolute;
-      top: -20px;
-      right: -20px;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 18vw;
-      color: rgba(255,255,255,0.02);
-      letter-spacing: 0.05em;
-      pointer-events: none;
-      line-height: 1;
     }
 
     #eventos .row-top {
@@ -836,11 +670,10 @@
       gap: 24px;
     }
 
-    #eventos .section-label { color: var(--terracotta-light); }
-    #eventos .section-label::before { background: var(--terracotta-light); }
-    #eventos h2.display { color: var(--cream); }
-    #eventos h2.display em { color: var(--terracotta-light); }
-    #eventos .link-arrow { color: var(--gold); }
+    #eventos .section-label { color: var(--orange); }
+    #eventos h2.display { color: var(--white); }
+    #eventos h2.display em { color: var(--orange); }
+    #eventos .link-arrow { color: var(--orange); }
 
     .events-list {
       display: flex;
@@ -853,82 +686,70 @@
       grid-template-columns: 100px 1fr auto;
       align-items: center;
       gap: 32px;
-      padding: 32px 0;
-      border-bottom: 1px solid rgba(253,250,245,0.08);
+      padding: 30px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
       cursor: pointer;
-      transition: padding-left 0.3s;
       position: relative;
     }
 
-    .event-row::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 0;
-      background: var(--terracotta);
-      opacity: 0.1;
-      transition: width 0.4s ease;
-    }
-
-    .event-row:hover { padding-left: 16px; }
-    .event-row:hover::before { width: 4px; }
-
-    .event-row:first-child { border-top: 1px solid rgba(253,250,245,0.08); }
+    .event-row:first-child { border-top: 1px solid rgba(255,255,255,0.1); }
 
     .event-date-box {
       text-align: center;
     }
 
     .event-date-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.8rem;
+      font-family: 'Archivo', sans-serif;
+      font-size: 2.6rem;
       font-weight: 900;
-      color: var(--terracotta-light);
+      color: var(--orange);
       line-height: 1;
       display: block;
     }
 
     .event-date-month {
+      font-family: 'Archivo', sans-serif;
       font-size: 0.65rem;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--muted);
+      font-weight: 700;
+      color: rgba(255,255,255,0.4);
       display: block;
-      margin-top: 4px;
+      margin-top: 6px;
     }
 
-    .event-info {}
-
     .event-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.45rem;
-      font-weight: 700;
-      color: var(--cream);
+      font-family: 'Archivo', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--white);
       margin-bottom: 6px;
       line-height: 1.2;
     }
 
     .event-details {
-      font-size: 0.78rem;
-      color: rgba(253,250,245,0.45);
-      letter-spacing: 0.06em;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.45);
+      font-weight: 500;
     }
 
     .event-tag {
-      font-size: 0.62rem;
-      letter-spacing: 0.18em;
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      font-weight: 500;
-      padding: 8px 16px;
-      border: 1px solid rgba(253,250,245,0.15);
-      color: rgba(253,250,245,0.5);
+      font-weight: 700;
+      padding: 9px 18px;
+      border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.16);
+      color: rgba(255,255,255,0.55);
       transition: border-color 0.3s, color 0.3s;
       white-space: nowrap;
     }
 
     .event-row:hover .event-tag {
-      border-color: var(--terracotta-light);
-      color: var(--terracotta-light);
+      border-color: var(--orange);
+      color: var(--orange);
     }
 
     /* ────────────────────────────────────────
@@ -936,7 +757,7 @@
     ──────────────────────────────────────── */
     #dar {
       padding: var(--section-pad);
-      background: var(--sand-dark);
+      background: var(--cream);
       position: relative;
       overflow: hidden;
     }
@@ -948,158 +769,42 @@
       align-items: center;
     }
 
-    .dar-left {}
-
     .dar-scripture {
       margin: 32px 0 40px;
-      padding: 24px 28px;
-      background: white;
-      border-left: 3px solid var(--terracotta);
+      padding: 26px 30px;
+      background: var(--white);
+      border-radius: 16px;
+      border-left: 4px solid var(--orange);
     }
 
     .dar-scripture p {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: 1.15rem;
-      line-height: 1.7;
-      color: var(--charcoal);
-      margin-bottom: 12px;
+      font-family: 'Archivo', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: var(--black);
+      margin-bottom: 14px;
     }
 
     .dar-scripture cite {
+      font-family: 'Archivo', sans-serif;
       font-size: 0.68rem;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--muted);
+      font-weight: 700;
+      color: var(--orange);
       font-style: normal;
     }
 
     .dar-body {
-      font-size: 1rem;
-      line-height: 1.8;
-      color: var(--warm-gray);
+      font-size: 1.02rem;
+      line-height: 1.75;
+      color: var(--muted);
       margin-bottom: 36px;
     }
 
-    /* Giving card */
-    .dar-right {}
-
-    .giving-card {
-      background: var(--charcoal);
-      padding: 48px 44px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .giving-card::after {
-      content: '♡';
-      position: absolute;
-      right: -10px;
-      bottom: -30px;
-      font-size: 12rem;
-      color: rgba(181,98,62,0.06);
-      line-height: 1;
-      pointer-events: none;
-    }
-
-    .giving-card-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.7rem;
-      font-weight: 700;
-      color: var(--cream);
-      margin-bottom: 8px;
-    }
-
-    .giving-card-sub {
-      font-size: 0.85rem;
-      color: rgba(253,250,245,0.45);
-      margin-bottom: 40px;
-    }
-
-    .giving-options {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 28px;
-    }
-
-    .giving-option {
-      padding: 20px;
-      border: 1px solid rgba(253,250,245,0.12);
-      cursor: pointer;
-      transition: border-color 0.3s, background 0.3s;
-      text-align: center;
-    }
-
-    .giving-option:hover,
-    .giving-option.active {
-      border-color: var(--terracotta);
-      background: rgba(181,98,62,0.1);
-    }
-
-    .giving-option-amount {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--cream);
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    .giving-option-label {
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(253,250,245,0.4);
-    }
-
-    .giving-divider {
-      text-align: center;
-      font-size: 0.7rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(253,250,245,0.3);
-      margin-bottom: 28px;
-    }
-
-    .giving-methods {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .giving-method-btn {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      width: 100%;
-      padding: 16px 20px;
-      background: rgba(253,250,245,0.06);
-      border: 1px solid rgba(253,250,245,0.1);
-      color: var(--cream);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.82rem;
-      letter-spacing: 0.06em;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
-      text-align: left;
-    }
-
-    .giving-method-btn:hover {
-      background: rgba(253,250,245,0.1);
-      transform: translateX(4px);
-    }
-
-    .giving-method-btn .method-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--terracotta);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-size: 0.85rem;
+    .dar-right iframe {
+      border-radius: 18px;
     }
 
     /* ────────────────────────────────────────
@@ -1107,142 +812,67 @@
     ──────────────────────────────────────── */
     #contacto {
       padding: var(--section-pad);
-      background: var(--cream);
+      background: var(--white);
     }
-
-    .contacto-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-    }
-
-    .contacto-left {}
 
     .contacto-intro {
-      font-size: 1rem;
-      line-height: 1.8;
-      color: var(--warm-gray);
+      font-size: 1.02rem;
+      line-height: 1.75;
+      color: var(--muted);
       margin: 24px 0 48px;
-      max-width: 420px;
+      max-width: 440px;
     }
-
-    .info-blocks {
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-    }
-
-    .info-block {}
 
     .info-block-label {
-      font-size: 0.62rem;
-      letter-spacing: 0.25em;
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.66rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--terracotta);
-      font-weight: 500;
-      margin-bottom: 8px;
+      color: var(--orange);
+      font-weight: 700;
+      margin-bottom: 10px;
       display: block;
     }
 
     .info-block-value {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
-      color: var(--charcoal);
+      font-family: 'Archivo', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--black);
       line-height: 1.5;
     }
 
     .info-block-sub {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: var(--muted);
-      margin-top: 4px;
+      margin-top: 6px;
     }
 
-    /* Contact form */
-    .contacto-form {
-      background: var(--sand);
-      padding: 48px 44px;
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--gray-100);
+      color: var(--black);
+      text-decoration: none;
+      transition: background 0.3s, color 0.3s, transform 0.2s;
     }
 
-    .form-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--charcoal);
-      margin-bottom: 32px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-label {
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      display: block;
-      margin-bottom: 8px;
-    }
-
-    .form-input,
-    .form-select,
-    .form-textarea {
-      width: 100%;
-      padding: 14px 16px;
-      background: white;
-      border: 1px solid rgba(44,36,32,0.12);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.3s;
-    }
-
-    .form-input:focus,
-    .form-select:focus,
-    .form-textarea:focus {
-      border-color: var(--terracotta);
-    }
-
-    .form-textarea {
-      resize: vertical;
-      min-height: 120px;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .form-submit {
-      width: 100%;
-      padding: 18px;
-      background: var(--terracotta);
-      color: white;
-      border: none;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.75rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      font-weight: 500;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: background 0.3s, transform 0.2s;
-    }
-
-    .form-submit:hover {
-      background: var(--sienna);
-      transform: translateY(-1px);
+    .social-link:hover {
+      background: var(--orange);
+      color: var(--white);
+      transform: translateY(-2px);
     }
 
     /* ────────────────────────────────────────
        FOOTER
     ──────────────────────────────────────── */
     footer {
-      background: var(--charcoal);
-      padding: 64px 0 32px;
+      background: var(--black);
+      padding: 72px 0 32px;
     }
 
     .footer-top {
@@ -1252,23 +882,12 @@
       margin-bottom: 56px;
     }
 
-    .footer-brand {}
-
-    .footer-logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2rem;
-      letter-spacing: 0.15em;
-      color: var(--cream);
-      display: block;
-      margin-bottom: 16px;
-    }
-
     .footer-tagline {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
+      font-family: 'Archivo', sans-serif;
+      font-weight: 600;
       font-size: 1rem;
-      color: rgba(253,250,245,0.45);
-      margin-bottom: 24px;
+      color: rgba(255,255,255,0.55);
+      margin: 20px 0 24px;
       line-height: 1.5;
     }
 
@@ -1277,31 +896,24 @@
       gap: 12px;
     }
 
-    .social-link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(253,250,245,0.5);
-      text-decoration: none;
-      transition: color 0.3s, transform 0.2s;
+    footer .social-link {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.6);
     }
 
-    .social-link svg {
-      width: 24px;
-      height: 24px;
-    }
-
-    .social-link:hover {
-      color: var(--terracotta-light);
-      transform: translateY(-2px);
+    footer .social-link:hover {
+      background: var(--orange);
+      color: var(--white);
     }
 
     .footer-col-title {
-      font-size: 0.65rem;
-      letter-spacing: 0.25em;
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--terracotta-light);
-      margin-bottom: 20px;
+      font-weight: 700;
+      color: var(--orange);
+      margin-bottom: 22px;
       display: block;
     }
 
@@ -1309,20 +921,21 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
     }
 
     .footer-links a {
-      font-size: 0.85rem;
-      color: rgba(253,250,245,0.5);
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.55);
       text-decoration: none;
       transition: color 0.3s;
     }
 
-    .footer-links a:hover { color: var(--cream); }
+    .footer-links a:hover { color: var(--white); }
 
     .footer-bottom {
-      border-top: 1px solid rgba(253,250,245,0.08);
+      border-top: 1px solid rgba(255,255,255,0.1);
       padding-top: 28px;
       display: flex;
       justify-content: space-between;
@@ -1332,16 +945,16 @@
     }
 
     .footer-copy {
-      font-size: 0.72rem;
-      color: rgba(253,250,245,0.25);
-      letter-spacing: 0.06em;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+      font-weight: 500;
     }
 
     .footer-verse {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
+      font-family: 'Archivo', sans-serif;
+      font-weight: 700;
       font-size: 0.78rem;
-      color: rgba(253,250,245,0.25);
+      color: rgba(255,255,255,0.3);
     }
 
     /* ────────────────────────────────────────
@@ -1370,7 +983,6 @@
         gap: 40px;
       }
 
-      /* Esencial section */
       #esencial .container > div {
         gap: 48px;
       }
@@ -1388,7 +1000,6 @@
       .nav-links, .nav-btn { display: none; }
       .nav-hamburger { display: flex; }
 
-      /* Hero */
       .hero-content .container {
         grid-template-columns: 1fr;
         gap: 32px;
@@ -1397,10 +1008,9 @@
       .hero-right { justify-content: flex-start; }
       .service-card { max-width: 100%; }
 
-      .hero-title { font-size: clamp(3rem, 10vw, 5rem); }
+      .hero-title { font-size: clamp(2.8rem, 10vw, 5rem); }
       .hero-body { font-size: 0.95rem; }
 
-      /* Sermones */
       .sermons-grid {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -1408,18 +1018,16 @@
 
       .sermon-card.featured { grid-row: auto; grid-column: auto; }
 
-      /* Eventos */
       .event-row {
         grid-template-columns: 70px 1fr;
         gap: 16px;
         padding: 20px 0;
       }
 
-      .event-date-num { font-size: 2.2rem; }
+      .event-date-num { font-size: 2.1rem; }
       .event-title { font-size: 1.2rem; }
       .event-tag { display: none; }
 
-      /* Esencial */
       #esencial .container > div {
         grid-template-columns: 1fr !important;
         gap: 48px;
@@ -1429,19 +1037,16 @@
         align-items: flex-start;
       }
 
-      /* Dar */
       .dar-inner {
         grid-template-columns: 1fr;
         gap: 40px;
       }
 
-      /* Contacto */
       .contacto-inner {
         grid-template-columns: 1fr;
         gap: 40px;
       }
 
-      /* Footer */
       .footer-top {
         grid-template-columns: 1fr 1fr;
         gap: 32px;
@@ -1453,7 +1058,6 @@
         text-align: center;
       }
 
-      /* Section headings */
       h2.display { font-size: clamp(2rem, 7vw, 3rem); }
     }
 
@@ -1465,8 +1069,7 @@
 
       .container { padding: 0 20px; }
 
-      /* Hero */
-      .hero-title { font-size: clamp(2.5rem, 12vw, 4rem); }
+      .hero-title { font-size: clamp(2.3rem, 12vw, 4rem); }
 
       .hero-actions {
         flex-direction: column;
@@ -1479,48 +1082,36 @@
         justify-content: center;
       }
 
-      /* Service card */
       .service-card { padding: 28px 24px; }
 
-      /* Ticker */
-      .ticker-track span { font-size: 0.95rem; }
+      .ticker-track span { font-size: 0.75rem; }
 
-      /* Sermones */
       .sermons-grid { gap: 16px; }
-      .sermon-body { padding: 16px 18px 20px; }
+      .sermon-body { padding: 18px 20px 22px; }
       .sermon-title { font-size: 1rem !important; }
 
-      /* Eventos */
       .event-row { grid-template-columns: 60px 1fr; gap: 12px; }
-      .event-date-num { font-size: 1.8rem; }
+      .event-date-num { font-size: 1.7rem; }
       .event-title { font-size: 1.1rem; }
 
-      /* Esencial podcast cover */
       #esencial [style*="width:280px"] {
         width: 220px !important;
         height: 220px !important;
       }
 
-      /* Dar section */
-      .dar-scripture { padding: 18px 20px; }
+      .dar-scripture { padding: 20px 22px; }
 
-      /* Footer */
       .footer-top { grid-template-columns: 1fr; gap: 28px; }
-      .footer-logo { font-size: 1.6rem; }
 
-      /* Nav logo */
       .nav-logo img { height: 32px !important; }
 
-      /* Buttons */
       .btn-primary, .btn-outline, .btn-ghost {
-        font-size: 0.7rem;
-        padding: 14px 28px;
+        font-size: 0.72rem;
+        padding: 15px 28px;
       }
 
-      /* Section labels */
-      .section-label { font-size: 0.62rem; }
+      .section-label { font-size: 0.64rem; }
 
-      /* Cursor glow — hide on mobile */
       .cursor-glow { display: none; }
     }
 
@@ -1528,9 +1119,9 @@
        RESPONSIVE — EXTRA SMALL (max 400px)
     ──────────────────────────────────────── */
     @media (max-width: 400px) {
-      .hero-title { font-size: 2.2rem; }
+      .hero-title { font-size: 2.1rem; }
       .event-row { grid-template-columns: 55px 1fr; }
-      .event-date-num { font-size: 1.6rem; }
+      .event-date-num { font-size: 1.5rem; }
     }
 
     /* ────────────────────────────────────────
@@ -1539,7 +1130,7 @@
     @media (min-width: 1400px) {
       :root { --content-max: 1320px; }
 
-      .hero-title { font-size: 7rem; }
+      .hero-title { font-size: 6.6rem; }
 
       .sermons-grid {
         grid-template-columns: 1.6fr 1fr 1fr;
@@ -1560,7 +1151,7 @@
   <nav id="nav">
     <div class="container">
       <a href="/" class="nav-logo">
-        <img src="logo.png" alt="Somos Reino" style="height:40px;width:auto;display:block;" />
+        <img src="logo.png" alt="Somos Reino" style="height:38px;width:auto;display:block;" />
       </a>
       <ul class="nav-links">
         <li><a href="#sermones">Sermones</a></li>
@@ -1585,9 +1176,9 @@
       <div class="container">
         <div class="hero-left">
           <!-- Live badge — hidden by default, shown when live -->
-          <div id="live-badge" style="display:none;align-items:center;gap:10px;margin-bottom:20px;">
+          <div id="live-badge" style="display:none;align-items:center;gap:10px;margin-bottom:22px;">
             <div style="width:10px;height:10px;border-radius:50%;background:#E53E3E;animation:livePulse 1.5s ease-in-out infinite;"></div>
-            <span style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;color:#E53E3E;">En Vivo Ahora</span>
+            <span style="font-family:'Archivo',sans-serif;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:#E53E3E;">En Vivo Ahora</span>
           </div>
 
           <div class="hero-eyebrow">
@@ -1601,7 +1192,7 @@
           </h1>
 
           <p class="hero-body">
-            Somos una comunidad que adora a Dios en espíritu y en verdad, 
+            Somos una comunidad que adora a Dios en espíritu y en verdad,
             construye relaciones genuinas y transforma su ciudad con el amor de Cristo.
           </p>
 
@@ -1674,8 +1265,8 @@
 
       <!-- Loading state -->
       <div id="sermons-loading" style="text-align:center;padding:60px 0;">
-        <div style="width:40px;height:40px;border:2px solid var(--sand-dark);border-top-color:var(--terracotta);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;"></div>
-        <p style="font-size:0.85rem;color:var(--muted);letter-spacing:0.1em;">Cargando sermones...</p>
+        <div style="width:40px;height:40px;border:2px solid var(--gray-100);border-top-color:var(--orange);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;"></div>
+        <p style="font-family:'Archivo',sans-serif;font-size:0.82rem;color:var(--muted);letter-spacing:0.08em;font-weight:600;">Cargando sermones...</p>
       </div>
 
       <!-- Error / fallback -->
@@ -1688,6 +1279,8 @@
       <div class="sermons-grid" id="sermons-grid" style="display:none;"></div>
     </div>
   </section>
+
+  <!-- ── EVENTOS ── -->
   <section id="eventos">
     <div class="container">
       <div class="row-top reveal">
@@ -1695,13 +1288,13 @@
           <span class="section-label">Próximas Fechas</span>
           <h2 class="display">Lo que viene<br><em>este mes</em></h2>
         </div>
-        <a href="https://www.churchtrac.com/public_calendar?ui=3637D3FD" target="_blank" class="link-arrow" style="color:var(--gold);">Ver calendario completo</a>
+        <a href="https://www.churchtrac.com/public_calendar?ui=3637D3FD" target="_blank" class="link-arrow">Ver calendario completo</a>
       </div>
 
       <!-- Loading state -->
       <div id="events-loading" style="text-align:center;padding:40px 0;">
-        <div style="width:36px;height:36px;border:2px solid rgba(253,250,245,0.1);border-top-color:var(--terracotta-light);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 14px;"></div>
-        <p style="font-size:0.82rem;color:rgba(253,250,245,0.35);letter-spacing:0.1em;">Cargando eventos...</p>
+        <div style="width:36px;height:36px;border:2px solid rgba(255,255,255,0.1);border-top-color:var(--orange);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 14px;"></div>
+        <p style="font-family:'Archivo',sans-serif;font-size:0.8rem;color:rgba(255,255,255,0.35);letter-spacing:0.08em;font-weight:600;">Cargando eventos...</p>
       </div>
 
       <!-- Events list injected by JS -->
@@ -1709,7 +1302,7 @@
 
       <!-- Fallback -->
       <div id="events-error" style="display:none;text-align:center;padding:40px 0;">
-        <a href="https://www.churchtrac.com/public_calendar?ui=3637D3FD" target="_blank" class="link-arrow" style="color:var(--gold);">Ver todos los eventos →</a>
+        <a href="https://www.churchtrac.com/public_calendar?ui=3637D3FD" target="_blank" class="link-arrow">Ver todos los eventos →</a>
       </div>
     </div>
   </section>
@@ -1748,60 +1341,55 @@
 
 
   <!-- ── ESENCIAL PODCAST ── -->
-  <section id="esencial" style="padding:100px 0;background:var(--charcoal);position:relative;overflow:hidden;">
-
-    <!-- Background orb -->
-    <div style="position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(181,98,62,0.1) 0%,transparent 70%);pointer-events:none;"></div>
-    <div style="position:absolute;bottom:-100px;left:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(201,150,58,0.07) 0%,transparent 70%);pointer-events:none;"></div>
+  <section id="esencial" style="padding:108px 0;background:var(--black);position:relative;overflow:hidden;">
 
     <div class="container" style="position:relative;z-index:1;">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;">
 
         <!-- Left: Podcast info -->
         <div class="reveal-left">
-          <span class="section-label" style="color:var(--terracotta-light);">
-            <span style="width:28px;height:1px;background:var(--terracotta-light);display:inline-block;"></span>
+          <span class="section-label" style="color:var(--orange);">
             Un Podcast de Somos Reino
           </span>
 
-          <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(3.5rem,8vw,6rem);font-weight:900;line-height:0.9;color:var(--cream);margin:16px 0 24px;letter-spacing:-0.02em;">
-            Esen<br><span style="color:var(--terracotta-light);">cial</span>
+          <h2 style="font-family:'Archivo',sans-serif;font-size:clamp(3.2rem,8vw,5.6rem);font-weight:900;line-height:0.92;color:var(--white);margin:16px 0 24px;letter-spacing:-0.02em;text-transform:uppercase;">
+            Esen<br><span style="color:var(--orange);">cial</span>
           </h2>
 
-          <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.15rem;color:rgba(253,250,245,0.55);line-height:1.6;margin-bottom:40px;">
+          <p style="font-size:1.1rem;font-weight:300;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:40px;">
             Conversaciones de fe y vida cotidiana.<br>Para el que camina, duda, cree y sigue adelante.
           </p>
 
           <!-- Platform links -->
           <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:40px;">
 
-            <a href="https://open.spotify.com/show/7hPqVVCSXma0FkD6zP0R1G?si=clq1VjnhSemF-9fD8qQT2g" target="_blank" style="display:flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(253,250,245,0.04);border:1px solid rgba(253,250,245,0.08);text-decoration:none;border-radius:6px;transition:background 0.3s;" onmouseover="this.style.background='rgba(253,250,245,0.08)'" onmouseout="this.style.background='rgba(253,250,245,0.04)'">
+            <a href="https://open.spotify.com/show/7hPqVVCSXma0FkD6zP0R1G?si=clq1VjnhSemF-9fD8qQT2g" target="_blank" style="display:flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);text-decoration:none;border-radius:14px;transition:background 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.09)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
               <div style="width:40px;height:40px;border-radius:10px;background:#1DB954;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="white"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
               </div>
               <div>
-                <span style="font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;color:var(--cream);display:block;">Spotify</span>
-                <span style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(253,250,245,0.35);">Escuchar ahora →</span>
+                <span style="font-family:'Archivo',sans-serif;font-size:0.95rem;font-weight:800;color:var(--white);display:block;">Spotify</span>
+                <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,0.4);">Escuchar ahora →</span>
               </div>
             </a>
 
-            <a href="https://podcasts.apple.com/us/podcast/esencial-principios-del-reino/id1894268031" target="_blank" style="display:flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(253,250,245,0.04);border:1px solid rgba(253,250,245,0.08);text-decoration:none;border-radius:6px;transition:background 0.3s;" onmouseover="this.style.background='rgba(253,250,245,0.08)'" onmouseout="this.style.background='rgba(253,250,245,0.04)'">
+            <a href="https://podcasts.apple.com/us/podcast/esencial-principios-del-reino/id1894268031" target="_blank" style="display:flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);text-decoration:none;border-radius:14px;transition:background 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.09)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
               <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#F452FF,#832BC1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="white"><path d="M18.5 12c0 3.59-2.91 6.5-6.5 6.5S5.5 15.59 5.5 12 8.41 5.5 12 5.5s6.5 2.91 6.5 6.5zm1.5 0c0-4.42-3.58-8-8-8s-8 3.58-8 8 3.58 8 8 8 8-3.58 8-8zm-8-3c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
               </div>
               <div>
-                <span style="font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;color:var(--cream);display:block;">Apple Podcasts</span>
-                <span style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(253,250,245,0.35);">Escuchar ahora →</span>
+                <span style="font-family:'Archivo',sans-serif;font-size:0.95rem;font-weight:800;color:var(--white);display:block;">Apple Podcasts</span>
+                <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,0.4);">Escuchar ahora →</span>
               </div>
             </a>
 
-            <a href="https://youtube.com/playlist?list=PLsHpz1KAchvpaUhBiFyCSsFPlWAw8ZF16&si=7uUmU4VSB26cqvlE" target="_blank" style="display:flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(253,250,245,0.04);border:1px solid rgba(253,250,245,0.08);text-decoration:none;border-radius:6px;transition:background 0.3s;" onmouseover="this.style.background='rgba(253,250,245,0.08)'" onmouseout="this.style.background='rgba(253,250,245,0.04)'">
+            <a href="https://youtube.com/playlist?list=PLsHpz1KAchvpaUhBiFyCSsFPlWAw8ZF16&si=7uUmU4VSB26cqvlE" target="_blank" style="display:flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);text-decoration:none;border-radius:14px;transition:background 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.09)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
               <div style="width:40px;height:40px;border-radius:10px;background:#FF0000;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="white"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
               </div>
               <div>
-                <span style="font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;color:var(--cream);display:block;">YouTube</span>
-                <span style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(253,250,245,0.35);">Ver ahora →</span>
+                <span style="font-family:'Archivo',sans-serif;font-size:0.95rem;font-weight:800;color:var(--white);display:block;">YouTube</span>
+                <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,0.4);">Ver ahora →</span>
               </div>
             </a>
 
@@ -1813,24 +1401,23 @@
 
           <!-- Podcast cover -->
           <div style="position:relative;width:280px;height:280px;flex-shrink:0;">
-            <div style="position:absolute;inset:0;background:linear-gradient(135deg,#3D1A14 0%,#7A3B2E 40%,#B5623E 100%);border-radius:16px;"></div>
-            <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(253,250,245,0.02) 40px,rgba(253,250,245,0.02) 41px);border-radius:16px;"></div>
+            <div style="position:absolute;inset:0;background:linear-gradient(135deg,#111111 0%,#BE3510 55%,#E8481E 100%);border-radius:22px;"></div>
             <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;">
-              <span style="font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(253,250,245,0.4);margin-bottom:16px;">Podcast</span>
-              <span style="font-family:'Playfair Display',serif;font-style:italic;font-size:3.5rem;font-weight:900;color:var(--cream);line-height:1;margin-bottom:16px;">Esencial</span>
-              <div style="width:40px;height:1px;background:rgba(253,250,245,0.3);margin-bottom:16px;"></div>
-              <span style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(253,250,245,0.4);">Somos Reino</span>
+              <span style="font-family:'Archivo',sans-serif;font-size:0.62rem;letter-spacing:0.24em;text-transform:uppercase;font-weight:700;color:rgba(255,255,255,0.55);margin-bottom:16px;">Podcast</span>
+              <span style="font-family:'Archivo',sans-serif;font-size:3.2rem;font-weight:900;text-transform:uppercase;color:var(--white);line-height:0.95;margin-bottom:16px;">Esencial</span>
+              <div style="width:40px;height:3px;background:rgba(255,255,255,0.4);border-radius:2px;margin-bottom:16px;"></div>
+              <span style="font-family:'Archivo',sans-serif;font-size:0.65rem;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;color:rgba(255,255,255,0.55);">Somos Reino</span>
             </div>
             <!-- Glow -->
-            <div style="position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);width:200px;height:30px;background:rgba(181,98,62,0.3);filter:blur(20px);border-radius:50%;"></div>
+            <div style="position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);width:200px;height:30px;background:rgba(232,72,30,0.35);filter:blur(24px);border-radius:50%;"></div>
           </div>
 
           <!-- Scripture -->
-          <div style="padding:20px 24px;border-left:3px solid var(--terracotta);background:rgba(253,250,245,0.04);max-width:280px;">
-            <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:0.95rem;line-height:1.7;color:rgba(253,250,245,0.7);margin:0 0 8px;">
+          <div style="padding:20px 24px;border-left:4px solid var(--orange);background:rgba(255,255,255,0.04);border-radius:0 14px 14px 0;max-width:280px;">
+            <p style="font-family:'Archivo',sans-serif;font-weight:700;font-size:0.95rem;line-height:1.6;color:rgba(255,255,255,0.75);margin:0 0 8px;">
               "No solo de pan vivirá el hombre, sino de toda palabra que sale de la boca de Dios."
             </p>
-            <cite style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(253,250,245,0.35);font-style:normal;">Mateo 4:4</cite>
+            <cite style="font-family:'Archivo',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--orange);font-style:normal;">Mateo 4:4</cite>
           </div>
 
         </div>
@@ -1968,12 +1555,6 @@
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
     revealEls.forEach(el => observer.observe(el));
 
-    // Giving amount toggle
-    function selectAmount(el) {
-      document.querySelectorAll('.giving-option').forEach(o => o.classList.remove('active'));
-      el.classList.add('active');
-    }
-
     // ── HERO PARALLAX ──
     window.addEventListener('scroll', () => {
       const heroBg = document.querySelector('.hero-bg');
@@ -1981,14 +1562,6 @@
         heroBg.style.transform = `scale(1) translateY(${window.scrollY * 0.3}px)`;
       }
     });
-
-    // ── STAGGER SERMON CARDS ──
-    function staggerCards(cards) {
-      cards.forEach((card, i) => {
-        card.style.transitionDelay = `${i * 0.1}s`;
-        observer.observe(card);
-      });
-    }
 
     // ── HOVER TILT ON SERVICE CARD ──
     const serviceCard = document.querySelector('.service-card');
@@ -2056,17 +1629,6 @@
 
     // ── YOUTUBE PLAYLIST LOADER ──
     (function() {
-      const PLAYLIST_ID = 'PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7';
-
-      // These are the 3 most recent video IDs from your playlist.
-      // Update these whenever you want to refresh which videos show.
-      // To find a video ID: open the video on YouTube, copy the part after "v=" in the URL.
-      const videos = [
-        { id: null, title: null }, // slot 1 — most recent
-        { id: null, title: null }, // slot 2
-        { id: null, title: null }, // slot 3
-      ];
-
       const loading = document.getElementById('sermons-loading');
       const grid = document.getElementById('sermons-grid');
       const error = document.getElementById('sermons-error');
@@ -2092,7 +1654,7 @@
               <div class="sermon-meta">
                 <span>${video.date}</span>
                 <span>·</span>
-                <span style="color:var(--terracotta);">Ver en YouTube →</span>
+                <span style="color:var(--orange);">Ver en YouTube →</span>
               </div>
             </div>
           </a>`;
@@ -2119,12 +1681,13 @@
       if (links.style.display === 'flex') {
         links.style.display = '';
       } else {
-        links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:72px;left:0;right:0;background:rgba(30,26,24,0.98);padding:32px 24px;gap:24px;backdrop-filter:blur(12px);z-index:99;';
+        links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:72px;left:0;right:0;background:rgba(17,17,17,0.98);padding:32px 24px;gap:24px;z-index:99;';
         links.querySelectorAll('a').forEach(a => {
-          a.style.color = 'var(--cream)';
+          a.style.color = '#FFFFFF';
           a.style.fontSize = '1.1rem';
-          a.style.fontFamily = "'Playfair Display', serif";
-          a.style.fontStyle = 'italic';
+          a.style.fontFamily = "'Archivo', sans-serif";
+          a.style.fontWeight = '700';
+          a.style.textTransform = 'uppercase';
           a.addEventListener('click', () => { links.style.display = ''; });
         });
       }
