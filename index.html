@@ -46,28 +46,6 @@
       padding: 0 48px;
     }
 
-    .section-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-family: 'Archivo', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: var(--orange);
-      margin-bottom: 20px;
-    }
-
-    .section-label::before {
-      content: '';
-      display: block;
-      width: 8px;
-      height: 8px;
-      background: var(--orange);
-      border-radius: 2px;
-    }
-
     h2.display {
       font-family: 'Archivo', sans-serif;
       font-size: clamp(2.4rem, 5vw, 4rem);
@@ -375,27 +353,6 @@
       gap: 60px;
     }
 
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      font-family: 'Archivo', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: var(--orange);
-      margin-bottom: 26px;
-      opacity: 0;
-      animation: fadeUp 0.8s ease-out 0.4s forwards;
-    }
-
-    .hero-eyebrow-dot {
-      width: 8px; height: 8px;
-      border-radius: 2px;
-      background: var(--orange);
-    }
-
     .hero-title {
       font-family: 'Archivo', sans-serif;
       font-size: clamp(3.4rem, 7.5vw, 6.2rem);
@@ -670,7 +627,6 @@
       gap: 24px;
     }
 
-    #eventos .section-label { color: var(--orange); }
     #eventos h2.display { color: var(--white); }
     #eventos h2.display em { color: var(--orange); }
     #eventos .link-arrow { color: var(--orange); }
@@ -1110,8 +1066,6 @@
         padding: 15px 28px;
       }
 
-      .section-label { font-size: 0.64rem; }
-
       .cursor-glow { display: none; }
     }
 
@@ -1179,11 +1133,6 @@
           <div id="live-badge" style="display:none;align-items:center;gap:10px;margin-bottom:22px;">
             <div style="width:10px;height:10px;border-radius:50%;background:#E53E3E;animation:livePulse 1.5s ease-in-out infinite;"></div>
             <span style="font-family:'Archivo',sans-serif;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:#E53E3E;">En Vivo Ahora</span>
-          </div>
-
-          <div class="hero-eyebrow">
-            <div class="hero-eyebrow-dot"></div>
-            Kissimmee, Florida
           </div>
 
           <h1 class="hero-title">
@@ -1257,7 +1206,6 @@
     <div class="container">
       <div class="row-top reveal">
         <div>
-          <span class="section-label">Palabra de Vida</span>
           <h2 class="display">Sermones <em>recientes</em></h2>
         </div>
         <a href="https://youtube.com/playlist?list=PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7" target="_blank" class="link-arrow">Ver todos en YouTube</a>
@@ -1285,7 +1233,6 @@
     <div class="container">
       <div class="row-top reveal">
         <div>
-          <span class="section-label">Próximas Fechas</span>
           <h2 class="display">Lo que viene<br><em>este mes</em></h2>
         </div>
         <a href="https://www.churchtrac.com/public_calendar?ui=3637D3FD" target="_blank" class="link-arrow">Ver calendario completo</a>
@@ -1312,7 +1259,6 @@
     <div class="container">
       <div class="dar-inner">
         <div class="dar-left reveal">
-          <span class="section-label">Mayordomía</span>
           <h2 class="display">Dar es<br><em>un acto de fe</em></h2>
 
           <blockquote class="dar-scripture">
@@ -1348,11 +1294,7 @@
 
         <!-- Left: Podcast info -->
         <div class="reveal-left">
-          <span class="section-label" style="color:var(--orange);">
-            Un Podcast de Somos Reino
-          </span>
-
-          <h2 style="font-family:'Archivo',sans-serif;font-size:clamp(3.2rem,8vw,5.6rem);font-weight:900;line-height:0.92;color:var(--white);margin:16px 0 24px;letter-spacing:-0.02em;text-transform:uppercase;">
+          <h2 style="font-family:'Archivo',sans-serif;font-size:clamp(3.2rem,8vw,5.6rem);font-weight:900;line-height:0.92;color:var(--white);margin:0 0 24px;letter-spacing:-0.02em;text-transform:uppercase;">
             Esen<br><span style="color:var(--orange);">cial</span>
           </h2>
 
@@ -1429,7 +1371,6 @@
   <section id="contacto">
     <div class="container">
       <div class="reveal">
-        <span class="section-label">Estamos Aquí</span>
         <h2 class="display">Nos encanta<br><em>conocerte</em></h2>
 
         <p class="contacto-intro">
