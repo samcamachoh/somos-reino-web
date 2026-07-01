@@ -401,6 +401,12 @@
       position: relative;
       z-index: 10;
       padding: 130px 0 110px;
+      transition: opacity 0.8s ease;
+    }
+
+    .hero-content.hero-faded {
+      opacity: 0;
+      pointer-events: none;
     }
 
     .hero-content .container {
@@ -1610,6 +1616,7 @@
     function initHeroPlayer(videoId) {
       const wrap = document.getElementById('hero-video-wrap');
       const heroBg = document.getElementById('hero-bg');
+      const heroContent = document.querySelector('.hero-content');
       wrap.style.display = 'block';
 
       ytPlayer = new YT.Player('hero-yt-player', {
@@ -1631,6 +1638,7 @@
             requestAnimationFrame(() => {
               wrap.classList.add('visible');
               heroBg.classList.add('faded');
+              heroContent.classList.add('hero-faded');
             });
             document.getElementById('hero-unmute-btn').style.display = 'flex';
           }
