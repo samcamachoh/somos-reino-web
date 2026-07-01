@@ -736,7 +736,7 @@
 
     .sermons-grid {
       display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 24px;
     }
 
@@ -745,19 +745,14 @@
       border-radius: 18px;
       overflow: hidden;
       cursor: pointer;
-      display: block;
+      display: flex;
+      flex-direction: column;
       width: 100%;
       text-align: left;
       border: none;
       padding: 0;
       font: inherit;
       color: inherit;
-    }
-
-    .sermon-card.featured {
-      grid-row: span 2;
-      display: flex;
-      flex-direction: column;
     }
 
     .sermon-thumb {
@@ -767,10 +762,6 @@
       position: relative;
       overflow: hidden;
       flex-shrink: 0;
-    }
-
-    .sermon-card.featured .sermon-thumb {
-      aspect-ratio: 4/3;
     }
 
     .sermon-play {
@@ -814,13 +805,11 @@
     .sermon-title {
       font-family: 'Archivo', sans-serif;
       font-weight: 800;
+      font-size: 1.1rem;
       line-height: 1.25;
       color: var(--black);
       margin-bottom: 12px;
     }
-
-    .sermon-card.featured .sermon-title { font-size: 1.6rem; }
-    .sermon-card:not(.featured) .sermon-title { font-size: 1.1rem; }
 
     .sermon-meta {
       font-size: 0.78rem;
@@ -1219,10 +1208,6 @@
         grid-template-columns: 1fr 1fr;
       }
 
-      .sermon-card.featured {
-        grid-column: span 2;
-      }
-
       .dar-inner {
         gap: 40px;
       }
@@ -1271,8 +1256,6 @@
         grid-template-columns: 1fr;
         gap: 20px;
       }
-
-      .sermon-card.featured { grid-row: auto; grid-column: auto; }
 
       .event-row {
         grid-template-columns: 70px 1fr;
@@ -1387,7 +1370,6 @@
       .hero-title { font-size: 6.6rem; }
 
       .sermons-grid {
-        grid-template-columns: 1.6fr 1fr 1fr;
         gap: 32px;
       }
     }
@@ -2060,11 +2042,10 @@
       const grid = document.getElementById('sermons-grid');
       const error = document.getElementById('sermons-error');
 
-      function buildCard(video, index) {
-        const isFirst = index === 0;
+      function buildCard(video) {
         const title = video.title.split('|')[0].trim();
         return `
-          <button type="button" class="sermon-card ${isFirst ? 'featured' : ''} reveal" data-video-id="${video.videoId}" aria-label="Reproducir: ${title}">
+          <button type="button" class="sermon-card reveal" data-video-id="${video.videoId}" aria-label="Reproducir: ${title}">
             <div class="sermon-thumb" style="position:relative;aspect-ratio:16/9;overflow:hidden;">
               <img
                 src="${video.thumbnail}"
@@ -2082,7 +2063,7 @@
             </div>
             <div class="sermon-body">
               <span class="sermon-series">Somos Reino</span>
-              <h3 class="sermon-title" style="font-size:${isFirst ? '1.3rem' : '1rem'};">${title}</h3>
+              <h3 class="sermon-title">${title}</h3>
               <div class="sermon-meta">
                 <span>${video.date}</span>
                 <span>·</span>
@@ -2094,7 +2075,7 @@
 
       function renderVideos(data) {
         if (!data.videos?.length) throw new Error('No videos');
-        grid.innerHTML = data.videos.slice(0,3).map((v, i) => buildCard(v, i)).join('');
+        grid.innerHTML = data.videos.slice(0,6).map(buildCard).join('');
         loading.style.display = 'none';
         grid.style.display = 'grid';
         grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
