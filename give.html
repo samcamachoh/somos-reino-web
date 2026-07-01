@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dar — Somos Reino</title>
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black:  #111111;
+      --white:  #FFFFFF;
+      --cream:  #F6F4F1;
+      --orange: #F7746D;
+      --text:   #171412;
+      --muted:  #6E6862;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+    }
+
+    .give-header {
+      background: var(--black);
+      padding: 22px 0;
+    }
+
+    .give-header .inner {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .give-logo img { height: 34px; width: auto; display: block; }
+
+    .give-back {
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .give-back:hover { color: var(--white); }
+
+    main {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+    }
+
+    h1 {
+      font-family: 'Archivo', sans-serif;
+      font-size: clamp(2.2rem, 6vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -0.01em;
+      line-height: 1.05;
+      margin-bottom: 14px;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--orange);
+    }
+
+    .give-intro {
+      font-size: 1.02rem;
+      line-height: 1.65;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 36px;
+    }
+
+    .give-embed {
+      background: var(--white);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 20px 48px rgba(17,17,17,0.08);
+    }
+
+    .give-embed iframe {
+      display: block;
+      width: 100%;
+      height: 700px;
+      border: none;
+    }
+
+    @media (max-width: 600px) {
+      main { padding: 40px 20px 56px; }
+      .give-embed iframe { height: 640px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="give-header">
+    <div class="inner">
+      <a href="/" class="give-logo">
+        <img src="logo.png" alt="Somos Reino" />
+      </a>
+      <a href="/" class="give-back">← Volver al sitio</a>
+    </div>
+  </header>
+
+  <main>
+    <h1>Dar es<br><em>un acto de fe</em></h1>
+    <p class="give-intro">
+      Tu generosidad hace posible que sigamos predicando el evangelio, sirviendo a nuestra comunidad y formando a la próxima generación de líderes.
+    </p>
+
+    <div class="give-embed">
+      <iframe src="https://casafamiliar.churchtrac.com/give/embed" style="border:none; width:100%; height:700px;" seamless></iframe>
+    </div>
+  </main>
+
+</body>
+</html>
