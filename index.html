@@ -1754,18 +1754,27 @@
           </a>`;
       }
 
-      fetch('https://somos-reino-api.vercel.app/api/videos')
-        .then(r => r.json())
-        .then(data => {
-          if (!data.videos?.length) throw new Error('No videos');
-          grid.innerHTML = data.videos.slice(0,3).map((v, i) => buildCard(v, i)).join('');
-          loading.style.display = 'none';
-          grid.style.display = 'grid';
-          grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-        })
+      function renderVideos(data) {
+        if (!data.videos?.length) throw new Error('No videos');
+        grid.innerHTML = data.videos.slice(0,3).map((v, i) => buildCard(v, i)).join('');
+        loading.style.display = 'none';
+        grid.style.display = 'grid';
+        grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+      }
+
+      // Prefer this site's own /api/videos (pulls straight from the YouTube
+      // playlist feed); fall back to the legacy external API if unavailable.
+      fetch('/api/videos')
+        .then(r => { if (!r.ok) throw new Error('local api unavailable'); return r.json(); })
+        .then(renderVideos)
         .catch(() => {
-          loading.style.display = 'none';
-          error.style.display = 'block';
+          fetch('https://somos-reino-api.vercel.app/api/videos')
+            .then(r => r.json())
+            .then(renderVideos)
+            .catch(() => {
+              loading.style.display = 'none';
+              error.style.display = 'block';
+            });
         });
     })();
 
