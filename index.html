@@ -296,11 +296,54 @@
 
     .nav-btn:hover { background: var(--orange-dark); transform: translateY(-1px); }
 
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    /* ── LANGUAGE TOGGLE ── */
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 100px;
+      padding: 3px;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .lang-option {
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.55);
+      background: none;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    .lang-option.active {
+      background: var(--orange);
+      color: var(--white);
+    }
+
+    .lang-option:not(.active):hover { color: var(--white); }
+
     /* Mobile hamburger */
     .nav-hamburger {
       display: none;
       flex-direction: column;
+      justify-content: center;
       gap: 5px;
+      width: 32px;
+      height: 32px;
       cursor: pointer;
       background: none;
       border: none;
@@ -312,7 +355,108 @@
       width: 24px;
       height: 2px;
       background: var(--white);
+      transition: transform 0.3s ease, opacity 0.2s ease;
+      transform-origin: center;
     }
+
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ── MOBILE MENU OVERLAY ── */
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      padding: 20px 24px 32px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-16px);
+      transition: opacity 0.35s ease, transform 0.35s ease, visibility 0s linear 0.35s;
+    }
+
+    .mobile-menu.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      transition: opacity 0.35s ease, transform 0.35s ease, visibility 0s linear 0s;
+    }
+
+    .mobile-menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 44px;
+    }
+
+    .mobile-menu-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.06);
+      border: none;
+      border-radius: 50%;
+      color: var(--white);
+      font-size: 1.4rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .mobile-menu-close:hover {
+      background: var(--orange);
+      transform: rotate(90deg);
+    }
+
+    .mobile-menu-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mobile-menu-links a {
+      font-family: 'Archivo', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      display: block;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
+    }
+
+    .mobile-menu.open .mobile-menu-links a {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .mobile-menu-links a:active { color: var(--orange); }
+
+    .mobile-menu-links li:nth-child(1) a { transition-delay: 0.06s; }
+    .mobile-menu-links li:nth-child(2) a { transition-delay: 0.11s; }
+    .mobile-menu-links li:nth-child(3) a { transition-delay: 0.16s; }
+    .mobile-menu-links li:nth-child(4) a { transition-delay: 0.21s; }
+    .mobile-menu-links li:nth-child(5) a { transition-delay: 0.26s; }
+
+    .mobile-menu-footer {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-top: 28px;
+    }
+
+    .mobile-menu-footer .btn-primary { flex: 1; text-align: center; }
 
     /* ────────────────────────────────────────
        HERO
@@ -1264,18 +1408,48 @@
         <img src="logo.png" alt="Somos Reino" style="height:38px;width:auto;display:block;" />
       </a>
       <ul class="nav-links">
-        <li><a href="#sermones">Sermones</a></li>
-        <li><a href="#eventos">Eventos</a></li>
+        <li><a href="#sermones" data-en="Sermons">Sermones</a></li>
+        <li><a href="#eventos" data-en="Events">Eventos</a></li>
         <li><a href="#esencial">Esencial</a></li>
-        <li><a href="#dar">Dar</a></li>
-        <li><a href="#contacto">Contacto</a></li>
+        <li><a href="#dar" data-en="Give">Dar</a></li>
+        <li><a href="#contacto" data-en="Contact">Contacto</a></li>
       </ul>
-      <a href="https://www.somosreino.org/give" target="_blank" class="nav-btn">Dar</a>
-      <button class="nav-hamburger" id="hamburger" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
+      <div class="nav-right">
+        <div class="lang-toggle" id="lang-toggle" role="group" aria-label="Language selector">
+          <button type="button" class="lang-option active" data-lang="es">ES</button>
+          <button type="button" class="lang-option" data-lang="en">EN</button>
+        </div>
+        <a href="https://www.somosreino.org/give" target="_blank" class="nav-btn" data-en="Give">Dar</a>
+        <button class="nav-hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
   </nav>
+
+  <!-- ── MOBILE MENU OVERLAY ── -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-header">
+      <a href="/" class="nav-logo">
+        <img src="logo.png" alt="Somos Reino" style="height:34px;width:auto;display:block;" />
+      </a>
+      <button class="mobile-menu-close" id="mobile-menu-close" type="button" aria-label="Cerrar menú" data-en-label="Close menu">&times;</button>
+    </div>
+    <ul class="mobile-menu-links">
+      <li><a href="#sermones" data-en="Sermons">Sermones</a></li>
+      <li><a href="#eventos" data-en="Events">Eventos</a></li>
+      <li><a href="#esencial">Esencial</a></li>
+      <li><a href="#dar" data-en="Give">Dar</a></li>
+      <li><a href="#contacto" data-en="Contact">Contacto</a></li>
+    </ul>
+    <div class="mobile-menu-footer">
+      <div class="lang-toggle" id="lang-toggle-mobile" role="group" aria-label="Language selector">
+        <button type="button" class="lang-option active" data-lang="es">ES</button>
+        <button type="button" class="lang-option" data-lang="en">EN</button>
+      </div>
+      <a href="https://www.somosreino.org/give" target="_blank" class="btn-primary" data-en="Give">Dar</a>
+    </div>
+  </div>
 
   <!-- ── HERO ── -->
   <section id="hero">
@@ -1285,7 +1459,7 @@
     <div class="hero-video-wrap" id="hero-video-wrap">
       <div id="hero-yt-player"></div>
     </div>
-    <button class="hero-unmute-btn" id="hero-unmute-btn" type="button" aria-label="Activar sonido">
+    <button class="hero-unmute-btn" id="hero-unmute-btn" type="button" aria-label="Activar sonido" data-en-label="Turn on sound">
       <span id="hero-unmute-icon">🔇</span>
       <span id="hero-unmute-label">Activar Sonido</span>
     </button>
@@ -1298,37 +1472,37 @@
           <!-- Live badge — hidden by default, shown when live -->
           <div id="live-badge" style="display:none;align-items:center;gap:10px;margin-bottom:22px;">
             <div style="width:10px;height:10px;border-radius:50%;background:#E53E3E;animation:livePulse 1.5s ease-in-out infinite;"></div>
-            <span style="font-family:'Archivo',sans-serif;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:#E53E3E;">En Vivo Ahora</span>
+            <span data-en="Live Now" style="font-family:'Archivo',sans-serif;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:#E53E3E;">En Vivo Ahora</span>
           </div>
 
           <h1 class="hero-title">
-            Una familia<br>
-            <span class="line2">de reino.</span>
+            <span data-en="A Kingdom">Una familia</span><br>
+            <span class="line2" data-en="Family.">de reino.</span>
           </h1>
 
-          <p class="hero-body">
+          <p class="hero-body" data-en="We are a community that worships God in spirit and truth, builds genuine relationships, and transforms our city with the love of Christ.">
             Somos una comunidad que adora a Dios en espíritu y en verdad,
             construye relaciones genuinas y transforma su ciudad con el amor de Cristo.
           </p>
 
           <div class="hero-actions">
-            <a href="#contacto" class="btn-primary">Planifica Tu Visita</a>
-            <a id="live-btn" href="#sermones" class="btn-outline">Ver Sermones</a>
+            <a href="#contacto" class="btn-primary" data-en="Plan Your Visit">Planifica Tu Visita</a>
+            <a id="live-btn" href="#sermones" class="btn-outline" data-en="Watch Sermons">Ver Sermones</a>
           </div>
         </div>
 
         <div class="hero-right">
           <div class="service-card">
-            <span class="service-card-label">Servicios Regulares</span>
+            <span class="service-card-label" data-en="Regular Services">Servicios Regulares</span>
             <div class="service-item">
-              <span class="service-day">Domingo</span>
-              <span class="service-time">11:00 AM · Celebración</span>
-              <span class="service-note">En español · Niños disponible</span>
+              <span class="service-day" data-en="Sunday">Domingo</span>
+              <span class="service-time" data-en="11:00 AM · Celebration">11:00 AM · Celebración</span>
+              <span class="service-note" data-en="In Spanish · Kids available">En español · Niños disponible</span>
             </div>
             <div class="service-item">
-              <span class="service-day">Miércoles</span>
-              <span class="service-time">7:30 PM · Formación</span>
-              <span class="service-note">Estudio bíblico y adoración</span>
+              <span class="service-day" data-en="Wednesday">Miércoles</span>
+              <span class="service-time" data-en="7:30 PM · Discipleship">7:30 PM · Formación</span>
+              <span class="service-note" data-en="Bible study and worship">Estudio bíblico y adoración</span>
             </div>
           </div>
         </div>
@@ -1338,30 +1512,30 @@
     <!-- Ticker -->
     <div class="hero-ticker">
       <div class="ticker-track">
-        <span>Bienvenidos a Somos Reino</span>
+        <span data-en="Welcome to Somos Reino">Bienvenidos a Somos Reino</span>
         <span class="dot">·</span>
         <span>Kissimmee, Florida</span>
         <span class="dot">·</span>
-        <span>Domingos 11:00 AM · Celebración</span>
+        <span data-en="Sundays 11:00 AM · Celebration">Domingos 11:00 AM · Celebración</span>
         <span class="dot">·</span>
-        <span>Miércoles 7:30 PM · Formación</span>
+        <span data-en="Wednesdays 7:30 PM · Discipleship">Miércoles 7:30 PM · Formación</span>
         <span class="dot">·</span>
-        <span>Una familia de reino</span>
+        <span data-en="A Kingdom family">Una familia de reino</span>
         <span class="dot">·</span>
-        <span>Adoración · Comunidad · Propósito</span>
+        <span data-en="Worship · Community · Purpose">Adoración · Comunidad · Propósito</span>
         <span class="dot">·</span>
         <!-- Duplicate for seamless loop -->
-        <span>Bienvenidos a Somos Reino</span>
+        <span data-en="Welcome to Somos Reino">Bienvenidos a Somos Reino</span>
         <span class="dot">·</span>
         <span>2824 Michigan Ave Unit F, Kissimmee, FL 34744</span>
         <span class="dot">·</span>
-        <span>Domingos 11:00 AM · Celebración</span>
+        <span data-en="Sundays 11:00 AM · Celebration">Domingos 11:00 AM · Celebración</span>
         <span class="dot">·</span>
-        <span>Miércoles 7:30 PM · Formación</span>
+        <span data-en="Wednesdays 7:30 PM · Discipleship">Miércoles 7:30 PM · Formación</span>
         <span class="dot">·</span>
-        <span>Una familia de reino</span>
+        <span data-en="A Kingdom family">Una familia de reino</span>
         <span class="dot">·</span>
-        <span>Adoración · Comunidad · Propósito</span>
+        <span data-en="Worship · Community · Purpose">Adoración · Comunidad · Propósito</span>
         <span class="dot">·</span>
       </div>
     </div>
@@ -1372,21 +1546,21 @@
     <div class="container">
       <div class="row-top reveal">
         <div>
-          <h2 class="display">Sermones <em>recientes</em></h2>
+          <h2 class="display" data-en="Recent <em>Sermons</em>">Sermones <em>recientes</em></h2>
         </div>
-        <a href="https://youtube.com/playlist?list=PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7" target="_blank" class="link-arrow">Ver todos en YouTube</a>
+        <a href="https://youtube.com/playlist?list=PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7" target="_blank" class="link-arrow" data-en="View All on YouTube">Ver todos en YouTube</a>
       </div>
 
       <!-- Loading state -->
       <div id="sermons-loading" style="text-align:center;padding:60px 0;">
         <div style="width:40px;height:40px;border:2px solid var(--gray-100);border-top-color:var(--orange);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;"></div>
-        <p style="font-family:'Archivo',sans-serif;font-size:0.82rem;color:var(--muted);letter-spacing:0.08em;font-weight:600;">Cargando sermones...</p>
+        <p data-en="Loading sermons..." style="font-family:'Archivo',sans-serif;font-size:0.82rem;color:var(--muted);letter-spacing:0.08em;font-weight:600;">Cargando sermones...</p>
       </div>
 
       <!-- Error / fallback -->
       <div id="sermons-error" style="display:none;text-align:center;padding:60px 0;">
-        <p style="font-size:0.9rem;color:var(--muted);margin-bottom:20px;">Mira nuestros sermones directamente en YouTube.</p>
-        <a href="https://youtube.com/playlist?list=PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7" target="_blank" class="btn-primary" style="display:inline-block;">Ver Playlist →</a>
+        <p data-en="Watch our sermons directly on YouTube." style="font-size:0.9rem;color:var(--muted);margin-bottom:20px;">Mira nuestros sermones directamente en YouTube.</p>
+        <a href="https://youtube.com/playlist?list=PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7" target="_blank" class="btn-primary" data-en="View Playlist →" style="display:inline-block;">Ver Playlist →</a>
       </div>
 
       <!-- Dynamic grid injected by JS -->
@@ -1398,7 +1572,7 @@
   <div class="video-modal" id="video-modal" role="dialog" aria-modal="true" aria-label="Reproductor de sermón">
     <div class="video-modal-backdrop" id="video-modal-backdrop"></div>
     <div class="video-modal-inner">
-      <button class="video-modal-close" id="video-modal-close" type="button" aria-label="Cerrar video">&times;</button>
+      <button class="video-modal-close" id="video-modal-close" type="button" aria-label="Cerrar video" data-en-label="Close video">&times;</button>
       <div class="video-modal-frame" id="video-modal-frame"></div>
     </div>
   </div>
@@ -1408,15 +1582,15 @@
     <div class="container">
       <div class="row-top reveal">
         <div>
-          <h2 class="display">Lo que viene<br><em>este mes</em></h2>
+          <h2 class="display" data-en="What's Coming<br><em>This Month</em>">Lo que viene<br><em>este mes</em></h2>
         </div>
-        <a href="https://www.churchtrac.com/public_calendar?ui=3637D3FD" target="_blank" class="link-arrow">Ver calendario completo</a>
+        <a href="https://www.churchtrac.com/public_calendar?ui=3637D3FD" target="_blank" class="link-arrow" data-en="View Full Calendar">Ver calendario completo</a>
       </div>
 
       <!-- Loading state -->
       <div id="events-loading" style="text-align:center;padding:40px 0;">
         <div style="width:36px;height:36px;border:2px solid rgba(255,255,255,0.1);border-top-color:var(--orange);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 14px;"></div>
-        <p style="font-family:'Archivo',sans-serif;font-size:0.8rem;color:rgba(255,255,255,0.35);letter-spacing:0.08em;font-weight:600;">Cargando eventos...</p>
+        <p data-en="Loading events..." style="font-family:'Archivo',sans-serif;font-size:0.8rem;color:rgba(255,255,255,0.35);letter-spacing:0.08em;font-weight:600;">Cargando eventos...</p>
       </div>
 
       <!-- Events list injected by JS -->
@@ -1424,7 +1598,7 @@
 
       <!-- Fallback -->
       <div id="events-error" style="display:none;text-align:center;padding:40px 0;">
-        <a href="https://www.churchtrac.com/public_calendar?ui=3637D3FD" target="_blank" class="link-arrow">Ver todos los eventos →</a>
+        <a href="https://www.churchtrac.com/public_calendar?ui=3637D3FD" target="_blank" class="link-arrow" data-en="View All Events">Ver todos los eventos</a>
       </div>
     </div>
   </section>
@@ -1434,14 +1608,14 @@
     <div class="container">
       <div class="dar-inner">
         <div class="dar-left reveal">
-          <h2 class="display">Dar es<br><em>un acto de fe</em></h2>
+          <h2 class="display" data-en="Giving Is<br><em>an Act of Faith</em>">Dar es<br><em>un acto de fe</em></h2>
 
           <blockquote class="dar-scripture">
-            <p>"Cada uno dé como propuso en su corazón: no con tristeza, ni por necesidad, porque Dios ama al dador alegre."</p>
-            <cite>2 Corintios 9:7</cite>
+            <p data-en="&quot;Each person should give as they have decided in their heart, not reluctantly or out of obligation, for God loves a cheerful giver.&quot;">"Cada uno dé como propuso en su corazón: no con tristeza, ni por necesidad, porque Dios ama al dador alegre."</p>
+            <cite data-en="2 Corinthians 9:7">2 Corintios 9:7</cite>
           </blockquote>
 
-          <p class="dar-body">
+          <p class="dar-body" data-en="Your generosity makes it possible for us to keep preaching the gospel, serving our community, and raising up the next generation of leaders. Every gift is a seed planted with eternal purpose.">
             Tu generosidad hace posible que sigamos predicando el evangelio, sirviendo a nuestra comunidad y formando a la próxima generación de líderes. Cada ofrenda es una semilla sembrada con propósito eterno.
           </p>
         </div>
@@ -1466,7 +1640,7 @@
             Esen<br><span style="color:var(--orange);">cial</span>
           </h2>
 
-          <p style="font-size:1.1rem;font-weight:300;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:40px;">
+          <p data-en="Conversations about faith and everyday life.<br>For anyone who walks, doubts, believes, and keeps going." style="font-size:1.1rem;font-weight:300;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:40px;">
             Conversaciones de fe y vida cotidiana.<br>Para el que camina, duda, cree y sigue adelante.
           </p>
 
@@ -1479,7 +1653,7 @@
               </div>
               <div>
                 <span style="font-family:'Archivo',sans-serif;font-size:0.95rem;font-weight:800;color:var(--white);display:block;">Spotify</span>
-                <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,0.4);">Escuchar ahora →</span>
+                <span data-en="Listen now →" style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,0.4);">Escuchar ahora →</span>
               </div>
             </a>
 
@@ -1489,7 +1663,7 @@
               </div>
               <div>
                 <span style="font-family:'Archivo',sans-serif;font-size:0.95rem;font-weight:800;color:var(--white);display:block;">Apple Podcasts</span>
-                <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,0.4);">Escuchar ahora →</span>
+                <span data-en="Listen now →" style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,0.4);">Escuchar ahora →</span>
               </div>
             </a>
 
@@ -1499,7 +1673,7 @@
               </div>
               <div>
                 <span style="font-family:'Archivo',sans-serif;font-size:0.95rem;font-weight:800;color:var(--white);display:block;">YouTube</span>
-                <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,0.4);">Ver ahora →</span>
+                <span data-en="Watch now →" style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,0.4);">Ver ahora →</span>
               </div>
             </a>
 
@@ -1524,10 +1698,10 @@
 
           <!-- Scripture -->
           <div style="padding:20px 24px;border-left:4px solid var(--orange);background:rgba(255,255,255,0.04);border-radius:0 14px 14px 0;max-width:280px;">
-            <p style="font-family:'Archivo',sans-serif;font-weight:700;font-size:0.95rem;line-height:1.6;color:rgba(255,255,255,0.75);margin:0 0 8px;">
+            <p data-en="&quot;Man shall not live on bread alone, but on every word that comes from the mouth of God.&quot;" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:0.95rem;line-height:1.6;color:rgba(255,255,255,0.75);margin:0 0 8px;">
               "No solo de pan vivirá el hombre, sino de toda palabra que sale de la boca de Dios."
             </p>
-            <cite style="font-family:'Archivo',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--orange);font-style:normal;">Mateo 4:4</cite>
+            <cite data-en="Matthew 4:4" style="font-family:'Archivo',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--orange);font-style:normal;">Mateo 4:4</cite>
           </div>
 
         </div>
@@ -1539,28 +1713,28 @@
   <section id="contacto">
     <div class="container">
       <div class="reveal">
-        <h2 class="display">Nos encanta<br><em>conocerte</em></h2>
+        <h2 class="display" data-en="We'd Love<br><em>to Meet You</em>">Nos encanta<br><em>conocerte</em></h2>
 
-        <p class="contacto-intro">
+        <p class="contacto-intro" data-en="If it's your first time, if you have questions, or you just want to connect — we're here. You don't have to come alone.">
           Si es tu primera vez, si tienes preguntas, o simplemente quieres conectar — estamos aquí. No tienes que venir solo.
         </p>
 
         <div class="info-blocks" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;margin-top:48px;">
           <div class="info-block">
-            <span class="info-block-label">Ubicación</span>
+            <span class="info-block-label" data-en="Location">Ubicación</span>
             <div class="info-block-value">2824 Michigan Ave Unit F<br>Kissimmee, FL 34744</div>
           </div>
           <div class="info-block">
-            <span class="info-block-label">Horarios de Servicio</span>
-            <div class="info-block-value">Domingo 11:00 AM · Celebración<br>Miércoles 7:30 PM · Formación</div>
+            <span class="info-block-label" data-en="Service Times">Horarios de Servicio</span>
+            <div class="info-block-value" data-en="Sunday 11:00 AM · Celebration<br>Wednesday 7:30 PM · Discipleship">Domingo 11:00 AM · Celebración<br>Miércoles 7:30 PM · Formación</div>
           </div>
           <div class="info-block">
-            <span class="info-block-label">Escríbenos</span>
+            <span class="info-block-label" data-en="Email Us">Escríbenos</span>
             <div class="info-block-value">hola@somosreino.org</div>
-            <div class="info-block-sub">Respondemos en menos de 24 horas</div>
+            <div class="info-block-sub" data-en="We respond within 24 hours">Respondemos en menos de 24 horas</div>
           </div>
           <div class="info-block">
-            <span class="info-block-label">Síguenos</span>
+            <span class="info-block-label" data-en="Follow Us">Síguenos</span>
             <div style="display:flex;gap:12px;margin-top:8px;">
               <a href="https://www.instagram.com/somosreinofl?igsh=MWx5dWt4NzJmY3Z5cg%3D%3D&utm_source=qr" target="_blank" class="social-link" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
               <a href="https://youtube.com/@somosreinofl?si=o2pavfWMVryrC4az" target="_blank" class="social-link" aria-label="YouTube"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
@@ -1579,7 +1753,7 @@
       <div class="footer-top">
         <div class="footer-brand">
           <a href="/"><img src="logo.png" alt="Somos Reino" style="height:32px;width:auto;display:block;" /></a>
-          <p class="footer-tagline">"Busquen primeramente el reino de Dios<br>y su justicia." — Mateo 6:33</p>
+          <p class="footer-tagline" data-en="&quot;Seek first the kingdom of God<br>and his righteousness.&quot; — Matthew 6:33">"Busquen primeramente el reino de Dios<br>y su justicia." — Mateo 6:33</p>
           <div class="footer-social">
             <a href="https://www.instagram.com/somosreinofl?igsh=MWx5dWt4NzJmY3Z5cg%3D%3D&utm_source=qr" target="_blank" class="social-link" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
             <a href="#" target="_blank" class="social-link" aria-label="YouTube"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
@@ -1589,46 +1763,82 @@
         </div>
 
         <div>
-          <span class="footer-col-title">Navegación</span>
+          <span class="footer-col-title" data-en="Navigation">Navegación</span>
           <ul class="footer-links">
-            <li><a href="#hero">Inicio</a></li>
-            <li><a href="#sermones">Sermones</a></li>
-            <li><a href="#eventos">Eventos</a></li>
+            <li><a href="#hero" data-en="Home">Inicio</a></li>
+            <li><a href="#sermones" data-en="Sermons">Sermones</a></li>
+            <li><a href="#eventos" data-en="Events">Eventos</a></li>
             <li><a href="#esencial">Esencial</a></li>
-            <li><a href="#dar">Dar</a></li>
-            <li><a href="#contacto">Contacto</a></li>
+            <li><a href="#dar" data-en="Give">Dar</a></li>
+            <li><a href="#contacto" data-en="Contact">Contacto</a></li>
           </ul>
         </div>
 
         <div>
-          <span class="footer-col-title">Servicios</span>
+          <span class="footer-col-title" data-en="Services">Servicios</span>
           <ul class="footer-links">
-            <li><a href="#">Domingo 11:00 AM · Celebración</a></li>
-            <li><a href="#">Miércoles 7:30 PM · Formación</a></li>
-            <li><a href="#">Ministerio de Niños</a></li>
+            <li><a href="#" data-en="Sunday 11:00 AM · Celebration">Domingo 11:00 AM · Celebración</a></li>
+            <li><a href="#" data-en="Wednesday 7:30 PM · Discipleship">Miércoles 7:30 PM · Formación</a></li>
+            <li><a href="#" data-en="Kids Ministry">Ministerio de Niños</a></li>
           </ul>
         </div>
 
         <div>
-          <span class="footer-col-title">Recursos</span>
+          <span class="footer-col-title" data-en="Resources">Recursos</span>
           <ul class="footer-links">
             <li><a href="#">Podcast — Esencial</a></li>
-            <li><a href="#">Petición de Oración</a></li>
-            <li><a href="#">Plan de Salvación</a></li>
-            <li><a href="#">Dar en Línea</a></li>
+            <li><a href="#" data-en="Prayer Request">Petición de Oración</a></li>
+            <li><a href="#" data-en="Plan of Salvation">Plan de Salvación</a></li>
+            <li><a href="#" data-en="Give Online">Dar en Línea</a></li>
           </ul>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <span class="footer-copy">© 2025 Somos Reino Church · Kissimmee, FL · Todos los derechos reservados</span>
-        <span class="footer-verse">Una familia que transforma su ciudad</span>
+        <span class="footer-copy" data-en="© 2025 Somos Reino Church · Kissimmee, FL · All rights reserved">© 2025 Somos Reino Church · Kissimmee, FL · Todos los derechos reservados</span>
+        <span class="footer-verse" data-en="A family that transforms its city">Una familia que transforma su ciudad</span>
       </div>
     </div>
   </footer>
 
   <!-- ── SCRIPTS ── -->
   <script>
+    // ── LANGUAGE (EN/ES) ──
+    const LANG_KEY = 'somos-reino-lang';
+    let currentLang = localStorage.getItem(LANG_KEY) === 'en' ? 'en' : 'es';
+
+    // Shorthand for translating strings generated directly in JS
+    function t(es, en) { return currentLang === 'en' ? en : es; }
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+
+      document.querySelectorAll('[data-en]').forEach(el => {
+        if (el.dataset.es === undefined) el.dataset.es = el.innerHTML;
+        el.innerHTML = lang === 'en' ? el.dataset.en : el.dataset.es;
+      });
+
+      document.querySelectorAll('[data-en-label]').forEach(el => {
+        if (el.dataset.esLabel === undefined) el.dataset.esLabel = el.getAttribute('aria-label') || '';
+        el.setAttribute('aria-label', lang === 'en' ? el.dataset.enLabel : el.dataset.esLabel);
+      });
+
+      document.querySelectorAll('.lang-option').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+    }
+
+    document.querySelectorAll('.lang-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.lang;
+        localStorage.setItem(LANG_KEY, lang);
+        applyLanguage(lang);
+      });
+    });
+
+    applyLanguage(currentLang);
+
     // ── CURSOR GLOW ──
     const cursorGlow = document.getElementById('cursor-glow');
     document.addEventListener('mousemove', e => {
@@ -1746,11 +1956,11 @@
       if (ytPlayer.isMuted()) {
         ytPlayer.unMute();
         icon.textContent = '🔊';
-        label.textContent = 'Silenciar';
+        label.textContent = t('Silenciar', 'Mute');
       } else {
         ytPlayer.mute();
         icon.textContent = '🔇';
-        label.textContent = 'Activar Sonido';
+        label.textContent = t('Activar Sonido', 'Turn On Sound');
       }
     });
 
@@ -1771,7 +1981,9 @@
           badge.style.display = 'flex';
           // Swap "Ver Sermones" button to "Ver En Vivo"
           const btn = document.getElementById('live-btn');
-          btn.textContent = '🔴 Ver En Vivo';
+          btn.dataset.es = '🔴 Ver En Vivo';
+          btn.dataset.en = '🔴 Watch Live';
+          btn.textContent = t('🔴 Ver En Vivo', '🔴 Watch Live');
           btn.href = data.url;
           btn.target = '_blank';
           btn.style.borderColor = '#E53E3E';
@@ -1805,13 +2017,14 @@
                   <h3 class="event-title">${ev.title}</h3>
                   <p class="event-details">${ev.weekday} · ${ev.time}</p>
                 </div>
-                <span class="event-tag">Evento</span>
+                <span class="event-tag" data-en="Event">Evento</span>
               </div>`;
           }).join('');
           document.getElementById('events-loading').style.display = 'none';
           list.style.display = 'flex';
           list.style.flexDirection = 'column';
           list.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+          applyLanguage(currentLang);
         })
         .catch(() => {
           document.getElementById('events-loading').style.display = 'none';
@@ -1873,7 +2086,7 @@
               <div class="sermon-meta">
                 <span>${video.date}</span>
                 <span>·</span>
-                <span style="color:var(--orange);">Reproducir →</span>
+                <span data-en="Play →" style="color:var(--orange);">Reproducir →</span>
               </div>
             </div>
           </button>`;
@@ -1885,6 +2098,7 @@
         loading.style.display = 'none';
         grid.style.display = 'grid';
         grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        applyLanguage(currentLang);
       }
 
       // Play a sermon inline instead of leaving the site
@@ -1909,22 +2123,37 @@
         });
     })();
 
-    // Mobile menu
-    document.getElementById('hamburger').addEventListener('click', () => {
-      const links = document.querySelector('.nav-links');
-      if (links.style.display === 'flex') {
-        links.style.display = '';
-      } else {
-        links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:72px;left:0;right:0;background:rgba(17,17,17,0.98);padding:32px 24px;gap:24px;z-index:99;';
-        links.querySelectorAll('a').forEach(a => {
-          a.style.color = '#FFFFFF';
-          a.style.fontSize = '1.1rem';
-          a.style.fontFamily = "'Archivo', sans-serif";
-          a.style.fontWeight = '700';
-          a.style.textTransform = 'uppercase';
-          a.addEventListener('click', () => { links.style.display = ''; });
-        });
-      }
+    // ── MOBILE MENU ──
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    function openMobileMenu() {
+      mobileMenu.classList.add('open');
+      hamburger.classList.add('open');
+      hamburger.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileMenu() {
+      mobileMenu.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    hamburger.addEventListener('click', () => {
+      mobileMenu.classList.contains('open') ? closeMobileMenu() : openMobileMenu();
+    });
+
+    document.getElementById('mobile-menu-close').addEventListener('click', closeMobileMenu);
+    mobileMenu.querySelectorAll('.mobile-menu-links a, .mobile-menu-footer a').forEach(a => {
+      a.addEventListener('click', closeMobileMenu);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('open')) closeMobileMenu();
+    });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900 && mobileMenu.classList.contains('open')) closeMobileMenu();
     });
   </script>
 
