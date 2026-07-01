@@ -335,31 +335,33 @@
       to   { transform: scale(1.0); }
     }
 
-    /* ── HERO LIVE VIDEO ── */
+    /* ── HERO LIVE VIDEO ──
+       Contained (not cropped) so YouTube's own controls, seek bar and
+       fullscreen button stay fully visible and clickable, and the box
+       stops above the ticker bar so the controls are never hidden behind it. */
     .hero-video-wrap {
       position: absolute;
-      inset: 0;
+      top: 0; left: 0; right: 0;
+      bottom: 54px;
       overflow: hidden;
       display: none;
       opacity: 0;
       transition: opacity 1s ease;
-      pointer-events: none;
+      background: #000;
     }
 
     .hero-video-wrap.visible { opacity: 1; }
 
     .hero-video-wrap iframe {
       position: absolute;
-      top: 50%; left: 50%;
-      width: 100%; height: 100%;
-      min-width: 177.78vh;
-      min-height: 56.25vw;
-      transform: translate(-50%, -50%);
+      inset: 0;
+      width: 100%;
+      height: 100%;
     }
 
     .hero-unmute-btn {
       position: absolute;
-      bottom: 76px;
+      top: 110px;
       right: 24px;
       z-index: 15;
       display: none;
@@ -392,6 +394,7 @@
       background:
         linear-gradient(110deg, rgba(17,17,17,0.92) 0%, rgba(17,17,17,0.62) 48%, rgba(17,17,17,0.32) 100%),
         linear-gradient(to top, rgba(17,17,17,0.9) 0%, transparent 45%);
+      pointer-events: none;
     }
 
     .hero-content {
@@ -1022,7 +1025,7 @@
       .hero-body { font-size: 0.95rem; }
 
       .hero-unmute-btn {
-        bottom: 64px;
+        top: 84px;
         right: 16px;
         padding: 10px 16px;
         font-size: 0.66rem;
@@ -1175,7 +1178,7 @@
         <li><a href="#dar">Dar</a></li>
         <li><a href="#contacto">Contacto</a></li>
       </ul>
-      <a href="#contacto" class="nav-btn">Visítanos</a>
+      <a href="https://www.somosreino.org/give" target="_blank" class="nav-btn">Dar</a>
       <button class="nav-hamburger" id="hamburger" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
@@ -1614,12 +1617,11 @@
         playerVars: {
           autoplay: 1,
           mute: 1,
-          controls: 0,
+          controls: 1,
           modestbranding: 1,
           rel: 0,
           playsinline: 1,
-          disablekb: 1,
-          fs: 0,
+          fs: 1,
           iv_load_policy: 3
         },
         events: {
