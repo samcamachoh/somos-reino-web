@@ -593,6 +593,13 @@
       border-radius: 18px;
       overflow: hidden;
       cursor: pointer;
+      display: block;
+      width: 100%;
+      text-align: left;
+      border: none;
+      padding: 0;
+      font: inherit;
+      color: inherit;
     }
 
     .sermon-card.featured {
@@ -669,6 +676,77 @@
       display: flex;
       gap: 16px;
       font-weight: 500;
+    }
+
+    /* ────────────────────────────────────────
+       VIDEO MODAL — inline sermon playback
+    ──────────────────────────────────────── */
+    .video-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .video-modal.open { display: flex; }
+
+    .video-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(17,17,17,0.92);
+      backdrop-filter: blur(6px);
+    }
+
+    .video-modal-inner {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+      aspect-ratio: 16/9;
+      z-index: 1;
+    }
+
+    .video-modal-frame,
+    .video-modal-frame iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .video-modal-close {
+      position: absolute;
+      top: -48px;
+      right: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: 1.5px solid rgba(255,255,255,0.3);
+      color: var(--white);
+      font-size: 1.5rem;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    .video-modal-close:hover {
+      background: var(--orange);
+      border-color: var(--orange);
+    }
+
+    @media (max-width: 600px) {
+      .video-modal-close {
+        top: 8px;
+        right: 8px;
+        background: rgba(17,17,17,0.7);
+      }
     }
 
     /* ────────────────────────────────────────
@@ -1308,6 +1386,15 @@
     </div>
   </section>
 
+  <!-- ── VIDEO MODAL — inline sermon playback ── -->
+  <div class="video-modal" id="video-modal" role="dialog" aria-modal="true" aria-label="Reproductor de sermón">
+    <div class="video-modal-backdrop" id="video-modal-backdrop"></div>
+    <div class="video-modal-inner">
+      <button class="video-modal-close" id="video-modal-close" type="button" aria-label="Cerrar video">&times;</button>
+      <div class="video-modal-frame" id="video-modal-frame"></div>
+    </div>
+  </div>
+
   <!-- ── EVENTOS ── -->
   <section id="eventos">
     <div class="container">
@@ -1731,6 +1818,28 @@
         });
     })();
 
+    // ── VIDEO MODAL (inline sermon playback) ──
+    const videoModal = document.getElementById('video-modal');
+    const videoModalFrame = document.getElementById('video-modal-frame');
+
+    function openVideoModal(videoId) {
+      videoModalFrame.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1" title="Sermón" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+      videoModal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeVideoModal() {
+      videoModal.classList.remove('open');
+      videoModalFrame.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('video-modal-close').addEventListener('click', closeVideoModal);
+    document.getElementById('video-modal-backdrop').addEventListener('click', closeVideoModal);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && videoModal.classList.contains('open')) closeVideoModal();
+    });
+
     // ── YOUTUBE PLAYLIST LOADER ──
     (function() {
       const loading = document.getElementById('sermons-loading');
@@ -1741,7 +1850,7 @@
         const isFirst = index === 0;
         const title = video.title.split('|')[0].trim();
         return `
-          <a href="${video.url}" target="_blank" class="sermon-card ${isFirst ? 'featured' : ''} reveal" style="text-decoration:none;">
+          <button type="button" class="sermon-card ${isFirst ? 'featured' : ''} reveal" data-video-id="${video.videoId}" aria-label="Reproducir: ${title}">
             <div class="sermon-thumb" style="position:relative;aspect-ratio:16/9;overflow:hidden;">
               <img
                 src="${video.thumbnail}"
@@ -1751,6 +1860,11 @@
                 onmouseover="this.style.transform='scale(1.04)'"
                 onmouseout="this.style.transform='scale(1)'"
               />
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(17,17,17,0.15);">
+                <span class="sermon-play">
+                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </span>
+              </div>
             </div>
             <div class="sermon-body">
               <span class="sermon-series">Somos Reino</span>
@@ -1758,10 +1872,10 @@
               <div class="sermon-meta">
                 <span>${video.date}</span>
                 <span>·</span>
-                <span style="color:var(--orange);">Ver en YouTube →</span>
+                <span style="color:var(--orange);">Reproducir →</span>
               </div>
             </div>
-          </a>`;
+          </button>`;
       }
 
       function renderVideos(data) {
@@ -1771,6 +1885,12 @@
         grid.style.display = 'grid';
         grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
       }
+
+      // Play a sermon inline instead of leaving the site
+      grid.addEventListener('click', (e) => {
+        const card = e.target.closest('.sermon-card');
+        if (card && card.dataset.videoId) openVideoModal(card.dataset.videoId);
+      });
 
       // Prefer this site's own /api/videos (pulls straight from the YouTube
       // playlist feed); fall back to the legacy external API if unavailable.
