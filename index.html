@@ -325,11 +325,65 @@
       background-size: cover;
       background-position: center top;
       animation: heroZoom 16s ease-out forwards;
+      transition: opacity 1s ease;
     }
+
+    .hero-bg.faded { opacity: 0; }
 
     @keyframes heroZoom {
       from { transform: scale(1.07); }
       to   { transform: scale(1.0); }
+    }
+
+    /* ── HERO LIVE VIDEO ── */
+    .hero-video-wrap {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      display: none;
+      opacity: 0;
+      transition: opacity 1s ease;
+      pointer-events: none;
+    }
+
+    .hero-video-wrap.visible { opacity: 1; }
+
+    .hero-video-wrap iframe {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 100%; height: 100%;
+      min-width: 177.78vh;
+      min-height: 56.25vw;
+      transform: translate(-50%, -50%);
+    }
+
+    .hero-unmute-btn {
+      position: absolute;
+      bottom: 76px;
+      right: 24px;
+      z-index: 15;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: rgba(17,17,17,0.55);
+      border: 1.5px solid rgba(255,255,255,0.4);
+      color: var(--white);
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 12px 20px;
+      border-radius: 100px;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: background 0.3s, border-color 0.3s, transform 0.2s;
+    }
+
+    .hero-unmute-btn:hover {
+      background: rgba(17,17,17,0.8);
+      border-color: var(--white);
+      transform: translateY(-2px);
     }
 
     .hero-overlay {
@@ -967,6 +1021,13 @@
       .hero-title { font-size: clamp(2.8rem, 10vw, 5rem); }
       .hero-body { font-size: 0.95rem; }
 
+      .hero-unmute-btn {
+        bottom: 64px;
+        right: 16px;
+        padding: 10px 16px;
+        font-size: 0.66rem;
+      }
+
       .sermons-grid {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -1123,7 +1184,17 @@
 
   <!-- ── HERO ── -->
   <section id="hero">
-    <div class="hero-bg"></div>
+    <div class="hero-bg" id="hero-bg"></div>
+
+    <!-- Live YouTube video — hidden until the channel goes live -->
+    <div class="hero-video-wrap" id="hero-video-wrap">
+      <div id="hero-yt-player"></div>
+    </div>
+    <button class="hero-unmute-btn" id="hero-unmute-btn" type="button" aria-label="Activar sonido">
+      <span id="hero-unmute-icon">🔇</span>
+      <span id="hero-unmute-label">Activar Sonido</span>
+    </button>
+
     <div class="hero-overlay"></div>
 
     <div class="hero-content" style="width:100%;">
@@ -1517,6 +1588,82 @@
         serviceCard.style.transform = 'perspective(600px) rotateY(0) rotateX(0)';
       });
     }
+    // ── LIVE HERO VIDEO (YouTube IFrame API) ──
+    let ytPlayer = null;
+    let ytApiReady = false;
+    let pendingLiveVideoId = null;
+
+    function extractYouTubeId(url) {
+      if (!url) return null;
+      const match = url.match(/(?:youtube\.com\/(?:watch\?v=|live\/|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+      return match ? match[1] : null;
+    }
+
+    window.onYouTubeIframeAPIReady = function() {
+      ytApiReady = true;
+      if (pendingLiveVideoId) initHeroPlayer(pendingLiveVideoId);
+    };
+
+    function initHeroPlayer(videoId) {
+      const wrap = document.getElementById('hero-video-wrap');
+      const heroBg = document.getElementById('hero-bg');
+      wrap.style.display = 'block';
+
+      ytPlayer = new YT.Player('hero-yt-player', {
+        videoId: videoId,
+        playerVars: {
+          autoplay: 1,
+          mute: 1,
+          controls: 0,
+          modestbranding: 1,
+          rel: 0,
+          playsinline: 1,
+          disablekb: 1,
+          fs: 0,
+          iv_load_policy: 3
+        },
+        events: {
+          onReady: (e) => {
+            e.target.mute();
+            e.target.playVideo();
+            requestAnimationFrame(() => {
+              wrap.classList.add('visible');
+              heroBg.classList.add('faded');
+            });
+            document.getElementById('hero-unmute-btn').style.display = 'flex';
+          }
+        }
+      });
+    }
+
+    function startHeroLiveVideo(videoId) {
+      pendingLiveVideoId = videoId;
+      if (ytApiReady) initHeroPlayer(videoId);
+    }
+
+    document.getElementById('hero-unmute-btn').addEventListener('click', () => {
+      if (!ytPlayer || typeof ytPlayer.isMuted !== 'function') return;
+      const icon = document.getElementById('hero-unmute-icon');
+      const label = document.getElementById('hero-unmute-label');
+      if (ytPlayer.isMuted()) {
+        ytPlayer.unMute();
+        icon.textContent = '🔊';
+        label.textContent = 'Silenciar';
+      } else {
+        ytPlayer.mute();
+        icon.textContent = '🔇';
+        label.textContent = 'Activar Sonido';
+      }
+    });
+
+    // Load the YouTube IFrame API asynchronously
+    (function() {
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    })();
+
     fetch('https://somos-reino-api.vercel.app/api/live')
       .then(r => r.json())
       .then(data => {
@@ -1531,6 +1678,12 @@
           btn.target = '_blank';
           btn.style.borderColor = '#E53E3E';
           btn.style.color = '#E53E3E';
+
+          // Turn the hero background into the live stream, muted, after 5s
+          const videoId = extractYouTubeId(data.url);
+          if (videoId) {
+            setTimeout(() => startHeroLiveVideo(videoId), 5000);
+          }
         }
       })
       .catch(() => {});
