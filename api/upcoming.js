@@ -11,6 +11,10 @@
 // needed). If that lookup fails, this falls back to checking the most
 // recent playlist entries directly. This is still best-effort, not a
 // guaranteed signal — it may break if YouTube changes its page structure.
+//
+// Field parsing is scoped to the `liveBroadcastDetails` JSON object first,
+// then reads its fields independent of key order, since anchoring to an
+// exact key order is fragile against YouTube's page-structure changes.
 const PLAYLIST_ID = 'PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7';
 const FEED_URL = `https://www.youtube.com/feeds/videos.xml?playlist_id=${PLAYLIST_ID}`;
 
@@ -20,6 +24,13 @@ function extractAll(xml, tag) {
   let m;
   while ((m = re.exec(xml))) out.push(m[1]);
   return out;
+}
+
+function extractChannelId(xml) {
+  const tagMatch = xml.match(/<yt:channelId>(.*?)<\/yt:channelId>/);
+  if (tagMatch) return tagMatch[1];
+  const uriMatch = xml.match(/youtube\.com\/channel\/(UC[\w-]+)/);
+  return uriMatch ? uriMatch[1] : null;
 }
 
 function decodeEntities(str) {
@@ -40,14 +51,17 @@ async function fetchFeed() {
 }
 
 function parseUpcomingFromHtml(html, fallbackVideoId) {
-  const match = html.match(/"liveBroadcastDetails":\{"isLiveNow":(true|false)(?:,"startTimestamp":"([^"]+)")?/);
-  if (!match) return null;
+  const objMatch = html.match(/"liveBroadcastDetails":\{([^}]*)\}/);
+  if (!objMatch) return null;
+  const inner = objMatch[1];
 
-  const isLiveNow = match[1] === 'true';
-  const startTimestamp = match[2];
-  if (isLiveNow || !startTimestamp) return null;
+  const isLiveNow = /"isLiveNow":true/.test(inner);
+  if (isLiveNow) return null;
 
-  const scheduledStartTime = new Date(startTimestamp);
+  const startMatch = inner.match(/"startTimestamp":"([^"]+)"/);
+  if (!startMatch) return null;
+
+  const scheduledStartTime = new Date(startMatch[1]);
   if (isNaN(scheduledStartTime.getTime()) || scheduledStartTime.getTime() < Date.now()) return null;
 
   const videoIdMatch = html.match(/<link rel="canonical" href="https:\/\/www\.youtube\.com\/watch\?v=([\w-]{11})"/);
@@ -92,9 +106,9 @@ module.exports = async (req, res) => {
   try {
     const xml = await fetchFeed();
 
-    const channelIdMatch = xml.match(/<yt:channelId>(.*?)<\/yt:channelId>/);
-    if (channelIdMatch) {
-      const upcoming = await checkChannelUpcoming(channelIdMatch[1]);
+    const channelId = extractChannelId(xml);
+    if (channelId) {
+      const upcoming = await checkChannelUpcoming(channelId);
       if (upcoming) return res.status(200).json({ upcoming });
     }
 
