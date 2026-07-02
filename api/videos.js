@@ -45,7 +45,7 @@ function parseEntry(entry) {
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 's-maxage=1800, stale-while-revalidate=3600');
+  res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
 
   try {
     const feedRes = await fetch(FEED_URL);
