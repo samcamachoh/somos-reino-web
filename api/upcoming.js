@@ -1,19 +1,16 @@
 // Serverless function: best-effort detection of an upcoming (scheduled but
 // not yet started) live stream.
 //
-// YouTube's public RSS feed does NOT expose broadcast status (live /
-// upcoming / none) — it only lists published entries, so there is no
-// reliable RSS-only signal for "this is scheduled to go live later."
-// Detecting that properly requires the YouTube Data API (search.list with
-// eventType=upcoming) and an API key, which this project doesn't have.
+// Primary approach: the channel's stable "/live" URL (see api/live.js for
+// details) also serves the "waiting room" watch page for a scheduled stream
+// before it starts, carrying an `isLiveNow:false` + future `startTimestamp`
+// in its `liveBroadcastDetails`. Checking that page doesn't depend on the
+// stream having been added to the sermon playlist ahead of time.
 //
-// As a best-effort fallback with no API key, this checks the watch pages of
-// the most recent playlist entries for the `liveBroadcastDetails` block
-// YouTube embeds in every stream's page data (the same field long relied on
-// by open-source YouTube tooling). If a video's `isLiveNow` is false but it
-// carries a future `startTimestamp`, it's treated as upcoming. This can
-// miss streams (e.g. ones not yet in the playlist) and may break if
-// YouTube changes its page structure — it is not a guaranteed signal.
+// The channel ID is read from the sermon playlist's RSS feed (no API key
+// needed). If that lookup fails, this falls back to checking the most
+// recent playlist entries directly. This is still best-effort, not a
+// guaranteed signal — it may break if YouTube changes its page structure.
 const PLAYLIST_ID = 'PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7';
 const FEED_URL = `https://www.youtube.com/feeds/videos.xml?playlist_id=${PLAYLIST_ID}`;
 
@@ -36,13 +33,13 @@ function decodeEntities(str) {
     .replace(/&#39;/g, "'");
 }
 
-async function checkUpcoming(videoId) {
-  const res = await fetch(`https://www.youtube.com/watch?v=${videoId}`, {
-    headers: { 'Accept-Language': 'en-US,en;q=0.9' },
-  });
-  if (!res.ok) return null;
-  const html = await res.text();
+async function fetchFeed() {
+  const feedRes = await fetch(FEED_URL);
+  if (!feedRes.ok) throw new Error(`YouTube feed returned ${feedRes.status}`);
+  return feedRes.text();
+}
 
+function parseUpcomingFromHtml(html, fallbackVideoId) {
   const match = html.match(/"liveBroadcastDetails":\{"isLiveNow":(true|false)(?:,"startTimestamp":"([^"]+)")?/);
   if (!match) return null;
 
@@ -52,6 +49,10 @@ async function checkUpcoming(videoId) {
 
   const scheduledStartTime = new Date(startTimestamp);
   if (isNaN(scheduledStartTime.getTime()) || scheduledStartTime.getTime() < Date.now()) return null;
+
+  const videoIdMatch = html.match(/<link rel="canonical" href="https:\/\/www\.youtube\.com\/watch\?v=([\w-]{11})"/);
+  const videoId = videoIdMatch ? videoIdMatch[1] : fallbackVideoId;
+  if (!videoId) return null;
 
   const titleMatch = html.match(/<title>([^<]*)<\/title>/);
   const title = titleMatch
@@ -66,22 +67,46 @@ async function checkUpcoming(videoId) {
   };
 }
 
+async function checkChannelUpcoming(channelId) {
+  const res = await fetch(`https://www.youtube.com/channel/${channelId}/live`, {
+    headers: { 'Accept-Language': 'en-US,en;q=0.9' },
+  });
+  if (!res.ok) return null;
+  const html = await res.text();
+  return parseUpcomingFromHtml(html, null);
+}
+
+async function checkVideoUpcoming(videoId) {
+  const res = await fetch(`https://www.youtube.com/watch?v=${videoId}`, {
+    headers: { 'Accept-Language': 'en-US,en;q=0.9' },
+  });
+  if (!res.ok) return null;
+  const html = await res.text();
+  return parseUpcomingFromHtml(html, videoId);
+}
+
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 's-maxage=600, stale-while-revalidate=1200');
 
   try {
-    const feedRes = await fetch(FEED_URL);
-    if (!feedRes.ok) throw new Error(`YouTube feed returned ${feedRes.status}`);
-    const xml = await feedRes.text();
+    const xml = await fetchFeed();
 
+    const channelIdMatch = xml.match(/<yt:channelId>(.*?)<\/yt:channelId>/);
+    if (channelIdMatch) {
+      const upcoming = await checkChannelUpcoming(channelIdMatch[1]);
+      if (upcoming) return res.status(200).json({ upcoming });
+    }
+
+    // Fallback: the channel's /live redirect can lag or fail to resolve —
+    // check the most recent playlist entries directly.
     const videoIds = extractAll(xml, 'entry')
       .slice(0, 5)
       .map(entry => (entry.match(/<yt:videoId>(.*?)<\/yt:videoId>/) || [])[1])
       .filter(Boolean);
 
     for (const videoId of videoIds) {
-      const upcoming = await checkUpcoming(videoId);
+      const upcoming = await checkVideoUpcoming(videoId);
       if (upcoming) return res.status(200).json({ upcoming });
     }
 
