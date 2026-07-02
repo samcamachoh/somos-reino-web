@@ -482,6 +482,8 @@
 
     .hero-bg.faded { opacity: 0; }
 
+    .hero-overlay.faded { opacity: 0; }
+
     @keyframes heroZoom {
       from { transform: scale(1.07); }
       to   { transform: scale(1.0); }
@@ -547,6 +549,7 @@
         linear-gradient(110deg, rgba(17,17,17,0.92) 0%, rgba(17,17,17,0.62) 48%, rgba(17,17,17,0.32) 100%),
         linear-gradient(to top, rgba(17,17,17,0.9) 0%, transparent 45%);
       pointer-events: none;
+      transition: opacity 1s ease;
     }
 
     .hero-content {
@@ -1925,6 +1928,7 @@
       const wrap = document.getElementById('hero-video-wrap');
       const heroBg = document.getElementById('hero-bg');
       const heroContent = document.querySelector('.hero-content');
+      const heroOverlay = document.querySelector('.hero-overlay');
       wrap.style.display = 'block';
 
       ytPlayer = new YT.Player('hero-yt-player', {
@@ -1946,6 +1950,7 @@
             requestAnimationFrame(() => {
               wrap.classList.add('visible');
               heroBg.classList.add('faded');
+              heroOverlay.classList.add('faded');
               heroContent.classList.add('hero-faded');
             });
             document.getElementById('hero-unmute-btn').style.display = 'flex';
