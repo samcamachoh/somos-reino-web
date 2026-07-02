@@ -1476,6 +1476,12 @@
             <span data-en="Live Now" style="font-family:'Archivo',sans-serif;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:#E53E3E;">En Vivo Ahora</span>
           </div>
 
+          <!-- Upcoming stream badge — hidden by default, shown when a stream is scheduled and we're not live -->
+          <a id="upcoming-badge" href="#" target="_blank" style="display:none;align-items:center;gap:10px;margin-bottom:22px;text-decoration:none;">
+            <div style="width:10px;height:10px;border-radius:50%;background:var(--orange);"></div>
+            <span id="upcoming-badge-text" style="font-family:'Archivo',sans-serif;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--orange);"></span>
+          </a>
+
           <h1 class="hero-title">
             <span data-en="A Kingdom">Una familia</span><br>
             <span class="line2" data-en="Family.">de reino.</span>
@@ -1818,6 +1824,15 @@
     // Shorthand for translating strings generated directly in JS
     function t(es, en) { return currentLang === 'en' ? en : es; }
 
+    // Formats an ISO date/time in the church's local timezone, per language
+    function formatUpcoming(iso, lang) {
+      const date = new Date(iso);
+      const locale = lang === 'en' ? 'en-US' : 'es-US';
+      const dateStr = date.toLocaleDateString(locale, { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'America/New_York' });
+      const timeStr = date.toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' });
+      return `${dateStr} · ${timeStr}`;
+    }
+
     function applyLanguage(lang) {
       currentLang = lang;
       document.documentElement.lang = lang;
@@ -1975,32 +1990,56 @@
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     })();
 
-    fetch('https://somos-reino-api.vercel.app/api/live')
-      .then(r => r.json())
-      .then(data => {
-        if (data.live) {
-          // Show live badge
-          const badge = document.getElementById('live-badge');
-          badge.style.display = 'flex';
-          // Swap "Ver Sermones" button to "Ver En Vivo"
-          const btn = document.getElementById('live-btn');
-          btn.dataset.es = '🔴 Ver En Vivo';
-          btn.dataset.en = '🔴 Watch Live';
-          btn.textContent = t('🔴 Ver En Vivo', '🔴 Watch Live');
-          btn.href = data.url;
-          btn.target = '_blank';
-          btn.style.borderColor = '#E53E3E';
-          btn.style.color = '#E53E3E';
+    function handleLiveStatus(data) {
+      if (data.live) {
+        // Show live badge
+        const badge = document.getElementById('live-badge');
+        badge.style.display = 'flex';
+        // Swap "Ver Sermones" button to "Ver En Vivo"
+        const btn = document.getElementById('live-btn');
+        btn.dataset.es = '🔴 Ver En Vivo';
+        btn.dataset.en = '🔴 Watch Live';
+        btn.textContent = t('🔴 Ver En Vivo', '🔴 Watch Live');
+        btn.href = data.url;
+        btn.target = '_blank';
+        btn.style.borderColor = '#E53E3E';
+        btn.style.color = '#E53E3E';
 
-          // Turn the hero background into the live stream, muted, after 5s
-          const videoId = extractYouTubeId(data.url);
-          if (videoId) {
-            setTimeout(() => startHeroLiveVideo(videoId), 5000);
-            showLiveChat(videoId);
-          }
+        // Turn the hero background into the live stream, muted, after 5s
+        const videoId = extractYouTubeId(data.url);
+        if (videoId) {
+          setTimeout(() => startHeroLiveVideo(videoId), 5000);
+          showLiveChat(videoId);
         }
-      })
-      .catch(() => {});
+      } else {
+        // Not live — check for a best-effort "upcoming" scheduled stream
+        fetch('/api/upcoming')
+          .then(r => r.json())
+          .then(upData => {
+            if (!upData.upcoming) return;
+            const badge = document.getElementById('upcoming-badge');
+            const text = document.getElementById('upcoming-badge-text');
+            text.dataset.es = `Próxima Transmisión · ${formatUpcoming(upData.upcoming.scheduledStartTime, 'es')}`;
+            text.dataset.en = `Upcoming Stream · ${formatUpcoming(upData.upcoming.scheduledStartTime, 'en')}`;
+            text.textContent = t(text.dataset.es, text.dataset.en);
+            badge.href = upData.upcoming.url;
+            badge.style.display = 'flex';
+          })
+          .catch(() => {});
+      }
+    }
+
+    // Prefer this site's own /api/live (no dependency on an external
+    // service's uptime); fall back to the legacy external API if it fails.
+    fetch('/api/live')
+      .then(r => { if (!r.ok) throw new Error('local live api unavailable'); return r.json(); })
+      .then(handleLiveStatus)
+      .catch(() => {
+        fetch('https://somos-reino-api.vercel.app/api/live')
+          .then(r => r.json())
+          .then(handleLiveStatus)
+          .catch(() => {});
+      });
 
     // ── EVENTS LOADER — only show events outside the regular Sunday/Wednesday services ──
     (function() {
