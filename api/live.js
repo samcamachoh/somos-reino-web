@@ -15,9 +15,7 @@
 //
 // Field parsing is scoped to the `liveBroadcastDetails` JSON object first,
 // then reads its fields independent of key order — YouTube's exact key
-// ordering isn't a stable contract, so anchoring to it (e.g. requiring
-// "isLiveNow" immediately after the opening brace) is fragile and has
-// caused false "not live" results in practice.
+// ordering isn't a stable contract, so anchoring to it is fragile.
 const PLAYLIST_ID = 'PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7';
 const FEED_URL = `https://www.youtube.com/feeds/videos.xml?playlist_id=${PLAYLIST_ID}`;
 
@@ -36,10 +34,17 @@ function extractChannelId(xml) {
   return uriMatch ? uriMatch[1] : null;
 }
 
-function isLiveNow(html) {
+function readLiveBroadcastDetails(html) {
   const objMatch = html.match(/"liveBroadcastDetails":\{([^}]*)\}/);
-  if (!objMatch) return false;
-  return /"isLiveNow":true/.test(objMatch[1]);
+  if (!objMatch) return { found: false, isLiveNow: false };
+  const inner = objMatch[1];
+  return { found: true, isLiveNow: /"isLiveNow":true/.test(inner) };
+}
+
+async function fetchPage(url) {
+  const res = await fetch(url, { headers: { 'Accept-Language': 'en-US,en;q=0.9' } });
+  const html = res.ok ? await res.text() : '';
+  return { status: res.status, ok: res.ok, html };
 }
 
 async function fetchFeed() {
@@ -48,48 +53,35 @@ async function fetchFeed() {
   return feedRes.text();
 }
 
-async function checkChannelLive(channelId) {
-  const res = await fetch(`https://www.youtube.com/channel/${channelId}/live`, {
-    headers: { 'Accept-Language': 'en-US,en;q=0.9' },
-  });
-  if (!res.ok) return null;
-  const html = await res.text();
-
-  if (!isLiveNow(html)) return null;
-
-  const videoIdMatch = html.match(/<link rel="canonical" href="https:\/\/www\.youtube\.com\/watch\?v=([\w-]{11})"/);
-  return videoIdMatch ? videoIdMatch[1] : null;
-}
-
-async function checkVideoLive(videoId) {
-  const res = await fetch(`https://www.youtube.com/watch?v=${videoId}`, {
-    headers: { 'Accept-Language': 'en-US,en;q=0.9' },
-  });
-  if (!res.ok) return false;
-  const html = await res.text();
-  return isLiveNow(html);
-}
-
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=120');
 
   const debug = req.query && (req.query.debug === '1' || req.query.debug === 'true');
-  const trace = { channelId: null, channelChecked: false, channelFoundLive: false, fallbackCheckedIds: [] };
+  const trace = { channelId: null, channelCheck: null, fallbackChecks: [] };
 
   try {
     const xml = await fetchFeed();
-
     const channelId = extractChannelId(xml);
     trace.channelId = channelId;
 
     if (channelId) {
-      trace.channelChecked = true;
-      const liveVideoId = await checkChannelLive(channelId);
-      if (liveVideoId) {
-        trace.channelFoundLive = true;
-        const payload = { live: true, url: `https://www.youtube.com/watch?v=${liveVideoId}` };
-        return res.status(200).json(debug ? { ...payload, debug: trace } : payload);
+      const page = await fetchPage(`https://www.youtube.com/channel/${channelId}/live`);
+      const liveInfo = page.ok ? readLiveBroadcastDetails(page.html) : { found: false, isLiveNow: false };
+      trace.channelCheck = {
+        status: page.status,
+        htmlLength: page.html.length,
+        hasLiveBroadcastDetailsKey: page.html.includes('liveBroadcastDetails'),
+        parsedIsLiveNow: liveInfo.isLiveNow,
+      };
+
+      if (liveInfo.isLiveNow) {
+        const videoIdMatch = page.html.match(/<link rel="canonical" href="https:\/\/www\.youtube\.com\/watch\?v=([\w-]{11})"/);
+        trace.channelCheck.canonicalVideoId = videoIdMatch ? videoIdMatch[1] : null;
+        if (videoIdMatch) {
+          const payload = { live: true, url: `https://www.youtube.com/watch?v=${videoIdMatch[1]}` };
+          return res.status(200).json(debug ? { ...payload, debug: trace } : payload);
+        }
       }
     }
 
@@ -101,8 +93,16 @@ module.exports = async (req, res) => {
       .filter(Boolean);
 
     for (const videoId of videoIds) {
-      trace.fallbackCheckedIds.push(videoId);
-      if (await checkVideoLive(videoId)) {
+      const page = await fetchPage(`https://www.youtube.com/watch?v=${videoId}`);
+      const liveInfo = page.ok ? readLiveBroadcastDetails(page.html) : { found: false, isLiveNow: false };
+      trace.fallbackChecks.push({
+        videoId,
+        status: page.status,
+        hasLiveBroadcastDetailsKey: page.html.includes('liveBroadcastDetails'),
+        parsedIsLiveNow: liveInfo.isLiveNow,
+      });
+
+      if (liveInfo.isLiveNow) {
         const payload = { live: true, url: `https://www.youtube.com/watch?v=${videoId}` };
         return res.status(200).json(debug ? { ...payload, debug: trace } : payload);
       }
