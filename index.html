@@ -1013,6 +1013,8 @@
       color: rgba(255,255,255,0.55);
       transition: border-color 0.3s, color 0.3s;
       white-space: nowrap;
+      text-decoration: none;
+      display: inline-block;
     }
 
     .event-row:hover .event-tag {
@@ -1413,7 +1415,7 @@
       </a>
       <ul class="nav-links">
         <li><a href="#sermones" data-en="Sermons">Sermones</a></li>
-        <li style="display:none;"><a href="#eventos" data-en="Events">Eventos</a></li>
+        <li><a href="#eventos" data-en="Events">Eventos</a></li>
         <li><a href="#esencial">Esencial</a></li>
         <li><a href="#dar" data-en="Give">Dar</a></li>
         <li><a href="#contacto" data-en="Contact">Contacto</a></li>
@@ -1441,7 +1443,7 @@
     </div>
     <ul class="mobile-menu-links">
       <li><a href="#sermones" data-en="Sermons">Sermones</a></li>
-      <li style="display:none;"><a href="#eventos" data-en="Events">Eventos</a></li>
+      <li><a href="#eventos" data-en="Events">Eventos</a></li>
       <li><a href="#esencial">Esencial</a></li>
       <li><a href="#dar" data-en="Give">Dar</a></li>
       <li><a href="#contacto" data-en="Contact">Contacto</a></li>
@@ -1609,8 +1611,8 @@
     </div>
   </div>
 
-  <!-- ── EVENTOS — hidden until there's a special event outside the regular Sunday/Wednesday services ── -->
-  <section id="eventos" style="display:none;">
+  <!-- ── EVENTOS ── -->
+  <section id="eventos">
     <div class="container">
       <div class="row-top reveal">
         <div>
@@ -1619,8 +1621,19 @@
         <a href="https://www.churchtrac.com/public_calendar?ui=3637D3FD" target="_blank" class="link-arrow" data-en="View Full Calendar">Ver calendario completo</a>
       </div>
 
-      <!-- Events list injected by JS -->
-      <div class="events-list" id="events-list"></div>
+      <div class="events-list" id="events-list">
+        <div class="event-row reveal">
+          <div class="event-date-box">
+            <span class="event-date-num">18</span>
+            <span class="event-date-month">JUL</span>
+          </div>
+          <div class="event-info">
+            <h3 class="event-title" data-en="The Authority of a Leader">La Autoridad de un Líder</h3>
+            <p class="event-details" data-en="Saturday · 10:00 AM &ndash; 2:00 PM">Sábado · 10:00 AM &ndash; 2:00 PM</p>
+          </div>
+          <a href="https://casafamiliar.churchtrac.com/connect?ei=TD2CIGI" target="_blank" class="event-tag" data-en="Register">Registrarse</a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1784,7 +1797,7 @@
           <ul class="footer-links">
             <li><a href="#hero" data-en="Home">Inicio</a></li>
             <li><a href="#sermones" data-en="Sermons">Sermones</a></li>
-            <li style="display:none;"><a href="#eventos" data-en="Events">Eventos</a></li>
+            <li><a href="#eventos" data-en="Events">Eventos</a></li>
             <li><a href="#esencial">Esencial</a></li>
             <li><a href="#dar" data-en="Give">Dar</a></li>
             <li><a href="#contacto" data-en="Contact">Contacto</a></li>
@@ -2045,48 +2058,6 @@
           .then(handleLiveStatus)
           .catch(() => {});
       });
-
-    // ── EVENTS LOADER — only show events outside the regular Sunday/Wednesday services ──
-    (function() {
-      function isRegularServiceDay(weekday) {
-        if (!weekday) return false;
-        const w = weekday.toString().trim().toLowerCase();
-        return w === 'domingo' || w === 'sunday' || w === 'miercoles' || w === 'miércoles' || w === 'wednesday';
-      }
-
-      fetch('https://somos-reino-api.vercel.app/api/events')
-        .then(r => r.json())
-        .then(data => {
-          const specialEvents = (data.events || []).filter(ev => !isRegularServiceDay(ev.weekday));
-          if (!specialEvents.length) return;
-
-          const list = document.getElementById('events-list');
-          list.innerHTML = specialEvents.map((ev, i) => {
-            const delays = ['reveal-delay-1','reveal-delay-2','reveal-delay-3','reveal-delay-4'];
-            return `
-              <div class="event-row reveal ${delays[i] || ''}">
-                <div class="event-date-box">
-                  <span class="event-date-num">${ev.day}</span>
-                  <span class="event-date-month">${ev.month}</span>
-                </div>
-                <div class="event-info">
-                  <h3 class="event-title">${ev.title}</h3>
-                  <p class="event-details">${ev.weekday} · ${ev.time}</p>
-                </div>
-                <span class="event-tag" data-en="Event">Evento</span>
-              </div>`;
-          }).join('');
-
-          document.getElementById('eventos').style.display = '';
-          document.querySelectorAll('a[href="#eventos"]').forEach(a => {
-            if (a.parentElement.tagName === 'LI') a.parentElement.style.display = '';
-          });
-
-          list.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-          applyLanguage(currentLang);
-        })
-        .catch(() => {});
-    })();
 
     // ── VIDEO MODAL (inline sermon playback) ──
     const videoModal = document.getElementById('video-modal');
