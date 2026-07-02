@@ -12,6 +12,12 @@
 // The channel ID is read from the sermon playlist's RSS feed (no API key
 // needed) instead of being hardcoded. If that lookup fails for any reason,
 // this falls back to checking the most recent playlist entries directly.
+//
+// Field parsing is scoped to the `liveBroadcastDetails` JSON object first,
+// then reads its fields independent of key order — YouTube's exact key
+// ordering isn't a stable contract, so anchoring to it (e.g. requiring
+// "isLiveNow" immediately after the opening brace) is fragile and has
+// caused false "not live" results in practice.
 const PLAYLIST_ID = 'PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7';
 const FEED_URL = `https://www.youtube.com/feeds/videos.xml?playlist_id=${PLAYLIST_ID}`;
 
@@ -21,6 +27,19 @@ function extractAll(xml, tag) {
   let m;
   while ((m = re.exec(xml))) out.push(m[1]);
   return out;
+}
+
+function extractChannelId(xml) {
+  const tagMatch = xml.match(/<yt:channelId>(.*?)<\/yt:channelId>/);
+  if (tagMatch) return tagMatch[1];
+  const uriMatch = xml.match(/youtube\.com\/channel\/(UC[\w-]+)/);
+  return uriMatch ? uriMatch[1] : null;
+}
+
+function isLiveNow(html) {
+  const objMatch = html.match(/"liveBroadcastDetails":\{([^}]*)\}/);
+  if (!objMatch) return false;
+  return /"isLiveNow":true/.test(objMatch[1]);
 }
 
 async function fetchFeed() {
@@ -36,8 +55,7 @@ async function checkChannelLive(channelId) {
   if (!res.ok) return null;
   const html = await res.text();
 
-  const liveMatch = html.match(/"liveBroadcastDetails":\{"isLiveNow":(true|false)/);
-  if (!liveMatch || liveMatch[1] !== 'true') return null;
+  if (!isLiveNow(html)) return null;
 
   const videoIdMatch = html.match(/<link rel="canonical" href="https:\/\/www\.youtube\.com\/watch\?v=([\w-]{11})"/);
   return videoIdMatch ? videoIdMatch[1] : null;
@@ -49,22 +67,29 @@ async function checkVideoLive(videoId) {
   });
   if (!res.ok) return false;
   const html = await res.text();
-  const match = html.match(/"liveBroadcastDetails":\{"isLiveNow":(true|false)/);
-  return !!match && match[1] === 'true';
+  return isLiveNow(html);
 }
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=120');
 
+  const debug = req.query && (req.query.debug === '1' || req.query.debug === 'true');
+  const trace = { channelId: null, channelChecked: false, channelFoundLive: false, fallbackCheckedIds: [] };
+
   try {
     const xml = await fetchFeed();
 
-    const channelIdMatch = xml.match(/<yt:channelId>(.*?)<\/yt:channelId>/);
-    if (channelIdMatch) {
-      const liveVideoId = await checkChannelLive(channelIdMatch[1]);
+    const channelId = extractChannelId(xml);
+    trace.channelId = channelId;
+
+    if (channelId) {
+      trace.channelChecked = true;
+      const liveVideoId = await checkChannelLive(channelId);
       if (liveVideoId) {
-        return res.status(200).json({ live: true, url: `https://www.youtube.com/watch?v=${liveVideoId}` });
+        trace.channelFoundLive = true;
+        const payload = { live: true, url: `https://www.youtube.com/watch?v=${liveVideoId}` };
+        return res.status(200).json(debug ? { ...payload, debug: trace } : payload);
       }
     }
 
@@ -76,13 +101,17 @@ module.exports = async (req, res) => {
       .filter(Boolean);
 
     for (const videoId of videoIds) {
+      trace.fallbackCheckedIds.push(videoId);
       if (await checkVideoLive(videoId)) {
-        return res.status(200).json({ live: true, url: `https://www.youtube.com/watch?v=${videoId}` });
+        const payload = { live: true, url: `https://www.youtube.com/watch?v=${videoId}` };
+        return res.status(200).json(debug ? { ...payload, debug: trace } : payload);
       }
     }
 
-    return res.status(200).json({ live: false });
+    const payload = { live: false };
+    return res.status(200).json(debug ? { ...payload, debug: trace } : payload);
   } catch (err) {
-    return res.status(200).json({ live: false, error: err.message });
+    const payload = { live: false, error: err.message };
+    return res.status(200).json(debug ? { ...payload, debug: trace } : payload);
   }
 };
