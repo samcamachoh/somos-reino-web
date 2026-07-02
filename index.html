@@ -1990,47 +1990,56 @@
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     })();
 
-    fetch('https://somos-reino-api.vercel.app/api/live')
-      .then(r => r.json())
-      .then(data => {
-        if (data.live) {
-          // Show live badge
-          const badge = document.getElementById('live-badge');
-          badge.style.display = 'flex';
-          // Swap "Ver Sermones" button to "Ver En Vivo"
-          const btn = document.getElementById('live-btn');
-          btn.dataset.es = '🔴 Ver En Vivo';
-          btn.dataset.en = '🔴 Watch Live';
-          btn.textContent = t('🔴 Ver En Vivo', '🔴 Watch Live');
-          btn.href = data.url;
-          btn.target = '_blank';
-          btn.style.borderColor = '#E53E3E';
-          btn.style.color = '#E53E3E';
+    function handleLiveStatus(data) {
+      if (data.live) {
+        // Show live badge
+        const badge = document.getElementById('live-badge');
+        badge.style.display = 'flex';
+        // Swap "Ver Sermones" button to "Ver En Vivo"
+        const btn = document.getElementById('live-btn');
+        btn.dataset.es = '🔴 Ver En Vivo';
+        btn.dataset.en = '🔴 Watch Live';
+        btn.textContent = t('🔴 Ver En Vivo', '🔴 Watch Live');
+        btn.href = data.url;
+        btn.target = '_blank';
+        btn.style.borderColor = '#E53E3E';
+        btn.style.color = '#E53E3E';
 
-          // Turn the hero background into the live stream, muted, after 5s
-          const videoId = extractYouTubeId(data.url);
-          if (videoId) {
-            setTimeout(() => startHeroLiveVideo(videoId), 5000);
-            showLiveChat(videoId);
-          }
-        } else {
-          // Not live — check for a best-effort "upcoming" scheduled stream
-          fetch('/api/upcoming')
-            .then(r => r.json())
-            .then(upData => {
-              if (!upData.upcoming) return;
-              const badge = document.getElementById('upcoming-badge');
-              const text = document.getElementById('upcoming-badge-text');
-              text.dataset.es = `Próxima Transmisión · ${formatUpcoming(upData.upcoming.scheduledStartTime, 'es')}`;
-              text.dataset.en = `Upcoming Stream · ${formatUpcoming(upData.upcoming.scheduledStartTime, 'en')}`;
-              text.textContent = t(text.dataset.es, text.dataset.en);
-              badge.href = upData.upcoming.url;
-              badge.style.display = 'flex';
-            })
-            .catch(() => {});
+        // Turn the hero background into the live stream, muted, after 5s
+        const videoId = extractYouTubeId(data.url);
+        if (videoId) {
+          setTimeout(() => startHeroLiveVideo(videoId), 5000);
+          showLiveChat(videoId);
         }
-      })
-      .catch(() => {});
+      } else {
+        // Not live — check for a best-effort "upcoming" scheduled stream
+        fetch('/api/upcoming')
+          .then(r => r.json())
+          .then(upData => {
+            if (!upData.upcoming) return;
+            const badge = document.getElementById('upcoming-badge');
+            const text = document.getElementById('upcoming-badge-text');
+            text.dataset.es = `Próxima Transmisión · ${formatUpcoming(upData.upcoming.scheduledStartTime, 'es')}`;
+            text.dataset.en = `Upcoming Stream · ${formatUpcoming(upData.upcoming.scheduledStartTime, 'en')}`;
+            text.textContent = t(text.dataset.es, text.dataset.en);
+            badge.href = upData.upcoming.url;
+            badge.style.display = 'flex';
+          })
+          .catch(() => {});
+      }
+    }
+
+    // Prefer this site's own /api/live (no dependency on an external
+    // service's uptime); fall back to the legacy external API if it fails.
+    fetch('/api/live')
+      .then(r => { if (!r.ok) throw new Error('local live api unavailable'); return r.json(); })
+      .then(handleLiveStatus)
+      .catch(() => {
+        fetch('https://somos-reino-api.vercel.app/api/live')
+          .then(r => r.json())
+          .then(handleLiveStatus)
+          .catch(() => {});
+      });
 
     // ── EVENTS LOADER — only show events outside the regular Sunday/Wednesday services ──
     (function() {
