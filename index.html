@@ -1298,7 +1298,7 @@
 
       .event-date-num { font-size: 2.1rem; }
       .event-title { font-size: 1.2rem; }
-      .event-tag { display: none; }
+      .event-tag { grid-column: 2; margin-top: 10px; }
 
       #esencial .container > div {
         grid-template-columns: 1fr !important;
@@ -1564,6 +1564,32 @@
     </div>
   </section>
 
+  <!-- ── EVENTOS ── -->
+  <section id="eventos">
+    <div class="container">
+      <div class="row-top reveal">
+        <div>
+          <h2 class="display" data-en="What's Coming<br><em>This Month</em>">Lo que viene<br><em>este mes</em></h2>
+        </div>
+        <a href="https://www.churchtrac.com/public_calendar?ui=3637D3FD" target="_blank" class="link-arrow" data-en="View Full Calendar">Ver calendario completo</a>
+      </div>
+
+      <div class="events-list" id="events-list">
+        <div class="event-row event-row-closed reveal">
+          <div class="event-date-box">
+            <span class="event-date-num">18</span>
+            <span class="event-date-month">JUL</span>
+          </div>
+          <div class="event-info">
+            <h3 class="event-title" data-en="The Authority of a Leader">La Autoridad de un Líder</h3>
+            <p class="event-details" data-en="Saturday · 10:00 AM &ndash; 2:00 PM">Sábado · 10:00 AM &ndash; 2:00 PM</p>
+          </div>
+          <span class="event-tag event-tag-closed" data-en="Registration Closed">Registro Cerrado</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ── LIVE CHAT — only shown while the channel is live ── -->
   <section id="live-chat">
     <div class="container">
@@ -1618,32 +1644,6 @@
       <div class="video-modal-frame" id="video-modal-frame"></div>
     </div>
   </div>
-
-  <!-- ── EVENTOS ── -->
-  <section id="eventos">
-    <div class="container">
-      <div class="row-top reveal">
-        <div>
-          <h2 class="display" data-en="What's Coming<br><em>This Month</em>">Lo que viene<br><em>este mes</em></h2>
-        </div>
-        <a href="https://www.churchtrac.com/public_calendar?ui=3637D3FD" target="_blank" class="link-arrow" data-en="View Full Calendar">Ver calendario completo</a>
-      </div>
-
-      <div class="events-list" id="events-list">
-        <div class="event-row event-row-closed reveal">
-          <div class="event-date-box">
-            <span class="event-date-num">18</span>
-            <span class="event-date-month">JUL</span>
-          </div>
-          <div class="event-info">
-            <h3 class="event-title" data-en="The Authority of a Leader">La Autoridad de un Líder</h3>
-            <p class="event-details" data-en="Saturday · 10:00 AM &ndash; 2:00 PM">Sábado · 10:00 AM &ndash; 2:00 PM</p>
-          </div>
-          <span class="event-tag event-tag-closed" data-en="Registration Closed">Registro Cerrado</span>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- ── DAR ── -->
   <section id="dar">
