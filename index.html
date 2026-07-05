@@ -1023,6 +1023,14 @@
       color: var(--orange);
     }
 
+    .event-row-closed { cursor: default; }
+
+    .event-tag-closed,
+    .event-row-closed:hover .event-tag-closed {
+      color: rgba(255,255,255,0.35);
+      border-color: rgba(255,255,255,0.16);
+    }
+
     /* ────────────────────────────────────────
        DAR / OFRENDAS
     ──────────────────────────────────────── */
@@ -1622,7 +1630,7 @@
       </div>
 
       <div class="events-list" id="events-list">
-        <a class="event-row reveal" href="https://casafamiliar.churchtrac.com/connect?ei=TD2CIGI" target="_blank">
+        <div class="event-row event-row-closed reveal">
           <div class="event-date-box">
             <span class="event-date-num">18</span>
             <span class="event-date-month">JUL</span>
@@ -1631,8 +1639,8 @@
             <h3 class="event-title" data-en="The Authority of a Leader">La Autoridad de un Líder</h3>
             <p class="event-details" data-en="Saturday · 10:00 AM &ndash; 2:00 PM">Sábado · 10:00 AM &ndash; 2:00 PM</p>
           </div>
-          <span class="event-tag" data-en="Register">Registrarse</span>
-        </a>
+          <span class="event-tag event-tag-closed" data-en="Registration Closed">Registro Cerrado</span>
+        </div>
       </div>
     </div>
   </section>
