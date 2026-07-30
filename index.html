@@ -202,16 +202,6 @@
       box-shadow: 0 20px 48px rgba(17,17,17,0.14);
     }
 
-    /* ── EVENT ROW HOVER ── */
-    .event-row {
-      transition: padding-left 0.35s cubic-bezier(0.16,1,0.3,1), background 0.3s ease;
-    }
-
-    .event-row:hover {
-      padding-left: 20px;
-      background: rgba(255,255,255,0.03);
-    }
-
     /* ── NAV ── */
     #nav {
       position: fixed;
@@ -928,117 +918,6 @@
     }
 
     /* ────────────────────────────────────────
-       EVENTOS
-    ──────────────────────────────────────── */
-    #eventos {
-      padding: var(--section-pad);
-      background: var(--black);
-      position: relative;
-      overflow: hidden;
-    }
-
-    #eventos .row-top {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 56px;
-      flex-wrap: wrap;
-      gap: 24px;
-    }
-
-    #eventos h2.display { color: var(--white); }
-    #eventos h2.display em { color: var(--orange); }
-    #eventos .link-arrow { color: var(--orange); }
-
-    .events-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .event-row {
-      display: grid;
-      grid-template-columns: 100px 1fr auto;
-      align-items: center;
-      gap: 32px;
-      padding: 30px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      cursor: pointer;
-      position: relative;
-      text-decoration: none;
-    }
-
-    .event-row:first-child { border-top: 1px solid rgba(255,255,255,0.1); }
-
-    .event-date-box {
-      text-align: center;
-    }
-
-    .event-date-num {
-      font-family: 'Archivo', sans-serif;
-      font-size: 2.6rem;
-      font-weight: 900;
-      color: var(--orange);
-      line-height: 1;
-      display: block;
-    }
-
-    .event-date-month {
-      font-family: 'Archivo', sans-serif;
-      font-size: 0.65rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: rgba(255,255,255,0.4);
-      display: block;
-      margin-top: 6px;
-    }
-
-    .event-title {
-      font-family: 'Archivo', sans-serif;
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: var(--white);
-      margin-bottom: 6px;
-      line-height: 1.2;
-    }
-
-    .event-details {
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.45);
-      font-weight: 500;
-    }
-
-    .event-tag {
-      font-family: 'Archivo', sans-serif;
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      font-weight: 700;
-      padding: 9px 18px;
-      border-radius: 100px;
-      border: 1px solid rgba(255,255,255,0.16);
-      color: rgba(255,255,255,0.55);
-      transition: border-color 0.3s, color 0.3s;
-      white-space: nowrap;
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    .event-row:hover .event-tag {
-      border-color: var(--orange);
-      color: var(--orange);
-    }
-
-    .event-row-closed { cursor: default; }
-
-    .event-tag-closed,
-    .event-row-closed:hover .event-tag-closed {
-      color: rgba(255,255,255,0.35);
-      border-color: rgba(255,255,255,0.16);
-    }
-
-    /* ────────────────────────────────────────
        DAR / OFRENDAS
     ──────────────────────────────────────── */
     #dar {
@@ -1158,7 +1037,9 @@
     ──────────────────────────────────────── */
     #whatsapp {
       padding: var(--section-pad);
-      background: var(--cream);
+      background: var(--black);
+      position: relative;
+      overflow: hidden;
     }
 
     .whatsapp-card {
@@ -1166,8 +1047,8 @@
       grid-template-columns: auto 1fr auto;
       align-items: center;
       gap: 40px;
-      background: var(--white);
-      border: 1px solid var(--orange);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 24px;
       padding: 48px 52px;
     }
@@ -1201,7 +1082,7 @@
       font-weight: 900;
       letter-spacing: -0.01em;
       line-height: 1.15;
-      color: var(--black);
+      color: var(--white);
       margin-bottom: 12px;
     }
 
@@ -1213,7 +1094,7 @@
     .whatsapp-body {
       font-size: 0.98rem;
       line-height: 1.7;
-      color: var(--muted);
+      color: rgba(255,255,255,0.6);
       max-width: 520px;
       margin: 0;
     }
@@ -1369,16 +1250,6 @@
         gap: 20px;
       }
 
-      .event-row {
-        grid-template-columns: 70px 1fr;
-        gap: 16px;
-        padding: 20px 0;
-      }
-
-      .event-date-num { font-size: 2.1rem; }
-      .event-title { font-size: 1.2rem; }
-      .event-tag { grid-column: 2; justify-self: start; margin-top: 10px; }
-
       #esencial .container > div {
         grid-template-columns: 1fr !important;
         gap: 48px;
@@ -1452,9 +1323,6 @@
       .sermon-body { padding: 18px 20px 22px; }
       .sermon-title { font-size: 1rem !important; }
 
-      .event-row { grid-template-columns: 60px 1fr; gap: 12px; }
-      .event-date-num { font-size: 1.7rem; }
-      .event-title { font-size: 1.1rem; }
 
       #esencial [style*="width:280px"] {
         width: 220px !important;
@@ -1480,8 +1348,6 @@
     ──────────────────────────────────────── */
     @media (max-width: 400px) {
       .hero-title { font-size: 2.1rem; }
-      .event-row { grid-template-columns: 55px 1fr; }
-      .event-date-num { font-size: 1.5rem; }
     }
 
     /* ────────────────────────────────────────
@@ -1514,8 +1380,8 @@
       </a>
       <ul class="nav-links">
         <li><a href="#sermones" data-en="Sermons">Sermones</a></li>
-        <li><a href="#eventos" data-en="Events">Eventos</a></li>
         <li><a href="#esencial">Esencial</a></li>
+        <li><a href="#whatsapp">WhatsApp</a></li>
         <li><a href="#dar" data-en="Give">Dar</a></li>
         <li><a href="#contacto" data-en="Contact">Contacto</a></li>
       </ul>
@@ -1542,7 +1408,6 @@
     </div>
     <ul class="mobile-menu-links">
       <li><a href="#sermones" data-en="Sermons">Sermones</a></li>
-      <li><a href="#eventos" data-en="Events">Eventos</a></li>
       <li><a href="#esencial">Esencial</a></li>
       <li><a href="#whatsapp">WhatsApp</a></li>
       <li><a href="#contacto" data-en="Contact">Contacto</a></li>
@@ -1655,31 +1520,25 @@
     </div>
   </section>
 
-  <!-- ── EVENTOS ── -->
-  <section id="eventos">
+  <!-- ── CANAL DE WHATSAPP ── -->
+  <section id="whatsapp">
     <div class="container">
-      <div class="row-top reveal">
+      <div class="whatsapp-card reveal">
+
+        <div class="whatsapp-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 24 24" fill="white" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.82 9.82 0 016.988 2.898 9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        </div>
+
         <div>
-          <h2 class="display" data-en="What's Coming<br><em>This Month</em>">Lo que viene<br><em>este mes</em></h2>
+          <span class="whatsapp-label" data-en="Stay Connected">Mantente Conectado</span>
+          <h2 class="whatsapp-title" data-en="Join our <em>WhatsApp channel</em>">Únete a nuestro <em>canal de WhatsApp</em></h2>
+          <p class="whatsapp-body" data-en="Get service reminders, event announcements, and a word of encouragement straight to your phone. No groups, no noise — just updates from Somos Reino.">
+            Recibe recordatorios de servicios, anuncios de eventos y una palabra de aliento directo en tu teléfono. Sin grupos, sin ruido — solo lo importante de Somos Reino.
+          </p>
         </div>
-      </div>
 
-      <div class="events-list" id="events-list">
-        <div class="event-row event-row-closed reveal">
-          <div class="event-date-box">
-            <span class="event-date-num">18</span>
-            <span class="event-date-month">JUL</span>
-          </div>
-          <div class="event-info">
-            <h3 class="event-title" data-en="The Authority of a Leader">La Autoridad de un Líder</h3>
-            <p class="event-details" data-en="Saturday · 10:00 AM &ndash; 2:00 PM">Sábado · 10:00 AM &ndash; 2:00 PM</p>
-          </div>
-          <span class="event-tag event-tag-closed" data-en="Registration Closed">Registro Cerrado</span>
-        </div>
-      </div>
+        <a href="https://whatsapp.com/channel/0029VaQlt7T2ZjCpaaXFOK0P" target="_blank" rel="noopener" class="btn-primary whatsapp-btn" data-en="Follow the Channel">Seguir el Canal</a>
 
-      <div style="text-align:center;margin-top:48px;">
-        <a href="https://www.churchtrac.com/public_calendar?ui=3637D3FD" target="_blank" class="link-arrow" data-en="View Full Calendar" style="justify-content:center;">Ver calendario completo</a>
       </div>
     </div>
   </section>
@@ -1839,28 +1698,6 @@
     </div>
   </section>
 
-  <!-- ── CANAL DE WHATSAPP ── -->
-  <section id="whatsapp">
-    <div class="container">
-      <div class="whatsapp-card reveal">
-
-        <div class="whatsapp-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 24 24" fill="white" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.82 9.82 0 016.988 2.898 9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-        </div>
-
-        <div>
-          <span class="whatsapp-label" data-en="Stay Connected">Mantente Conectado</span>
-          <h2 class="whatsapp-title" data-en="Join our <em>WhatsApp channel</em>">Únete a nuestro <em>canal de WhatsApp</em></h2>
-          <p class="whatsapp-body" data-en="Get service reminders, event announcements, and a word of encouragement straight to your phone. No groups, no noise — just updates from Somos Reino.">
-            Recibe recordatorios de servicios, anuncios de eventos y una palabra de aliento directo en tu teléfono. Sin grupos, sin ruido — solo lo importante de Somos Reino.
-          </p>
-        </div>
-
-        <a href="https://whatsapp.com/channel/0029VaQlt7T2ZjCpaaXFOK0P" target="_blank" rel="noopener" class="btn-primary whatsapp-btn" data-en="Follow the Channel">Seguir el Canal</a>
-
-      </div>
-    </div>
-  </section>
 
   <!-- ── CONTACTO ── -->
   <section id="contacto">
@@ -1922,7 +1759,6 @@
           <ul class="footer-links">
             <li><a href="#hero" data-en="Home">Inicio</a></li>
             <li><a href="#sermones" data-en="Sermons">Sermones</a></li>
-            <li><a href="#eventos" data-en="Events">Eventos</a></li>
             <li><a href="#esencial">Esencial</a></li>
             <li><a href="#whatsapp">WhatsApp</a></li>
             <li><a href="#dar" data-en="Give">Dar</a></li>
