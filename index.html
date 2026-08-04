@@ -651,6 +651,115 @@
       display: block;
     }
 
+    /* ────────────────────────────────────────
+       EVENTOS
+    ──────────────────────────────────────── */
+    #eventos {
+      padding: var(--section-pad);
+      background: var(--white);
+    }
+
+    .eventos-label {
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.66rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--orange);
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .eventos-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .evento-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 28px;
+      align-items: start;
+      background: var(--cream);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 34px 36px;
+      transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .evento-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--orange);
+      box-shadow: 0 16px 36px rgba(17,17,17,0.08);
+    }
+
+    .evento-date {
+      width: 78px;
+      flex-shrink: 0;
+      background: var(--white);
+      border: 1px solid var(--orange);
+      border-radius: 14px;
+      padding: 12px 0 14px;
+      text-align: center;
+    }
+
+    .evento-month {
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--orange);
+      display: block;
+    }
+
+    .evento-day {
+      font-family: 'Archivo', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--black);
+      display: block;
+      margin-top: 4px;
+    }
+
+    .evento-title {
+      font-family: 'Archivo', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--black);
+      margin-bottom: 12px;
+    }
+
+    .evento-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .evento-meta > span {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .evento-meta svg {
+      flex-shrink: 0;
+      color: var(--orange);
+    }
+
+    .evento-when {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 700;
+      color: var(--orange) !important;
+      font-size: 0.95rem !important;
+    }
+
     /* ── HERO TICKER ── */
     .hero-ticker {
       position: absolute;
@@ -1238,6 +1347,11 @@
         gap: 16px;
       }
 
+      .eventos-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
       .hero-unmute-btn {
         top: 84px;
         right: 16px;
@@ -1317,6 +1431,16 @@
 
       .servicio-card { padding: 26px 24px; }
 
+      .evento-card {
+        padding: 26px 24px;
+        gap: 20px;
+      }
+
+      .evento-date { width: 68px; }
+      .evento-day { font-size: 1.65rem; }
+      .evento-title { font-size: 1.25rem; }
+      .evento-when { font-size: 0.85rem !important; }
+
       .ticker-track span { font-size: 0.75rem; }
 
       .sermons-grid { gap: 16px; }
@@ -1379,6 +1503,7 @@
         <img src="logo.png" alt="Somos Reino" style="height:38px;width:auto;display:block;" />
       </a>
       <ul class="nav-links">
+        <li><a href="#eventos" data-en="Events">Eventos</a></li>
         <li><a href="#sermones" data-en="Sermons">Sermones</a></li>
         <li><a href="#esencial">Podcast</a></li>
         <li><a href="#dar" data-en="Give">Dar</a></li>
@@ -1406,6 +1531,7 @@
       <button class="mobile-menu-close" id="mobile-menu-close" type="button" aria-label="Cerrar menú" data-en-label="Close menu">&times;</button>
     </div>
     <ul class="mobile-menu-links">
+      <li><a href="#eventos" data-en="Events">Eventos</a></li>
       <li><a href="#sermones" data-en="Sermons">Sermones</a></li>
       <li><a href="#esencial">Podcast</a></li>
       <li><a href="#contacto" data-en="Contact">Contacto</a></li>
@@ -1513,6 +1639,50 @@
           <span class="servicio-day" data-en="Wednesday">Miércoles</span>
           <span class="servicio-time" data-en="7:30 PM · Discipleship">7:30 PM · Formación</span>
           <span class="servicio-note" data-en="Bible study and worship">Estudio bíblico y adoración</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── EVENTOS ── -->
+  <section id="eventos">
+    <div class="container">
+      <span class="eventos-label reveal" data-en="What's Coming">Lo Que Viene</span>
+      <h2 class="display reveal" data-en="Upcoming <em>Events</em>">Próximos <em>Eventos</em></h2>
+
+      <div class="eventos-grid">
+        <div class="evento-card reveal">
+          <div class="evento-date">
+            <span class="evento-month" data-en="Aug">Ago</span>
+            <span class="evento-day">14</span>
+          </div>
+          <div>
+            <h3 class="evento-title">Eikon Men</h3>
+            <div class="evento-meta">
+              <span class="evento-when" data-en="Friday, August 14 · 7:30 PM">Viernes 14 de agosto · 7:30 PM</span>
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span data-en="Main Campus">Campus Principal</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="evento-card reveal reveal-delay-1">
+          <div class="evento-date">
+            <span class="evento-month" data-en="Aug">Ago</span>
+            <span class="evento-day">28</span>
+          </div>
+          <div>
+            <h3 class="evento-title">Ezer: A Tiempo</h3>
+            <div class="evento-meta">
+              <span class="evento-when" data-en="Friday, August 28 · 7:00 PM">Viernes 28 de agosto · 7:00 PM</span>
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span data-en="Main Campus">Campus Principal</span>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1756,6 +1926,7 @@
           <span class="footer-col-title" data-en="Navigation">Navegación</span>
           <ul class="footer-links">
             <li><a href="#hero" data-en="Home">Inicio</a></li>
+            <li><a href="#eventos" data-en="Events">Eventos</a></li>
             <li><a href="#sermones" data-en="Sermons">Sermones</a></li>
             <li><a href="#esencial">Esencial</a></li>
             <li><a href="#whatsapp">WhatsApp</a></li>
