@@ -33,9 +33,16 @@
 
       --section-pad: 108px 0;
       --content-max: 1200px;
+
+      /* Motion */
+      --ease:      cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-back: cubic-bezier(0.34, 1.4, 0.64, 1);
     }
 
-    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: no-preference) {
+      html { scroll-behavior: smooth; }
+    }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -65,29 +72,74 @@
       color: var(--orange);
     }
 
-    /* Scroll reveal */
-    .reveal {
-      opacity: 0;
-      transform: translateY(32px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
+    /* Section eyebrow — small label above a heading */
+    .eyebrow {
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.66rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--orange);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
     }
 
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .eyebrow::before {
+      content: '';
+      width: 28px;
+      height: 2px;
+      background: var(--orange);
+      border-radius: 2px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.7s var(--ease) 0.15s;
     }
+
+    .visible .eyebrow::before,
+    .eyebrow.visible::before { transform: scaleX(1); }
+
+    .eyebrow-light { color: rgba(255,255,255,0.55); }
+    .eyebrow-light::before { background: var(--orange); }
+
+    /* Heading accent — underline that draws itself in on reveal */
+    h2.display em {
+      background-image: linear-gradient(rgba(247,116,109,0.32), rgba(247,116,109,0.32));
+      background-repeat: no-repeat;
+      background-position: 0 100%;
+      background-size: 0% 0.1em;
+      padding-bottom: 0.06em;
+      transition: background-size 1.1s var(--ease) 0.3s;
+    }
+
+    .visible h2.display em,
+    h2.display.visible em { background-size: 100% 0.1em; }
+
+    /* Lead paragraph under a section heading */
+    .section-lead {
+      font-size: 1.02rem;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 480px;
+      margin-top: 20px;
+    }
+
+    .section-lead-light { color: rgba(255,255,255,0.55); }
 
     /* ── CURSOR GLOW ── */
     .cursor-glow {
-      width: 320px;
-      height: 320px;
+      width: 360px;
+      height: 360px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(247,116,109,0.14) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(247,116,109,0.16) 0%, rgba(247,116,109,0.05) 40%, transparent 70%);
       position: fixed;
+      top: 0; left: 0;
       pointer-events: none;
       z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: opacity 0.3s;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      will-change: transform;
     }
 
     /* ── SMOOTH SCROLL PROGRESS ── */
@@ -95,39 +147,48 @@
       position: fixed;
       top: 0; left: 0;
       height: 3px;
-      background: var(--orange);
+      width: 100%;
+      background: linear-gradient(90deg, var(--orange-dark), var(--orange));
       z-index: 9999;
-      transition: width 0.1s linear;
-      width: 0%;
+      transform: scaleX(0);
+      transform-origin: left;
+      will-change: transform;
     }
 
-    /* ── ENHANCED REVEAL ── */
-    .reveal-left {
+    /* ── SCROLL REVEAL ──
+       One system, three directions. Each element eases in with a touch of
+       depth (scale + blur) so sections arrive instead of just appearing.
+       Stagger is driven by --reveal-delay, set per element from JS. */
+    .reveal, .reveal-left, .reveal-right {
       opacity: 0;
-      transform: translateX(-40px);
-      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+      transition:
+        opacity 0.85s var(--ease),
+        transform 1s var(--ease),
+        filter 0.85s var(--ease);
+      transition-delay: var(--reveal-delay, 0s);
     }
 
-    .reveal-left.visible {
-      opacity: 1;
-      transform: translateX(0);
-    }
+    .reveal       { transform: translate3d(0, 36px, 0) scale(0.985); }
+    .reveal-left  { transform: translate3d(-44px, 0, 0); }
+    .reveal-right { transform: translate3d(44px, 0, 0); }
 
-    .reveal-right {
-      opacity: 0;
-      transform: translateX(40px);
-      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
-    }
-
+    .reveal.visible,
+    .reveal-left.visible,
     .reveal-right.visible {
       opacity: 1;
-      transform: translateX(0);
+      transform: translate3d(0, 0, 0) scale(1);
+      filter: blur(0);
     }
 
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.22s; }
-    .reveal-delay-3 { transition-delay: 0.34s; }
-    .reveal-delay-4 { transition-delay: 0.46s; }
+    /* Soft-focus entrance is desktop-only — blur is costly on phones */
+    @media (min-width: 901px) {
+      .reveal, .reveal-left, .reveal-right { filter: blur(7px); }
+    }
+
+    .reveal-delay-1 { --reveal-delay: 0.1s; }
+    .reveal-delay-2 { --reveal-delay: 0.22s; }
+    .reveal-delay-3 { --reveal-delay: 0.34s; }
+    .reveal-delay-4 { --reveal-delay: 0.46s; }
 
     /* ── BUTTONS (pill, bold, flat) ── */
     .btn-primary, .btn-outline, .btn-ghost {
@@ -139,7 +200,31 @@
       text-decoration: none;
       border-radius: 100px;
       display: inline-block;
-      transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      transition: transform 0.3s var(--ease-back), background 0.25s ease, box-shadow 0.3s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* Light sweeps across the button on hover */
+    .btn-primary::after, .btn-outline::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,0.35) 50%, transparent 65%);
+      transform: translateX(-110%);
+      transition: transform 0.75s var(--ease-soft);
+    }
+
+    .btn-primary:hover::after, .btn-outline:hover::after { transform: translateX(110%); }
+
+    .btn-primary:focus-visible, .btn-outline:focus-visible,
+    .nav-btn:focus-visible, .lang-option:focus-visible,
+    .sermon-card:focus-visible, .link-arrow:focus-visible,
+    .social-link:focus-visible {
+      outline: 2px solid var(--orange);
+      outline-offset: 3px;
     }
 
     .btn-primary {
@@ -194,12 +279,13 @@
 
     /* ── CARD HOVER ── */
     .sermon-card {
-      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s ease;
+      transition: transform 0.45s var(--ease), box-shadow 0.45s ease, border-color 0.35s ease;
     }
 
-    .sermon-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 48px rgba(17,17,17,0.14);
+    .sermon-card:hover, .sermon-card:focus-visible {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 56px rgba(17,17,17,0.16);
+      border-color: rgba(247,116,109,0.4);
     }
 
     /* ── NAV ── */
@@ -208,15 +294,22 @@
       top: 0; left: 0; right: 0;
       z-index: 200;
       background: rgba(17,17,17,0.0);
-      transition: background 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease;
+      transition: background 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease,
+                  transform 0.5s var(--ease);
       padding: 26px 0;
+      will-change: transform;
     }
 
     #nav.scrolled {
-      background: var(--black);
+      background: rgba(17,17,17,0.82);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
       box-shadow: 0 1px 0 rgba(255,255,255,0.06);
       padding: 16px 0;
     }
+
+    /* Tucked away while scrolling down, back the moment you scroll up */
+    #nav.nav-hidden { transform: translateY(-108%); }
 
     #nav::before {
       content: '';
@@ -261,10 +354,25 @@
       font-weight: 600;
       color: rgba(255,255,255,0.78);
       text-decoration: none;
+      position: relative;
+      padding-bottom: 4px;
       transition: color 0.3s;
     }
 
-    .nav-links a:hover { color: var(--orange); }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--orange);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.4s var(--ease);
+    }
+
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
 
     .nav-btn {
       font-family: 'Archivo', sans-serif;
@@ -463,15 +571,22 @@
     .hero-bg {
       position: absolute;
       inset: 0;
+      overflow: hidden;
+      transition: opacity 1s ease;
+      will-change: transform;
+    }
+
+    .hero-bg-img {
+      position: absolute;
+      inset: 0;
       background-image: url('IMG_0204.jpg');
       background-size: cover;
       background-position: center top;
-      animation: heroZoom 16s ease-out forwards;
-      transition: opacity 1s ease;
+      animation: heroZoom 18s var(--ease-soft) forwards;
     }
 
     @media (max-width: 600px) {
-      .hero-bg {
+      .hero-bg-img {
         background-image: url('mobile-hero.jpg');
         background-position: center 20%;
       }
@@ -482,8 +597,32 @@
     .hero-overlay.faded { opacity: 0; }
 
     @keyframes heroZoom {
-      from { transform: scale(1.07); }
+      from { transform: scale(1.09); }
       to   { transform: scale(1.0); }
+    }
+
+    /* Each headline line rises out from behind a mask */
+    @keyframes lineRise {
+      from { transform: translate3d(0, 110%, 0); }
+      to   { transform: translate3d(0, 0, 0); }
+    }
+
+    /* Slow drift for the ambient glows on the dark sections */
+    @keyframes drift {
+      from { transform: translate3d(0, 0, 0) scale(1); }
+      to   { transform: translate3d(-40px, 30px, 0) scale(1.15); }
+    }
+
+    @keyframes cueIn {
+      from { opacity: 0; transform: translate(-50%, 20px); }
+      to   { opacity: 1; transform: translate(-50%, 0); }
+    }
+
+    /* Dot travelling down the scroll cue */
+    @keyframes cueTravel {
+      0%       { transform: translateY(-100%); opacity: 0; }
+      20%, 70% { opacity: 1; }
+      100%     { transform: translateY(300%); opacity: 0; }
     }
 
     /* ── HERO LIVE VIDEO ──
@@ -561,6 +700,29 @@
       pointer-events: none;
     }
 
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: rgba(255,255,255,0.62);
+      margin-bottom: 22px;
+      opacity: 0;
+      animation: fadeUp 0.9s ease-out 0.35s forwards;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 26px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--orange);
+    }
+
     .hero-title {
       font-family: 'Archivo', sans-serif;
       font-size: clamp(3.4rem, 7.5vw, 6.2rem);
@@ -569,15 +731,59 @@
       line-height: 0.98;
       color: var(--white);
       margin-bottom: 28px;
-      opacity: 0;
-      animation: fadeUp 1s ease-out 0.65s forwards;
       text-transform: uppercase;
     }
 
-    .hero-title .line2 {
+    .hero-line {
       display: block;
+      overflow: hidden;
+      padding-bottom: 0.06em;
+    }
+
+    .hero-line > span {
+      display: block;
+      transform: translate3d(0, 110%, 0);
+      animation: lineRise 1.1s var(--ease) forwards;
+    }
+
+    .hero-line:nth-of-type(1) > span { animation-delay: 0.5s; }
+    .hero-line:nth-of-type(2) > span { animation-delay: 0.64s; }
+
+    .hero-title .line2 {
       font-style: normal;
       color: var(--orange);
+    }
+
+    /* Scroll cue — a thin rail with a dot running down it */
+    .hero-cue {
+      position: absolute;
+      left: 50%;
+      bottom: 84px;
+      transform: translateX(-50%);
+      z-index: 10;
+      width: 1px;
+      height: 52px;
+      background: rgba(255,255,255,0.22);
+      overflow: hidden;
+      opacity: 0;
+      animation: cueIn 1s ease-out 1.6s forwards;
+      transition: opacity 0.6s ease;
+    }
+
+    .hero-cue::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 1px;
+      height: 18px;
+      background: var(--orange);
+      animation: cueTravel 2.4s var(--ease-soft) infinite;
+    }
+
+    .hero-cue.faded { animation: none; opacity: 0; }
+
+    @media (max-width: 900px) {
+      .hero-cue { display: none; }
     }
 
     .hero-body {
@@ -619,13 +825,28 @@
       border: 1px solid var(--orange);
       border-radius: 18px;
       padding: 34px 36px;
-      transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s var(--ease), box-shadow 0.4s ease;
+    }
+
+    .servicio-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 4px;
+      background: var(--orange);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.5s var(--ease);
     }
 
     .servicio-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 36px rgba(17,17,17,0.08);
+      transform: translateY(-6px);
+      box-shadow: 0 18px 40px rgba(17,17,17,0.1);
     }
+
+    .servicio-card:hover::before { transform: scaleY(1); }
 
     .servicio-day {
       font-family: 'Archivo', sans-serif;
@@ -664,9 +885,12 @@
     .ticker-track {
       display: flex;
       gap: 60px;
-      animation: ticker 28s linear infinite;
+      animation: ticker 34s linear infinite;
       white-space: nowrap;
+      will-change: transform;
     }
+
+    .hero-ticker:hover .ticker-track { animation-play-state: paused; }
 
     .ticker-track span {
       font-family: 'Archivo', sans-serif;
@@ -776,10 +1000,30 @@
       flex-direction: column;
       width: 100%;
       text-align: left;
-      border: none;
+      border: 1px solid transparent;
       padding: 0;
       font: inherit;
       color: inherit;
+    }
+
+    .sermon-thumb img {
+      transition: transform 0.7s var(--ease);
+    }
+
+    .sermon-card:hover .sermon-thumb img { transform: scale(1.07); }
+
+    .sermon-scrim {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(to top, rgba(17,17,17,0.45), rgba(17,17,17,0.06));
+      transition: background 0.4s ease;
+    }
+
+    .sermon-card:hover .sermon-scrim {
+      background: linear-gradient(to top, rgba(17,17,17,0.55), rgba(247,116,109,0.14));
     }
 
     .sermon-thumb {
@@ -798,13 +1042,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.3s;
+      transition: transform 0.4s var(--ease-back), box-shadow 0.4s ease;
       position: relative;
       z-index: 2;
     }
 
     .sermon-card:hover .sermon-play {
-      transform: scale(1.1);
+      transform: scale(1.14);
+      box-shadow: 0 0 0 12px rgba(247,116,109,0.16);
     }
 
     .sermon-play svg {
@@ -1040,6 +1285,47 @@
       background: var(--black);
       position: relative;
       overflow: hidden;
+    }
+
+    /* Slow-drifting glows so the dark sections aren't flat black */
+    #whatsapp::before, #esencial::before, #esencial::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(30px);
+      animation: drift 22s var(--ease-soft) infinite alternate;
+    }
+
+    #whatsapp::before {
+      width: 560px; height: 560px;
+      top: -220px; right: -160px;
+      background: radial-gradient(circle, rgba(37,211,102,0.16), transparent 66%);
+    }
+
+    #esencial::before {
+      width: 620px; height: 620px;
+      top: -240px; left: -180px;
+      background: radial-gradient(circle, rgba(247,116,109,0.18), transparent 66%);
+    }
+
+    #esencial::after {
+      width: 480px; height: 480px;
+      bottom: -200px; right: -140px;
+      background: radial-gradient(circle, rgba(131,43,193,0.2), transparent 66%);
+      animation-duration: 28s;
+      animation-direction: alternate-reverse;
+    }
+
+    #whatsapp .container { position: relative; z-index: 1; }
+
+    .whatsapp-card {
+      transition: transform 0.4s var(--ease), border-color 0.4s ease;
+    }
+
+    .whatsapp-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(37,211,102,0.35);
     }
 
     .whatsapp-card {
@@ -1362,6 +1648,31 @@
         gap: 32px;
       }
     }
+
+    /* ────────────────────────────────────────
+       REDUCED MOTION — everything still arrives,
+       it just stops moving to get there.
+    ──────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0ms !important;
+      }
+
+      .reveal, .reveal-left, .reveal-right {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+      }
+
+      .hero-eyebrow, .hero-cue { opacity: 1 !important; }
+      .hero-line > span { transform: none !important; }
+      .hero-cue::after { display: none; }
+      .ticker-track { animation: none !important; }
+      .cursor-glow { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -1421,7 +1732,7 @@
 
   <!-- ── HERO ── -->
   <section id="hero">
-    <div class="hero-bg" id="hero-bg"></div>
+    <div class="hero-bg" id="hero-bg"><div class="hero-bg-img"></div></div>
 
     <!-- Live YouTube video — hidden until the channel goes live -->
     <div class="hero-video-wrap" id="hero-video-wrap">
@@ -1449,51 +1760,56 @@
             <span id="upcoming-badge-text" style="font-family:'Archivo',sans-serif;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--orange);"></span>
           </a>
 
+          <span class="hero-eyebrow" data-en="Kissimmee, FL · Sundays 11:00 AM">Kissimmee, FL · Domingos 11:00 AM</span>
+
           <h1 class="hero-title">
-            <span data-en="A Kingdom">Una familia</span><br>
-            <span class="line2" data-en="Family.">de reino.</span>
+            <span class="hero-line"><span data-en="A Kingdom">Una familia</span></span>
+            <span class="hero-line"><span class="line2" data-en="Family.">de reino.</span></span>
           </h1>
 
-          <p class="hero-body" data-en="We are a community that worships God in spirit and truth, builds genuine relationships, and transforms our city with the love of Christ.">
-            Somos una comunidad que adora a Dios en espíritu y en verdad,
-            construye relaciones genuinas y transforma su ciudad con el amor de Cristo.
+          <p class="hero-body" data-en="A place where worship is real, relationships run deep, and no one walks alone. Whoever you are, however you arrive — there's room for you here.">
+            Un lugar donde la adoración es real, las relaciones son profundas
+            y nadie camina solo. Vengas como vengas, aquí hay lugar para ti.
           </p>
 
           <div class="hero-actions">
-            <a href="#contacto" class="btn-primary" data-en="Plan Your Visit">Planifica Tu Visita</a>
+            <a href="#contacto" class="btn-primary" data-en="Come This Sunday">Ven Este Domingo</a>
             <a id="live-btn" href="#sermones" class="btn-outline" data-en="Watch Sermons">Ver Sermones</a>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- Scroll cue -->
+    <div class="hero-cue" id="hero-cue" aria-hidden="true"></div>
+
     <!-- Ticker -->
     <div class="hero-ticker">
       <div class="ticker-track">
-        <span data-en="Welcome to Somos Reino">Bienvenidos a Somos Reino</span>
-        <span class="dot">·</span>
-        <span>Kissimmee, Florida</span>
+        <span data-en="There's a place for you here">Aquí hay lugar para ti</span>
         <span class="dot">·</span>
         <span data-en="Sundays 11:00 AM · Celebration">Domingos 11:00 AM · Celebración</span>
         <span class="dot">·</span>
+        <span data-en="Come as you are">Ven tal como estás</span>
+        <span class="dot">·</span>
         <span data-en="Wednesdays 7:30 PM · Discipleship">Miércoles 7:30 PM · Formación</span>
         <span class="dot">·</span>
-        <span data-en="A Kingdom family">Una familia de reino</span>
-        <span class="dot">·</span>
         <span data-en="Worship · Community · Purpose">Adoración · Comunidad · Propósito</span>
-        <span class="dot">·</span>
-        <!-- Duplicate for seamless loop -->
-        <span data-en="Welcome to Somos Reino">Bienvenidos a Somos Reino</span>
         <span class="dot">·</span>
         <span>2824 Michigan Ave Unit F, Kissimmee, FL 34744</span>
         <span class="dot">·</span>
+        <!-- Exact duplicate — keeps the -50% loop seamless -->
+        <span data-en="There's a place for you here">Aquí hay lugar para ti</span>
+        <span class="dot">·</span>
         <span data-en="Sundays 11:00 AM · Celebration">Domingos 11:00 AM · Celebración</span>
+        <span class="dot">·</span>
+        <span data-en="Come as you are">Ven tal como estás</span>
         <span class="dot">·</span>
         <span data-en="Wednesdays 7:30 PM · Discipleship">Miércoles 7:30 PM · Formación</span>
         <span class="dot">·</span>
-        <span data-en="A Kingdom family">Una familia de reino</span>
-        <span class="dot">·</span>
         <span data-en="Worship · Community · Purpose">Adoración · Comunidad · Propósito</span>
+        <span class="dot">·</span>
+        <span>2824 Michigan Ave Unit F, Kissimmee, FL 34744</span>
         <span class="dot">·</span>
       </div>
     </div>
@@ -1502,17 +1818,23 @@
   <!-- ── SERVICIOS ── -->
   <section id="servicios">
     <div class="container">
-      <h2 class="display reveal" data-en="Service <em>Times</em>">Horarios de <em>Servicio</em></h2>
-      <div class="servicios-grid">
+      <div class="reveal">
+        <span class="eyebrow" data-en="Service Times">Horarios</span>
+        <h2 class="display" data-en="We Gather <em>Every Week</em>">Nos reunimos <em>cada semana</em></h2>
+        <p class="section-lead" data-en="Come a few minutes early — there's coffee, and someone waiting to welcome you by name.">
+          Llega unos minutos antes — hay café, y alguien esperando para recibirte por tu nombre.
+        </p>
+      </div>
+      <div class="servicios-grid" data-stagger>
         <div class="servicio-card reveal">
           <span class="servicio-day" data-en="Sunday">Domingo</span>
           <span class="servicio-time" data-en="11:00 AM · Celebration">11:00 AM · Celebración</span>
-          <span class="servicio-note" data-en="Bilingual · Kids available">Bilingüe · Niños disponible</span>
+          <span class="servicio-note" data-en="Bilingual · Kids ministry">Bilingüe · Ministerio de niños</span>
         </div>
-        <div class="servicio-card reveal reveal-delay-1">
+        <div class="servicio-card reveal">
           <span class="servicio-day" data-en="Wednesday">Miércoles</span>
           <span class="servicio-time" data-en="7:30 PM · Discipleship">7:30 PM · Formación</span>
-          <span class="servicio-note" data-en="Bible study and worship">Estudio bíblico y adoración</span>
+          <span class="servicio-note" data-en="Word, prayer and worship">Palabra, oración y adoración</span>
         </div>
       </div>
     </div>
@@ -1528,10 +1850,10 @@
         </div>
 
         <div>
-          <span class="whatsapp-label" data-en="Stay Connected">Mantente Conectado</span>
+          <span class="whatsapp-label" data-en="Stay Close">Mantente Cerca</span>
           <h2 class="whatsapp-title" data-en="Join our <em>WhatsApp channel</em>">Únete a nuestro <em>canal de WhatsApp</em></h2>
-          <p class="whatsapp-body" data-en="Get service reminders, event announcements, and a word of encouragement straight to your phone. No groups, no noise — just updates from Somos Reino.">
-            Recibe recordatorios de servicios, anuncios de eventos y una palabra de aliento directo en tu teléfono. Sin grupos, sin ruido — solo lo importante de Somos Reino.
+          <p class="whatsapp-body" data-en="Service reminders, what's coming up, and a word of encouragement — straight to your phone. No groups, no noise: only what matters.">
+            Recordatorios de servicio, lo que viene y una palabra de aliento — directo a tu teléfono. Sin grupos, sin ruido: solo lo que importa.
           </p>
         </div>
 
@@ -1562,24 +1884,28 @@
     <div class="container">
       <div class="row-top reveal">
         <div>
-          <h2 class="display" data-en="Recent <em>Sermons</em>">Sermones <em>recientes</em></h2>
+          <span class="eyebrow" data-en="Sermons">Predicaciones</span>
+          <h2 class="display" data-en="A Word That <em>Stays With You</em>">Palabra que <em>permanece</em></h2>
+          <p class="section-lead" data-en="Missed Sunday, or want to hear it again? Every message, right here.">
+            ¿Te perdiste el domingo o quieres volver a escucharlo? Cada mensaje, aquí mismo.
+          </p>
         </div>
       </div>
 
       <!-- Loading state -->
       <div id="sermons-loading" style="text-align:center;padding:60px 0;">
         <div style="width:40px;height:40px;border:2px solid var(--gray-100);border-top-color:var(--orange);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;"></div>
-        <p data-en="Loading sermons..." style="font-family:'Archivo',sans-serif;font-size:0.82rem;color:var(--muted);letter-spacing:0.08em;font-weight:600;">Cargando sermones...</p>
+        <p data-en="Loading messages..." style="font-family:'Archivo',sans-serif;font-size:0.82rem;color:var(--muted);letter-spacing:0.08em;font-weight:600;">Cargando mensajes...</p>
       </div>
 
       <!-- Error / fallback -->
       <div id="sermons-error" style="display:none;text-align:center;padding:60px 0;">
-        <p data-en="Watch our sermons directly on YouTube." style="font-size:0.9rem;color:var(--muted);margin-bottom:20px;">Mira nuestros sermones directamente en YouTube.</p>
+        <p data-en="The list is taking a moment — you can watch every message on YouTube." style="font-size:0.9rem;color:var(--muted);margin-bottom:20px;">La lista está tardando — puedes ver todos los mensajes en YouTube.</p>
         <a href="https://youtube.com/playlist?list=PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7" target="_blank" class="btn-primary" data-en="View Playlist →" style="display:inline-block;">Ver Playlist →</a>
       </div>
 
       <!-- Dynamic grid injected by JS -->
-      <div class="sermons-grid" id="sermons-grid" style="display:none;"></div>
+      <div class="sermons-grid" id="sermons-grid" data-stagger style="display:none;"></div>
 
       <div style="text-align:center;margin-top:48px;">
         <a href="https://youtube.com/playlist?list=PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7" target="_blank" class="link-arrow" data-en="View All on YouTube" style="justify-content:center;">Ver todos en YouTube</a>
@@ -1601,6 +1927,7 @@
     <div class="container">
       <div class="dar-inner">
         <div class="dar-left reveal">
+          <span class="eyebrow" data-en="Generosity">Generosidad</span>
           <h2 class="display" data-en="Giving Is<br><em>an Act of Faith</em>">Dar es<br><em>un acto de fe</em></h2>
 
           <blockquote class="dar-scripture">
@@ -1608,8 +1935,8 @@
             <cite data-en="2 Corinthians 9:7">2 Corintios 9:7</cite>
           </blockquote>
 
-          <p class="dar-body" data-en="Your generosity makes it possible for us to keep preaching the gospel, serving our community, and raising up the next generation of leaders. Every gift is a seed planted with eternal purpose.">
-            Tu generosidad hace posible que sigamos predicando el evangelio, sirviendo a nuestra comunidad y formando a la próxima generación de líderes. Cada ofrenda es una semilla sembrada con propósito eterno.
+          <p class="dar-body" data-en="Your generosity keeps the gospel moving in Kissimmee: every service held, every family walked with, every young person who finds their purpose. Thank you for sowing with us.">
+            Tu generosidad mantiene el evangelio en movimiento en Kissimmee: cada servicio, cada familia acompañada, cada joven que encuentra su propósito. Gracias por sembrar con nosotros.
           </p>
         </div>
 
@@ -1626,6 +1953,7 @@
 
     <div class="container" style="position:relative;z-index:1;">
       <div class="reveal" style="text-align:center;margin-bottom:56px;">
+        <span class="eyebrow eyebrow-light" data-en="Esencial · Kingdom Principles" style="justify-content:center;">Esencial · Principios del Reino</span>
         <h2 class="display" data-en="Our <em>Podcast</em>" style="color:var(--white);">Nuestro <em>Podcast</em></h2>
       </div>
 
@@ -1653,8 +1981,8 @@
 
         <!-- Right: Podcast info -->
         <div class="reveal-right">
-          <p data-en="Conversations about faith and everyday life.<br>For anyone who walks, doubts, believes, and keeps going." style="font-size:1.1rem;font-weight:300;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:40px;">
-            Conversaciones de fe y vida cotidiana.<br>Para el que camina, duda, cree y sigue adelante.
+          <p data-en="Conversations about faith and everyday life.<br>For anyone who walks, doubts, believes, and keeps going.<br><br>New episodes on Spotify, Apple Podcasts and YouTube." style="font-size:1.1rem;font-weight:300;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:40px;">
+            Conversaciones de fe y vida cotidiana.<br>Para el que camina, duda, cree y sigue adelante.<br><br>Nuevos episodios en Spotify, Apple Podcasts y YouTube.
           </p>
 
           <!-- Platform links -->
@@ -1701,27 +2029,28 @@
   <section id="contacto">
     <div class="container">
       <div class="reveal">
+        <span class="eyebrow" data-en="Visit Us">Visítanos</span>
         <h2 class="display" data-en="We'd Love<br><em>to Meet You</em>">Nos encanta<br><em>conocerte</em></h2>
 
-        <p class="contacto-intro" data-en="If it's your first time, if you have questions, or you just want to connect — we're here. You don't have to come alone.">
-          Si es tu primera vez, si tienes preguntas, o simplemente quieres conectar — estamos aquí. No tienes que venir solo.
+        <p class="contacto-intro" data-en="First time, full of questions, or just want to connect? Write to us. And you don't have to walk in alone — tell us you're coming and we'll be waiting at the door.">
+          ¿Primera vez, con preguntas, o simplemente quieres conectar? Escríbenos. Y no tienes que entrar solo: dinos que vienes y te esperamos en la puerta.
         </p>
 
-        <div class="info-blocks" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;margin-top:48px;">
-          <div class="info-block">
+        <div class="info-blocks" data-stagger style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;margin-top:48px;">
+          <div class="info-block reveal">
             <span class="info-block-label" data-en="Location">Ubicación</span>
             <div class="info-block-value">2824 Michigan Ave Unit F<br>Kissimmee, FL 34744</div>
           </div>
-          <div class="info-block">
+          <div class="info-block reveal">
             <span class="info-block-label" data-en="Service Times">Horarios de Servicio</span>
             <div class="info-block-value" data-en="Sunday 11:00 AM · Celebration<br>Wednesday 7:30 PM · Discipleship">Domingo 11:00 AM · Celebración<br>Miércoles 7:30 PM · Formación</div>
           </div>
-          <div class="info-block">
+          <div class="info-block reveal">
             <span class="info-block-label" data-en="Email Us">Escríbenos</span>
             <div class="info-block-value">hola@somosreino.org</div>
-            <div class="info-block-sub" data-en="We respond within 24 hours">Respondemos en menos de 24 horas</div>
+            <div class="info-block-sub" data-en="A real person answers, within 24 hours">Te responde una persona real, en menos de 24 horas</div>
           </div>
-          <div class="info-block">
+          <div class="info-block reveal">
             <span class="info-block-label" data-en="Follow Us">Síguenos</span>
             <div style="display:flex;gap:12px;margin-top:8px;">
               <a href="https://www.instagram.com/somosreinofl?igsh=MWx5dWt4NzJmY3Z5cg%3D%3D&utm_source=qr" target="_blank" class="social-link" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
@@ -1745,7 +2074,7 @@
           <p class="footer-tagline" data-en="&quot;Seek first the kingdom of God<br>and his righteousness.&quot; — Matthew 6:33">"Busquen primeramente el reino de Dios<br>y su justicia." — Mateo 6:33</p>
           <div class="footer-social">
             <a href="https://www.instagram.com/somosreinofl?igsh=MWx5dWt4NzJmY3Z5cg%3D%3D&utm_source=qr" target="_blank" class="social-link" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
-            <a href="#" target="_blank" class="social-link" aria-label="YouTube"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+            <a href="https://youtube.com/@somosreinofl?si=o2pavfWMVryrC4az" target="_blank" class="social-link" aria-label="YouTube"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
             <a href="https://www.facebook.com/share/1CkYP7Dpob/?mibextid=wwXIfr" target="_blank" class="social-link" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
             <a href="https://www.tiktok.com/@somosreinofl?_r=1&_t=ZT-95coSNg4ni2" target="_blank" class="social-link" aria-label="TikTok"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg></a>
             <a href="https://whatsapp.com/channel/0029VaQlt7T2ZjCpaaXFOK0P" target="_blank" rel="noopener" class="social-link" aria-label="Canal de WhatsApp" data-en-label="WhatsApp Channel"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.82 9.82 0 016.988 2.898 9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
@@ -1757,7 +2086,7 @@
           <ul class="footer-links">
             <li><a href="#hero" data-en="Home">Inicio</a></li>
             <li><a href="#sermones" data-en="Sermons">Sermones</a></li>
-            <li><a href="#esencial">Esencial</a></li>
+            <li><a href="#esencial">Podcast</a></li>
             <li><a href="#whatsapp">WhatsApp</a></li>
             <li><a href="#dar" data-en="Give">Dar</a></li>
             <li><a href="#contacto" data-en="Contact">Contacto</a></li>
@@ -1767,25 +2096,25 @@
         <div>
           <span class="footer-col-title" data-en="Services">Servicios</span>
           <ul class="footer-links">
-            <li><a href="#" data-en="Sunday 11:00 AM · Celebration">Domingo 11:00 AM · Celebración</a></li>
-            <li><a href="#" data-en="Wednesday 7:30 PM · Discipleship">Miércoles 7:30 PM · Formación</a></li>
-            <li><a href="#" data-en="Kids Ministry">Ministerio de Niños</a></li>
+            <li><a href="#servicios" data-en="Sunday 11:00 AM · Celebration">Domingo 11:00 AM · Celebración</a></li>
+            <li><a href="#servicios" data-en="Wednesday 7:30 PM · Discipleship">Miércoles 7:30 PM · Formación</a></li>
+            <li><a href="#contacto" data-en="Kids Ministry">Ministerio de Niños</a></li>
           </ul>
         </div>
 
         <div>
           <span class="footer-col-title" data-en="Resources">Recursos</span>
           <ul class="footer-links">
-            <li><a href="#">Podcast — Esencial</a></li>
-            <li><a href="#" data-en="Prayer Request">Petición de Oración</a></li>
-            <li><a href="#" data-en="Plan of Salvation">Plan de Salvación</a></li>
-            <li><a href="#" data-en="Give Online">Dar en Línea</a></li>
+            <li><a href="#esencial">Podcast — Esencial</a></li>
+            <li><a href="mailto:hola@somosreino.org" data-en="Prayer Request">Petición de Oración</a></li>
+            <li><a href="https://whatsapp.com/channel/0029VaQlt7T2ZjCpaaXFOK0P" target="_blank" rel="noopener" data-en="WhatsApp Channel">Canal de WhatsApp</a></li>
+            <li><a href="give.html" data-en="Give Online">Dar en Línea</a></li>
           </ul>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <span class="footer-copy" data-en="© 2025 Somos Reino Church · Kissimmee, FL · All rights reserved">© 2025 Somos Reino Church · Kissimmee, FL · Todos los derechos reservados</span>
+        <span class="footer-copy" data-en="© <span class=&quot;yr&quot;>2026</span> Somos Reino Church · Kissimmee, FL · All rights reserved">© <span class="yr">2026</span> Somos Reino Church · Kissimmee, FL · Todos los derechos reservados</span>
         <span class="footer-verse" data-en="A family that transforms its city">Una familia que transforma su ciudad</span>
       </div>
     </div>
@@ -1826,6 +2155,10 @@
       document.querySelectorAll('.lang-option').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.lang === lang);
       });
+
+      // The copyright year is re-injected because the swap above replaces it
+      const year = new Date().getFullYear();
+      document.querySelectorAll('.yr').forEach(el => { el.textContent = year; });
     }
 
     document.querySelectorAll('.lang-option').forEach(btn => {
@@ -1838,31 +2171,84 @@
 
     applyLanguage(currentLang);
 
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     // ── CURSOR GLOW ──
-    const cursorGlow = document.getElementById('cursor-glow');
-    document.addEventListener('mousemove', e => {
-      cursorGlow.style.left = e.clientX + 'px';
-      cursorGlow.style.top = e.clientY + 'px';
-    });
-    document.addEventListener('mouseleave', () => { cursorGlow.style.opacity = '0'; });
-    document.addEventListener('mouseenter', () => { cursorGlow.style.opacity = '1'; });
+    // Follows the pointer with a little lag, moved on the compositor.
+    (function() {
+      const glow = document.getElementById('cursor-glow');
+      if (!glow || reducedMotion || !window.matchMedia('(pointer: fine)').matches) return;
 
-    // ── SCROLL PROGRESS ──
-    const progressBar = document.getElementById('scroll-progress');
-    window.addEventListener('scroll', () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      progressBar.style.width = (scrollTop / docHeight * 100) + '%';
-    });
+      let targetX = window.innerWidth / 2, targetY = window.innerHeight / 2;
+      let x = targetX, y = targetY, running = false;
 
-    // Nav scroll effect
-    const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 60);
-    });
+      function frame() {
+        x += (targetX - x) * 0.14;
+        y += (targetY - y) * 0.14;
+        glow.style.transform = `translate3d(${x - 180}px, ${y - 180}px, 0)`;
+        if (Math.abs(targetX - x) > 0.3 || Math.abs(targetY - y) > 0.3) {
+          requestAnimationFrame(frame);
+        } else {
+          running = false;
+        }
+      }
 
-    // ── ENHANCED SCROLL REVEAL ──
-    const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+      document.addEventListener('mousemove', e => {
+        targetX = e.clientX;
+        targetY = e.clientY;
+        glow.style.opacity = '1';
+        if (!running) { running = true; requestAnimationFrame(frame); }
+      });
+      document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
+    })();
+
+    // ── SCROLL: progress bar, nav state, hero parallax ──
+    // All three ride a single rAF-throttled listener.
+    (function() {
+      const progressBar = document.getElementById('scroll-progress');
+      const nav = document.getElementById('nav');
+      const heroBg = document.getElementById('hero-bg');
+      let lastY = window.scrollY;
+      let ticking = false;
+
+      function update() {
+        ticking = false;
+        const y = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+        progressBar.style.transform = `scaleX(${docHeight > 0 ? Math.min(y / docHeight, 1) : 0})`;
+        nav.classList.toggle('scrolled', y > 60);
+
+        // Out of the way going down, back on the way up — but never while a
+        // menu is open, and never over the hero.
+        const menuOpen = document.getElementById('mobile-menu').classList.contains('open');
+        const goingDown = y > lastY;
+        nav.classList.toggle('nav-hidden', goingDown && y > 420 && !menuOpen);
+
+        // Parallax only matters while the hero is still on screen
+        if (heroBg && !reducedMotion && y < window.innerHeight) {
+          heroBg.style.transform = `translate3d(0, ${y * 0.28}px, 0)`;
+        }
+
+        lastY = y;
+      }
+
+      window.addEventListener('scroll', () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }, { passive: true });
+
+      update();
+    })();
+
+    // ── SCROLL REVEAL ──
+    // Children of a [data-stagger] container come in one after another.
+    function applyStagger(root) {
+      (root || document).querySelectorAll('[data-stagger]').forEach(group => {
+        group.querySelectorAll(':scope > .reveal, :scope > .reveal-left, :scope > .reveal-right')
+          .forEach((el, i) => el.style.setProperty('--reveal-delay', (i * 0.09).toFixed(2) + 's'));
+      });
+    }
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -1870,16 +2256,24 @@
           observer.unobserve(e.target);
         }
       });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    revealEls.forEach(el => observer.observe(el));
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
 
-    // ── HERO PARALLAX ──
-    window.addEventListener('scroll', () => {
-      const heroBg = document.querySelector('.hero-bg');
-      if (heroBg) {
-        heroBg.style.transform = `scale(1) translateY(${window.scrollY * 0.3}px)`;
-      }
-    });
+    function observeReveals(root) {
+      (root || document).querySelectorAll('.reveal, .reveal-left, .reveal-right')
+        .forEach(el => observer.observe(el));
+    }
+
+    applyStagger();
+    observeReveals();
+
+    // ── HERO SCROLL CUE — fades out as soon as you start scrolling ──
+    (function() {
+      const cue = document.getElementById('hero-cue');
+      if (!cue) return;
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 80) cue.classList.add('faded');
+      }, { passive: true, once: false });
+    })();
 
     // ── LIVE HERO VIDEO (YouTube IFrame API) ──
     let ytPlayer = null;
@@ -1925,6 +2319,8 @@
               heroBg.classList.add('faded');
               heroOverlay.classList.add('faded');
               heroContent.classList.add('hero-faded');
+              const cue = document.getElementById('hero-cue');
+              if (cue) cue.classList.add('faded');
             });
             document.getElementById('hero-unmute-btn').style.display = 'flex';
           }
@@ -2051,16 +2447,15 @@
         const title = video.title.split('|')[0].trim();
         return `
           <button type="button" class="sermon-card reveal" data-video-id="${video.videoId}" aria-label="Reproducir: ${title}">
-            <div class="sermon-thumb" style="position:relative;aspect-ratio:16/9;overflow:hidden;">
+            <div class="sermon-thumb">
               <img
                 src="${video.thumbnail}"
                 alt="${title}"
+                loading="lazy"
                 onerror="this.src='https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg'"
-                style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease;"
-                onmouseover="this.style.transform='scale(1.04)'"
-                onmouseout="this.style.transform='scale(1)'"
+                style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"
               />
-              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(17,17,17,0.15);">
+              <div class="sermon-scrim">
                 <span class="sermon-play">
                   <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                 </span>
@@ -2083,7 +2478,8 @@
         grid.innerHTML = data.videos.slice(0,6).map(buildCard).join('');
         loading.style.display = 'none';
         grid.style.display = 'grid';
-        grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        applyStagger(grid.parentElement);
+        observeReveals(grid);
         applyLanguage(currentLang);
       }
 
