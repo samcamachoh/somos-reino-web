@@ -31,6 +31,20 @@
       --muted:      #6E6862;
       --muted-dark: rgba(255,255,255,0.5);
 
+      /* ── THE COLOR RULE ──
+         Coral is the action color. It marks what you can act on: buttons,
+         links, hover and selected states, the play control — plus one
+         brand statement, the hero headline. Everything structural wears
+         ink instead. If it isn't clickable, it isn't coral. */
+      --action:      var(--orange);
+      --action-dark: var(--orange-dark);
+
+      /* Structure: labels, rules and quiet borders */
+      --label:       var(--muted);
+      --label-dark:  rgba(255,255,255,0.45);
+      --rule:        rgba(17,17,17,0.16);
+      --rule-dark:   rgba(255,255,255,0.2);
+
       --section-pad: 108px 0;
       --content-max: 1200px;
 
@@ -67,9 +81,11 @@
       color: var(--black);
     }
 
+    /* Emphasis in a heading reads through the drawn underline below,
+       so the words themselves stay ink. */
     h2.display em {
       font-style: normal;
-      color: var(--orange);
+      color: inherit;
     }
 
     /* Section eyebrow — small label above a heading */
@@ -78,7 +94,7 @@
       font-size: 0.66rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--orange);
+      color: var(--label);
       font-weight: 700;
       display: flex;
       align-items: center;
@@ -90,7 +106,7 @@
       content: '';
       width: 28px;
       height: 2px;
-      background: var(--orange);
+      background: var(--rule);
       border-radius: 2px;
       transform: scaleX(0);
       transform-origin: left;
@@ -100,12 +116,12 @@
     .visible .eyebrow::before,
     .eyebrow.visible::before { transform: scaleX(1); }
 
-    .eyebrow-light { color: rgba(255,255,255,0.55); }
-    .eyebrow-light::before { background: var(--orange); }
+    .eyebrow-light { color: var(--label-dark); }
+    .eyebrow-light::before { background: var(--rule-dark); }
 
     /* Heading accent — underline that draws itself in on reveal */
     h2.display em {
-      background-image: linear-gradient(rgba(247,116,109,0.32), rgba(247,116,109,0.32));
+      background-image: linear-gradient(var(--rule), var(--rule));
       background-repeat: no-repeat;
       background-position: 0 100%;
       background-size: 0% 0.1em;
@@ -115,6 +131,11 @@
 
     .visible h2.display em,
     h2.display.visible em { background-size: 100% 0.1em; }
+
+    #esencial h2.display em,
+    #live-chat h2.display em {
+      background-image: linear-gradient(var(--rule-dark), var(--rule-dark));
+    }
 
     /* Lead paragraph under a section heading */
     .section-lead {
@@ -128,27 +149,13 @@
     .section-lead-light { color: rgba(255,255,255,0.55); }
 
     /* ── CURSOR GLOW ── */
-    .cursor-glow {
-      width: 360px;
-      height: 360px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(247,116,109,0.16) 0%, rgba(247,116,109,0.05) 40%, transparent 70%);
-      position: fixed;
-      top: 0; left: 0;
-      pointer-events: none;
-      z-index: 9999;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      will-change: transform;
-    }
-
     /* ── SMOOTH SCROLL PROGRESS ── */
     .scroll-progress {
       position: fixed;
       top: 0; left: 0;
       height: 3px;
       width: 100%;
-      background: linear-gradient(90deg, var(--orange-dark), var(--orange));
+      background: linear-gradient(90deg, var(--action-dark), var(--action));
       z-index: 9999;
       transform: scaleX(0);
       transform-origin: left;
@@ -223,20 +230,20 @@
     .nav-btn:focus-visible, .lang-option:focus-visible,
     .sermon-card:focus-visible, .link-arrow:focus-visible,
     .social-link:focus-visible {
-      outline: 2px solid var(--orange);
+      outline: 2px solid var(--action);
       outline-offset: 3px;
     }
 
     .btn-primary {
       color: var(--white);
-      background: var(--orange);
+      background: var(--action);
       padding: 17px 38px;
-      border: 1px solid var(--orange);
+      border: 1px solid var(--action);
     }
 
     .btn-primary:hover {
-      background: var(--orange-dark);
-      border-color: var(--orange-dark);
+      background: var(--action-dark);
+      border-color: var(--action-dark);
       transform: translateY(-2px);
       box-shadow: 0 12px 28px rgba(247,116,109,0.4);
     }
@@ -365,7 +372,7 @@
       left: 0; right: 0; bottom: 0;
       height: 2px;
       border-radius: 2px;
-      background: var(--orange);
+      background: var(--action);
       transform: scaleX(0);
       transform-origin: right;
       transition: transform 0.4s var(--ease);
@@ -381,7 +388,7 @@
       font-weight: 700;
       text-transform: uppercase;
       color: var(--white);
-      background: var(--orange);
+      background: var(--action);
       border: none;
       padding: 12px 26px;
       border-radius: 100px;
@@ -392,7 +399,7 @@
       flex-shrink: 0;
     }
 
-    .nav-btn:hover { background: var(--orange-dark); transform: translateY(-1px); }
+    .nav-btn:hover { background: var(--action-dark); transform: translateY(-1px); }
 
     .nav-right {
       display: flex;
@@ -428,7 +435,7 @@
     }
 
     .lang-option.active {
-      background: var(--orange);
+      background: var(--action);
       color: var(--white);
     }
 
@@ -507,7 +514,7 @@
     }
 
     .mobile-menu-close:hover {
-      background: var(--orange);
+      background: var(--action);
       transform: rotate(90deg);
     }
 
@@ -537,7 +544,7 @@
       transform: translateY(0);
     }
 
-    .mobile-menu-links a:active { color: var(--orange); }
+    .mobile-menu-links a:active { color: var(--action); }
 
     .mobile-menu-links li:nth-child(1) a { transition-delay: 0.06s; }
     .mobile-menu-links li:nth-child(2) a { transition-delay: 0.11s; }
@@ -720,7 +727,7 @@
       width: 26px;
       height: 2px;
       border-radius: 2px;
-      background: var(--orange);
+      background: rgba(255,255,255,0.32);
     }
 
     .hero-title {
@@ -751,7 +758,7 @@
 
     .hero-title .line2 {
       font-style: normal;
-      color: var(--orange);
+      color: var(--action);
     }
 
     /* Scroll cue — a thin rail with a dot running down it */
@@ -776,7 +783,7 @@
       top: 0; left: 0;
       width: 1px;
       height: 18px;
-      background: var(--orange);
+      background: rgba(255,255,255,0.75);
       animation: cueTravel 2.4s var(--ease-soft) infinite;
     }
 
@@ -822,7 +829,7 @@
 
     .servicio-card {
       background: var(--white);
-      border: 1px solid var(--orange);
+      border: 1px solid var(--rule);
       border-radius: 18px;
       padding: 34px 36px;
       position: relative;
@@ -830,23 +837,10 @@
       transition: transform 0.4s var(--ease), box-shadow 0.4s ease;
     }
 
-    .servicio-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; bottom: 0;
-      width: 4px;
-      background: var(--orange);
-      transform: scaleY(0);
-      transform-origin: top;
-      transition: transform 0.5s var(--ease);
-    }
-
     .servicio-card:hover {
       transform: translateY(-6px);
       box-shadow: 0 18px 40px rgba(17,17,17,0.1);
     }
-
-    .servicio-card:hover::before { transform: scaleY(1); }
 
     .servicio-day {
       font-family: 'Archivo', sans-serif;
@@ -861,7 +855,7 @@
       font-family: 'Archivo', sans-serif;
       font-size: 1rem;
       font-weight: 700;
-      color: var(--orange);
+      color: var(--near-black);
       display: block;
       margin-bottom: 6px;
     }
@@ -876,7 +870,7 @@
     .hero-ticker {
       position: absolute;
       bottom: 0; left: 0; right: 0;
-      background: var(--orange);
+      background: var(--cream);
       padding: 15px 0;
       overflow: hidden;
       z-index: 10;
@@ -898,12 +892,12 @@
       letter-spacing: 0.03em;
       text-transform: uppercase;
       font-weight: 700;
-      color: var(--white);
+      color: var(--near-black);
       flex-shrink: 0;
     }
 
     .ticker-track .dot {
-      color: rgba(255,255,255,0.5);
+      color: rgba(17,17,17,0.28);
     }
 
     @keyframes ticker {
@@ -974,7 +968,7 @@
       letter-spacing: 0.05em;
       text-transform: uppercase;
       font-weight: 700;
-      color: var(--orange);
+      color: var(--action);
       text-decoration: none;
       display: inline-flex;
       align-items: center;
@@ -1023,7 +1017,7 @@
     }
 
     .sermon-card:hover .sermon-scrim {
-      background: linear-gradient(to top, rgba(17,17,17,0.55), rgba(247,116,109,0.14));
+      background: linear-gradient(to top, rgba(17,17,17,0.6), rgba(17,17,17,0.2));
     }
 
     .sermon-thumb {
@@ -1038,7 +1032,7 @@
     .sermon-play {
       width: 54px; height: 54px;
       border-radius: 50%;
-      background: var(--orange);
+      background: var(--action);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1068,7 +1062,7 @@
       font-size: 0.68rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--orange);
+      color: var(--label);
       font-weight: 700;
       margin-bottom: 12px;
       display: block;
@@ -1150,8 +1144,8 @@
     }
 
     .video-modal-close:hover {
-      background: var(--orange);
-      border-color: var(--orange);
+      background: var(--action);
+      border-color: var(--action);
     }
 
     @media (max-width: 600px) {
@@ -1184,7 +1178,7 @@
       padding: 26px 30px;
       background: var(--white);
       border-radius: 16px;
-      border: 1px solid var(--orange);
+      border: 1px solid var(--rule);
     }
 
     .dar-scripture p {
@@ -1202,7 +1196,7 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       font-weight: 700;
-      color: var(--orange);
+      color: var(--label);
       font-style: normal;
     }
 
@@ -1238,7 +1232,7 @@
       font-size: 0.66rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--orange);
+      color: var(--label);
       font-weight: 700;
       margin-bottom: 10px;
       display: block;
@@ -1272,7 +1266,7 @@
     }
 
     .social-link:hover {
-      background: var(--orange);
+      background: var(--action);
       color: var(--white);
       transform: translateY(-2px);
     }
@@ -1306,7 +1300,7 @@
     #esencial::before {
       width: 620px; height: 620px;
       top: -240px; left: -180px;
-      background: radial-gradient(circle, rgba(247,116,109,0.18), transparent 66%);
+      background: radial-gradient(circle, rgba(255,255,255,0.09), transparent 66%);
     }
 
     #esencial::after {
@@ -1356,7 +1350,7 @@
       font-size: 0.66rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--orange);
+      color: var(--label-dark);
       font-weight: 700;
       margin-bottom: 10px;
       display: block;
@@ -1374,7 +1368,12 @@
 
     .whatsapp-title em {
       font-style: normal;
-      color: var(--orange);
+      color: var(--white);
+      background-image: linear-gradient(var(--rule-dark), var(--rule-dark));
+      background-repeat: no-repeat;
+      background-position: 0 100%;
+      background-size: 100% 0.1em;
+      padding-bottom: 0.06em;
     }
 
     .whatsapp-body {
@@ -1427,7 +1426,7 @@
     }
 
     footer .social-link:hover {
-      background: var(--orange);
+      background: var(--action);
       color: var(--white);
     }
 
@@ -1437,7 +1436,7 @@
       letter-spacing: 0.18em;
       text-transform: uppercase;
       font-weight: 700;
-      color: var(--orange);
+      color: var(--label-dark);
       margin-bottom: 22px;
       display: block;
     }
@@ -1625,8 +1624,6 @@
         font-size: 0.72rem;
         padding: 15px 28px;
       }
-
-      .cursor-glow { display: none; }
     }
 
     /* ────────────────────────────────────────
@@ -1671,14 +1668,10 @@
       .hero-line > span { transform: none !important; }
       .hero-cue::after { display: none; }
       .ticker-track { animation: none !important; }
-      .cursor-glow { display: none; }
     }
   </style>
 </head>
 <body>
-
-  <!-- Cursor glow -->
-  <div class="cursor-glow" id="cursor-glow"></div>
 
   <!-- Scroll progress bar -->
   <div class="scroll-progress" id="scroll-progress"></div>
@@ -1756,8 +1749,8 @@
 
           <!-- Upcoming stream badge — hidden by default, shown when a stream is scheduled and we're not live -->
           <a id="upcoming-badge" href="#" target="_blank" style="display:none;align-items:center;gap:10px;margin-bottom:22px;text-decoration:none;">
-            <div style="width:10px;height:10px;border-radius:50%;background:var(--orange);"></div>
-            <span id="upcoming-badge-text" style="font-family:'Archivo',sans-serif;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--orange);"></span>
+            <div style="width:10px;height:10px;border-radius:50%;background:var(--action);"></div>
+            <span id="upcoming-badge-text" style="font-family:'Archivo',sans-serif;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--action);"></span>
           </a>
 
           <span class="hero-eyebrow" data-en="Kissimmee, FL · Sundays 11:00 AM">Kissimmee, FL · Domingos 11:00 AM</span>
@@ -1894,7 +1887,7 @@
 
       <!-- Loading state -->
       <div id="sermons-loading" style="text-align:center;padding:60px 0;">
-        <div style="width:40px;height:40px;border:2px solid var(--gray-100);border-top-color:var(--orange);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;"></div>
+        <div style="width:40px;height:40px;border:2px solid var(--gray-100);border-top-color:var(--near-black);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;"></div>
         <p data-en="Loading messages..." style="font-family:'Archivo',sans-serif;font-size:0.82rem;color:var(--muted);letter-spacing:0.08em;font-weight:600;">Cargando mensajes...</p>
       </div>
 
@@ -1966,15 +1959,15 @@
           <div style="position:relative;width:280px;height:280px;flex-shrink:0;">
             <img src="esencial-cover.png" alt="Esencial" style="position:absolute;inset:0;width:100%;height:100%;border-radius:22px;object-fit:cover;" />
             <!-- Glow -->
-            <div style="position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);width:200px;height:30px;background:rgba(247,116,109,0.4);filter:blur(24px);border-radius:50%;"></div>
+            <div style="position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);width:200px;height:30px;background:rgba(255,255,255,0.22);filter:blur(24px);border-radius:50%;"></div>
           </div>
 
           <!-- Scripture -->
-          <div style="padding:20px 24px;border-left:4px solid var(--orange);background:rgba(255,255,255,0.04);border-radius:0 14px 14px 0;max-width:280px;">
+          <div style="padding:20px 24px;border-left:4px solid var(--rule-dark);background:rgba(255,255,255,0.04);border-radius:0 14px 14px 0;max-width:280px;">
             <p data-en="&quot;Man shall not live on bread alone, but on every word that comes from the mouth of God.&quot;" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:0.95rem;line-height:1.6;color:rgba(255,255,255,0.75);margin:0 0 8px;">
               "No solo de pan vivirá el hombre, sino de toda palabra que sale de la boca de Dios."
             </p>
-            <cite data-en="Matthew 4:4" style="font-family:'Archivo',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--orange);font-style:normal;">Mateo 4:4</cite>
+            <cite data-en="Matthew 4:4" style="font-family:'Archivo',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--label-dark);font-style:normal;">Mateo 4:4</cite>
           </div>
 
         </div>
@@ -2172,35 +2165,6 @@
     applyLanguage(currentLang);
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // ── CURSOR GLOW ──
-    // Follows the pointer with a little lag, moved on the compositor.
-    (function() {
-      const glow = document.getElementById('cursor-glow');
-      if (!glow || reducedMotion || !window.matchMedia('(pointer: fine)').matches) return;
-
-      let targetX = window.innerWidth / 2, targetY = window.innerHeight / 2;
-      let x = targetX, y = targetY, running = false;
-
-      function frame() {
-        x += (targetX - x) * 0.14;
-        y += (targetY - y) * 0.14;
-        glow.style.transform = `translate3d(${x - 180}px, ${y - 180}px, 0)`;
-        if (Math.abs(targetX - x) > 0.3 || Math.abs(targetY - y) > 0.3) {
-          requestAnimationFrame(frame);
-        } else {
-          running = false;
-        }
-      }
-
-      document.addEventListener('mousemove', e => {
-        targetX = e.clientX;
-        targetY = e.clientY;
-        glow.style.opacity = '1';
-        if (!running) { running = true; requestAnimationFrame(frame); }
-      });
-      document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
-    })();
 
     // ── SCROLL: progress bar, nav state, hero parallax ──
     // All three ride a single rAF-throttled listener.
@@ -2467,7 +2431,7 @@
               <div class="sermon-meta">
                 <span>${video.date}</span>
                 <span>·</span>
-                <span data-en="Play →" style="color:var(--orange);">Reproducir →</span>
+                <span data-en="Play →" style="color:var(--action);">Reproducir →</span>
               </div>
             </div>
           </button>`;
