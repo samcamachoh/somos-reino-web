@@ -11,7 +11,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400..900;1,400..900&family=Inter:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet" />
 
   <style>
     /* ── RESET & ROOT ── */
@@ -72,6 +72,11 @@
       padding: 0 48px;
     }
 
+    /* ── HEADING VOICES ──
+       Headings are set in three: a heavy anchor (the default 900), a
+       regular lead-in (.reg) and an italic phrase (em). Each heading
+       picks two, and which one leads alternates down the page so no two
+       sections open the same way. */
     h2.display {
       font-family: 'Archivo', sans-serif;
       font-size: clamp(2.4rem, 5vw, 4rem);
@@ -81,12 +86,26 @@
       color: var(--black);
     }
 
-    /* Emphasis in a heading reads through the drawn underline below,
-       so the words themselves stay ink. */
-    h2.display em {
-      font-style: normal;
-      color: inherit;
+    /* The regular voice — a quiet lead-in before the anchor lands */
+    h2.display .reg,
+    .hero-title .reg,
+    h1 .reg {
+      font-weight: 400;
+      letter-spacing: -0.005em;
     }
+
+    /* The italic voice — arrives a beat after the rest of the heading */
+    h2.display em {
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: -0.005em;
+      color: inherit;
+      opacity: 0;
+      transition: opacity 0.9s var(--ease) 0.32s;
+    }
+
+    .visible h2.display em,
+    h2.display.visible em { opacity: 1; }
 
     /* Section eyebrow — small label above a heading */
     .eyebrow {
@@ -118,24 +137,6 @@
 
     .eyebrow-light { color: var(--label-dark); }
     .eyebrow-light::before { background: var(--rule-dark); }
-
-    /* Heading accent — underline that draws itself in on reveal */
-    h2.display em {
-      background-image: linear-gradient(var(--rule), var(--rule));
-      background-repeat: no-repeat;
-      background-position: 0 100%;
-      background-size: 0% 0.1em;
-      padding-bottom: 0.06em;
-      transition: background-size 1.1s var(--ease) 0.3s;
-    }
-
-    .visible h2.display em,
-    h2.display.visible em { background-size: 100% 0.1em; }
-
-    #esencial h2.display em,
-    #live-chat h2.display em {
-      background-image: linear-gradient(var(--rule-dark), var(--rule-dark));
-    }
 
     /* Lead paragraph under a section heading */
     .section-lead {
@@ -757,7 +758,7 @@
     .hero-line:nth-of-type(2) > span { animation-delay: 0.64s; }
 
     .hero-title .line2 {
-      font-style: normal;
+      font-style: italic;
       color: var(--action);
     }
 
@@ -1366,14 +1367,10 @@
       margin-bottom: 12px;
     }
 
-    .whatsapp-title em {
-      font-style: normal;
-      color: var(--white);
-      background-image: linear-gradient(var(--rule-dark), var(--rule-dark));
-      background-repeat: no-repeat;
-      background-position: 0 100%;
-      background-size: 100% 0.1em;
-      padding-bottom: 0.06em;
+    .whatsapp-title .reg {
+      font-weight: 400;
+      letter-spacing: 0;
+      color: rgba(255,255,255,0.72);
     }
 
     .whatsapp-body {
@@ -1664,7 +1661,7 @@
         filter: none !important;
       }
 
-      .hero-eyebrow, .hero-cue { opacity: 1 !important; }
+      .hero-eyebrow, .hero-cue, h2.display em { opacity: 1 !important; }
       .hero-line > span { transform: none !important; }
       .hero-cue::after { display: none; }
       .ticker-track { animation: none !important; }
@@ -1813,7 +1810,7 @@
     <div class="container">
       <div class="reveal">
         <span class="eyebrow" data-en="Service Times">Horarios</span>
-        <h2 class="display" data-en="We Gather <em>Every Week</em>">Nos reunimos <em>cada semana</em></h2>
+        <h2 class="display" data-en="We gather <em>every week</em>">Nos reunimos <em>cada semana</em></h2>
         <p class="section-lead" data-en="Come a few minutes early — there's coffee, and someone waiting to welcome you by name.">
           Llega unos minutos antes — hay café, y alguien esperando para recibirte por tu nombre.
         </p>
@@ -1844,7 +1841,7 @@
 
         <div>
           <span class="whatsapp-label" data-en="Stay Close">Mantente Cerca</span>
-          <h2 class="whatsapp-title" data-en="Join our <em>WhatsApp channel</em>">Únete a nuestro <em>canal de WhatsApp</em></h2>
+          <h2 class="whatsapp-title" data-en="<span class='reg'>Join our</span> WhatsApp channel"><span class="reg">Únete a nuestro</span> canal de WhatsApp</h2>
           <p class="whatsapp-body" data-en="Service reminders, what's coming up, and a word of encouragement — straight to your phone. No groups, no noise: only what matters.">
             Recordatorios de servicio, lo que viene y una palabra de aliento — directo a tu teléfono. Sin grupos, sin ruido: solo lo que importa.
           </p>
@@ -1864,7 +1861,7 @@
           <div style="width:10px;height:10px;border-radius:50%;background:#E53E3E;animation:livePulse 1.5s ease-in-out infinite;"></div>
           <span data-en="Live Now" style="font-family:'Archivo',sans-serif;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:#E53E3E;">En Vivo Ahora</span>
         </div>
-        <h2 class="display" data-en="Live <em>Chat</em>" style="color:var(--white);margin-bottom:32px;">Chat <em>en vivo</em></h2>
+        <h2 class="display" data-en="Live <em>chat</em>" style="color:var(--white);margin-bottom:32px;">Chat <em>en vivo</em></h2>
         <div class="live-chat-frame">
           <iframe id="live-chat-iframe" title="Live chat"></iframe>
         </div>
@@ -1878,7 +1875,7 @@
       <div class="row-top reveal">
         <div>
           <span class="eyebrow" data-en="Sermons">Predicaciones</span>
-          <h2 class="display" data-en="A Word That <em>Stays With You</em>">Palabra que <em>permanece</em></h2>
+          <h2 class="display" data-en="A word <em>that stays with you</em>">Palabra <em>que permanece</em></h2>
           <p class="section-lead" data-en="Missed Sunday, or want to hear it again? Every message, right here.">
             ¿Te perdiste el domingo o quieres volver a escucharlo? Cada mensaje, aquí mismo.
           </p>
@@ -1921,7 +1918,7 @@
       <div class="dar-inner">
         <div class="dar-left reveal">
           <span class="eyebrow" data-en="Generosity">Generosidad</span>
-          <h2 class="display" data-en="Giving Is<br><em>an Act of Faith</em>">Dar es<br><em>un acto de fe</em></h2>
+          <h2 class="display" data-en="<span class='reg'>Giving is</span><br>an act of faith"><span class="reg">Dar es</span><br>un acto de fe</h2>
 
           <blockquote class="dar-scripture">
             <p data-en="&quot;Each person should give as they have decided in their heart, not reluctantly or out of obligation, for God loves a cheerful giver.&quot;">"Cada uno dé como propuso en su corazón: no con tristeza, ni por necesidad, porque Dios ama al dador alegre."</p>
@@ -1947,7 +1944,7 @@
     <div class="container" style="position:relative;z-index:1;">
       <div class="reveal" style="text-align:center;margin-bottom:56px;">
         <span class="eyebrow eyebrow-light" data-en="Esencial · Kingdom Principles" style="justify-content:center;">Esencial · Principios del Reino</span>
-        <h2 class="display" data-en="Our <em>Podcast</em>" style="color:var(--white);">Nuestro <em>Podcast</em></h2>
+        <h2 class="display" data-en="<em>Our</em> Podcast" style="color:var(--white);"><em>Nuestro</em> Podcast</h2>
       </div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;">
@@ -2023,7 +2020,7 @@
     <div class="container">
       <div class="reveal">
         <span class="eyebrow" data-en="Visit Us">Visítanos</span>
-        <h2 class="display" data-en="We'd Love<br><em>to Meet You</em>">Nos encanta<br><em>conocerte</em></h2>
+        <h2 class="display" data-en="We'd love<br><em>to meet you</em>">Nos encanta<br><em>conocerte</em></h2>
 
         <p class="contacto-intro" data-en="First time, full of questions, or just want to connect? Write to us. And you don't have to walk in alone — tell us you're coming and we'll be waiting at the door.">
           ¿Primera vez, con preguntas, o simplemente quieres conectar? Escríbenos. Y no tienes que entrar solo: dinos que vienes y te esperamos en la puerta.
