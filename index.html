@@ -13,6 +13,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400..900;1,400..900&family=Inter:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet" />
 
+  <link rel="preload" as="image" href="hero-mobile.webp" media="(max-width: 600px)" fetchpriority="high" />
+  <link rel="preload" as="image" href="hero-desktop.webp" media="(min-width: 601px)" fetchpriority="high" />
   <style>
     /* ── RESET & ROOT ── */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -100,8 +102,7 @@
       font-weight: 400;
       letter-spacing: -0.005em;
       color: inherit;
-      opacity: 0;
-      transition: opacity 0.9s var(--ease) 0.32s;
+      opacity: 1;
     }
 
     .visible h2.display em,
@@ -163,40 +164,19 @@
       will-change: transform;
     }
 
-    /* ── SCROLL REVEAL ──
-       One system, three directions. Each element eases in with a touch of
-       depth (scale + blur) so sections arrive instead of just appearing.
-       Stagger is driven by --reveal-delay, set per element from JS. */
-    .reveal, .reveal-left, .reveal-right {
+    /* Content is visible by default; JS opts only offscreen items into motion. */
+    .reveal-pending {
       opacity: 0;
-      transition:
-        opacity 0.85s var(--ease),
-        transform 1s var(--ease),
-        filter 0.85s var(--ease);
+      transform: translateY(16px);
+    }
+    .reveal, .reveal-left, .reveal-right {
+      transition: opacity 0.4s ease, transform 0.45s var(--ease);
       transition-delay: var(--reveal-delay, 0s);
     }
-
-    .reveal       { transform: translate3d(0, 36px, 0) scale(0.985); }
-    .reveal-left  { transform: translate3d(-44px, 0, 0); }
-    .reveal-right { transform: translate3d(44px, 0, 0); }
-
-    .reveal.visible,
-    .reveal-left.visible,
-    .reveal-right.visible {
+    .reveal.visible, .reveal-left.visible, .reveal-right.visible {
       opacity: 1;
-      transform: translate3d(0, 0, 0) scale(1);
-      filter: blur(0);
+      transform: none;
     }
-
-    /* Soft-focus entrance is desktop-only — blur is costly on phones */
-    @media (min-width: 901px) {
-      .reveal, .reveal-left, .reveal-right { filter: blur(7px); }
-    }
-
-    .reveal-delay-1 { --reveal-delay: 0.1s; }
-    .reveal-delay-2 { --reveal-delay: 0.22s; }
-    .reveal-delay-3 { --reveal-delay: 0.34s; }
-    .reveal-delay-4 { --reveal-delay: 0.46s; }
 
     /* ── BUTTONS (pill, bold, flat) ── */
     .btn-primary, .btn-outline, .btn-ghost {
@@ -302,7 +282,7 @@
       top: 0; left: 0; right: 0;
       z-index: 200;
       background: rgba(17,17,17,0.0);
-      transition: background 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease,
+      transition: background 0.4s ease, box-shadow 0.4s ease,
                   transform 0.5s var(--ease);
       padding: 26px 0;
       will-change: transform;
@@ -587,15 +567,15 @@
     .hero-bg-img {
       position: absolute;
       inset: 0;
-      background-image: url('IMG_0204.jpg');
+      background-image: url('hero-desktop.webp');
       background-size: cover;
       background-position: center top;
-      animation: heroZoom 18s var(--ease-soft) forwards;
+
     }
 
     @media (max-width: 600px) {
       .hero-bg-img {
-        background-image: url('mobile-hero.jpg');
+        background-image: url('hero-mobile.webp');
         background-position: center 20%;
       }
     }
@@ -720,7 +700,7 @@
       color: rgba(255,255,255,0.62);
       margin-bottom: 22px;
       opacity: 0;
-      animation: fadeUp 0.9s ease-out 0.35s forwards;
+      animation: fadeUp 0.45s ease-out forwards;
     }
 
     .hero-eyebrow::before {
@@ -751,11 +731,11 @@
     .hero-line > span {
       display: block;
       transform: translate3d(0, 110%, 0);
-      animation: lineRise 1.1s var(--ease) forwards;
+      animation: lineRise 0.55s var(--ease) forwards;
     }
 
-    .hero-line:nth-of-type(1) > span { animation-delay: 0.5s; }
-    .hero-line:nth-of-type(2) > span { animation-delay: 0.64s; }
+    .hero-line:nth-of-type(1) > span { animation-delay: 0s; }
+    .hero-line:nth-of-type(2) > span { animation-delay: 0.08s; }
 
     .hero-title .line2 {
       font-style: italic;
@@ -802,7 +782,7 @@
       max-width: 440px;
       margin-bottom: 44px;
       opacity: 0;
-      animation: fadeUp 0.9s ease-out 0.9s forwards;
+      animation: fadeUp 0.45s ease-out 0.1s forwards;
     }
 
     .hero-actions {
@@ -810,7 +790,7 @@
       gap: 16px;
       flex-wrap: wrap;
       opacity: 0;
-      animation: fadeUp 0.9s ease-out 1.1s forwards;
+      animation: fadeUp 0.45s ease-out 0.15s forwards;
     }
 
     /* ────────────────────────────────────────
@@ -1650,6 +1630,7 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
+        animation-delay: 0ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         transition-delay: 0ms !important;
@@ -1665,6 +1646,26 @@
       .hero-line > span { transform: none !important; }
       .hero-cue::after { display: none; }
       .ticker-track { animation: none !important; }
+    }
+    section[id] { scroll-margin-top: 88px; }
+    #hero { min-height: 100svh; }
+    .hero-line { padding-right: 0.08em; }
+    h2.display { text-wrap: balance; }
+    .section-lead, .hero-body { text-wrap: pretty; }
+    .mobile-menu { overflow-y: auto; overscroll-behavior: contain; }
+    #nav:focus-within { transform: none; }
+    .contacto-inner > *, .dar-inner > * { min-width: 0; }
+    .contacto-inner a { overflow-wrap: anywhere; }
+    @media (min-width: 901px) and (max-width: 1100px) {
+      .nav-links { position: static; transform: none; gap: 20px; }
+      #nav .container { gap: 20px; }
+    }
+    @media (max-width: 600px) {
+      .hero-title { font-size: clamp(2.1rem, 10.5vw, 3.9rem); }
+      .hero-body { margin-bottom: 28px; }
+      .hero-content { padding: 112px 0 96px; }
+      .hero-eyebrow { letter-spacing: 0.1em; line-height: 1.6; }
+      #upcoming-badge { line-height: 1.6; }
     }
   </style>
 </head>
@@ -1931,7 +1932,7 @@
         </div>
 
         <div class="dar-right reveal reveal-delay-2">
-          <iframe src="https://casafamiliar.churchtrac.com/give/embed" style="border:none; width:100%; height:600px;" seamless></iframe>
+          <iframe loading="lazy" title="Dar en línea" src="https://casafamiliar.churchtrac.com/give/embed" style="border:none; width:100%; height:600px;" seamless></iframe>
         </div>
       </div>
     </div>
@@ -1954,7 +1955,7 @@
 
           <!-- Podcast cover -->
           <div style="position:relative;width:280px;height:280px;flex-shrink:0;">
-            <img src="esencial-cover.png" alt="Esencial" style="position:absolute;inset:0;width:100%;height:100%;border-radius:22px;object-fit:cover;" />
+            <img src="esencial-cover.png" loading="lazy" decoding="async" width="280" height="280" alt="Esencial" style="position:absolute;inset:0;width:100%;height:100%;border-radius:22px;object-fit:cover;" />
             <!-- Glow -->
             <div style="position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);width:200px;height:30px;background:rgba(255,255,255,0.22);filter:blur(24px);border-radius:50%;"></div>
           </div>
@@ -2112,9 +2113,21 @@
 
   <!-- ── SCRIPTS ── -->
   <script>
+    // Bound API waits so the fallback and error state can always appear.
+    async function fetchJSON(url) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 10000);
+      try {
+        const response = await fetch(url, { signal: controller.signal });
+        if (!response.ok) throw new Error('API unavailable');
+        return await response.json();
+      } finally { clearTimeout(timeout); }
+    }
+
     // ── LANGUAGE (EN/ES) ──
     const LANG_KEY = 'somos-reino-lang';
-    let currentLang = localStorage.getItem(LANG_KEY) === 'en' ? 'en' : 'es';
+    let currentLang = 'es';
+    try { currentLang = localStorage.getItem(LANG_KEY) === 'en' ? 'en' : 'es'; } catch {}
 
     // Shorthand for translating strings generated directly in JS
     function t(es, en) { return currentLang === 'en' ? en : es; }
@@ -2154,7 +2167,7 @@
     document.querySelectorAll('.lang-option').forEach(btn => {
       btn.addEventListener('click', () => {
         const lang = btn.dataset.lang;
-        localStorage.setItem(LANG_KEY, lang);
+        try { localStorage.setItem(LANG_KEY, lang); } catch {}
         applyLanguage(lang);
       });
     });
@@ -2163,12 +2176,11 @@
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // ── SCROLL: progress bar, nav state, hero parallax ──
-    // All three ride a single rAF-throttled listener.
+    // ── SCROLL: progress bar and nav state ──
+    // Share a single rAF-throttled listener.
     (function() {
       const progressBar = document.getElementById('scroll-progress');
       const nav = document.getElementById('nav');
-      const heroBg = document.getElementById('hero-bg');
       let lastY = window.scrollY;
       let ticking = false;
 
@@ -2186,11 +2198,6 @@
         const goingDown = y > lastY;
         nav.classList.toggle('nav-hidden', goingDown && y > 420 && !menuOpen);
 
-        // Parallax only matters while the hero is still on screen
-        if (heroBg && !reducedMotion && y < window.innerHeight) {
-          heroBg.style.transform = `translate3d(0, ${y * 0.28}px, 0)`;
-        }
-
         lastY = y;
       }
 
@@ -2206,22 +2213,29 @@
     function applyStagger(root) {
       (root || document).querySelectorAll('[data-stagger]').forEach(group => {
         group.querySelectorAll(':scope > .reveal, :scope > .reveal-left, :scope > .reveal-right')
-          .forEach((el, i) => el.style.setProperty('--reveal-delay', (i * 0.09).toFixed(2) + 's'));
+          .forEach((el, i) => el.style.setProperty('--reveal-delay', (Math.min(i, 3) * 0.05).toFixed(2) + 's'));
       });
     }
 
-    const observer = new IntersectionObserver((entries) => {
+    const observer = !reducedMotion && 'IntersectionObserver' in window ? new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
           e.target.classList.add('visible');
           observer.unobserve(e.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    }, { threshold: 0, rootMargin: '0px 0px 40px 0px' }) : null;
 
     function observeReveals(root) {
       (root || document).querySelectorAll('.reveal, .reveal-left, .reveal-right')
-        .forEach(el => observer.observe(el));
+        .forEach(el => {
+          if (!observer || el.getBoundingClientRect().top <= window.innerHeight) {
+            el.classList.add('visible');
+          } else {
+            el.classList.add('reveal-pending');
+            observer.observe(el);
+          }
+        });
     }
 
     applyStagger();
@@ -2292,6 +2306,13 @@
     function startHeroLiveVideo(videoId) {
       pendingLiveVideoId = videoId;
       if (ytApiReady) initHeroPlayer(videoId);
+      else if (!document.getElementById('youtube-api')) {
+        const tag = document.createElement('script');
+        tag.id = 'youtube-api';
+        tag.src = 'https://www.youtube.com/iframe_api';
+        tag.async = true;
+        document.head.appendChild(tag);
+      }
     }
 
     function showLiveChat(videoId) {
@@ -2317,14 +2338,6 @@
       }
     });
 
-    // Load the YouTube IFrame API asynchronously
-    (function() {
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      const firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-    })();
-
     function handleLiveStatus(data) {
       if (data.live) {
         // Show live badge
@@ -2348,8 +2361,7 @@
         }
       } else {
         // Not live — check for a best-effort "upcoming" scheduled stream
-        fetch('/api/upcoming')
-          .then(r => r.json())
+        fetchJSON('/api/upcoming')
           .then(upData => {
             if (!upData.upcoming) return;
             const badge = document.getElementById('upcoming-badge');
@@ -2366,12 +2378,10 @@
 
     // Prefer this site's own /api/live (no dependency on an external
     // service's uptime); fall back to the legacy external API if it fails.
-    fetch('/api/live')
-      .then(r => { if (!r.ok) throw new Error('local live api unavailable'); return r.json(); })
+    fetchJSON('/api/live')
       .then(handleLiveStatus)
       .catch(() => {
-        fetch('https://somos-reino-api.vercel.app/api/live')
-          .then(r => r.json())
+        fetchJSON('https://somos-reino-api.vercel.app/api/live')
           .then(handleLiveStatus)
           .catch(() => {});
       });
@@ -2404,16 +2414,20 @@
       const grid = document.getElementById('sermons-grid');
       const error = document.getElementById('sermons-error');
 
+      function escapeHTML(value) {
+        return String(value ?? '').replace(/[&<>"']/g, char => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        })[char]);
+      }
       function buildCard(video) {
-        const title = video.title.split('|')[0].trim();
+        const title = escapeHTML(String(video.title || 'Sermón').split('|')[0].trim());
         return `
           <button type="button" class="sermon-card reveal" data-video-id="${video.videoId}" aria-label="Reproducir: ${title}">
             <div class="sermon-thumb">
               <img
-                src="${video.thumbnail}"
+                src="https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg"
                 alt="${title}"
                 loading="lazy"
-                onerror="this.src='https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg'"
                 style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"
               />
               <div class="sermon-scrim">
@@ -2426,7 +2440,7 @@
               <span class="sermon-series">Somos Reino</span>
               <h3 class="sermon-title">${title}</h3>
               <div class="sermon-meta">
-                <span>${video.date}</span>
+                <span>${escapeHTML(video.date)}</span>
                 <span>·</span>
                 <span data-en="Play →" style="color:var(--action);">Reproducir →</span>
               </div>
@@ -2435,8 +2449,10 @@
       }
 
       function renderVideos(data) {
-        if (!data.videos?.length) throw new Error('No videos');
-        grid.innerHTML = data.videos.slice(0,6).map(buildCard).join('');
+        const videos = Array.isArray(data.videos)
+          ? data.videos.filter(video => video && /^[\w-]{11}$/.test(video.videoId)).slice(0, 6) : [];
+        if (!videos.length) throw new Error('No videos');
+        grid.innerHTML = videos.map(buildCard).join('');
         loading.style.display = 'none';
         grid.style.display = 'grid';
         applyStagger(grid.parentElement);
@@ -2452,12 +2468,10 @@
 
       // Prefer this site's own /api/videos (pulls straight from the YouTube
       // playlist feed); fall back to the legacy external API if unavailable.
-      fetch('/api/videos')
-        .then(r => { if (!r.ok) throw new Error('local api unavailable'); return r.json(); })
+      fetchJSON('/api/videos')
         .then(renderVideos)
         .catch(() => {
-          fetch('https://somos-reino-api.vercel.app/api/videos')
-            .then(r => r.json())
+          fetchJSON('https://somos-reino-api.vercel.app/api/videos')
             .then(renderVideos)
             .catch(() => {
               loading.style.display = 'none';
