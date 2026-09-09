@@ -1,0 +1,42 @@
+name: Add Eikon event
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  add-eikon:
+    if: github.event.head_commit.message != 'Add Eikon Men event'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Add Eikon Men to events
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('index.html')
+          html = path.read_text()
+          if '<h3 class="event-title">Eikon Men</h3>' not in html:
+              anchor = '''        <div class="event-row reveal">\n          <div class="event-date-box">\n            <span class="event-date-num">10</span>\n            <span class="event-date-month">OCT</span>\n          </div>\n          <div class="event-info">\n            <h3 class="event-title">Avance</h3>\n            <p class="event-details" data-en="Saturday · 1:00 PM – 5:00 PM">Sábado · 1:00 PM – 5:00 PM</p>\n          </div>\n          <span class="event-tag event-tag-static" data-en="October 10">10 de octubre</span>\n        </div>'''
+              addition = anchor + '''\n        <div class="event-row reveal">\n          <div class="event-date-box">\n            <span class="event-date-num">16</span>\n            <span class="event-date-month">OCT</span>\n          </div>\n          <div class="event-info">\n            <h3 class="event-title">Eikon Men</h3>\n            <p class="event-details" data-en="Friday · Men's Event · 7:30 PM">Viernes · Evento de Hombres · 7:30 PM</p>\n          </div>\n          <span class="event-tag event-tag-static" data-en="October 16">16 de octubre</span>\n        </div>'''
+              if anchor not in html:
+                  raise SystemExit('Avance event anchor not found')
+              html = html.replace(anchor, addition, 1)
+              path.write_text(html)
+          PY
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git rm .github/workflows/add-eikon-event.yml
+          git commit -m "Add Eikon Men event"
+          git push origin HEAD:main
