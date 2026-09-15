@@ -1209,6 +1209,28 @@
     }
     a.event-tag:hover { background: var(--action); color: var(--white); transform: translateY(-1px); }
     .event-tag-static { border-color: var(--rule); color: var(--muted); }
+    .event-row-special {
+      margin-bottom: 12px;
+      padding: 30px 24px;
+      border-radius: 16px;
+      border: 1px solid color-mix(in srgb, var(--action) 35%, transparent);
+      background: color-mix(in srgb, var(--action) 8%, var(--white));
+    }
+    .event-row-special:first-child { border-top-color: color-mix(in srgb, var(--action) 35%, transparent); }
+    .event-row-special:hover { padding-left: 32px; }
+    .event-special-label {
+      display: inline-block;
+      margin-bottom: 7px;
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--action-dark);
+    }
+    .event-tag-special { background: var(--action); color: var(--white); }
+    a.event-tag-special:hover { background: var(--action-dark); }
+
 
     /* ────────────────────────────────────────
        DAR / OFRENDAS
@@ -1925,6 +1947,18 @@
         </div>
       </div>
       <div class="events-list" data-stagger>
+        <div class="event-row event-row-special reveal">
+          <div class="event-date-box">
+            <span class="event-date-num">13</span>
+            <span class="event-date-month">NOV</span>
+          </div>
+          <div class="event-info">
+            <span class="event-special-label" data-en="Special">Especial</span>
+            <h3 class="event-title">Respuesta De Gracia</h3>
+            <p class="event-details" data-en="Friday · 7:00 PM">Viernes · 7:00 PM</p>
+          </div>
+          <a class="event-tag event-tag-special" href="https://casafamiliar.churchtrac.com/connect?ei=ADCNQ99" target="_blank" rel="noopener" data-en="Register">Registrarse</a>
+        </div>
         <div class="event-row reveal">
           <div class="event-date-box">
             <span class="event-date-num">18</span>
