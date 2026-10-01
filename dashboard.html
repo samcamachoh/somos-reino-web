@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="referrer" content="no-referrer" />
+  <title>Guest Dashboard — Somos Reino</title>
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..900&family=Inter:wght@300..700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --black:#111; --white:#fff; --cream:#F6F4F1; --orange:#F7746D; --text:#171412; --muted:#6E6862; --line:#E2DED9; }
+    body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--text); }
+    .header { background:var(--black); padding:22px 0; }
+    .header .inner, main { max-width:1100px; margin:0 auto; padding:0 24px; }
+    .header .inner { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+    .header img { height:34px; width:auto; display:block; }
+    .header span { font-family:'Archivo',sans-serif; font-weight:700; font-size:.75rem; letter-spacing:.08em; text-transform:uppercase; color:rgba(255,255,255,.6); }
+    main { padding-top:40px; padding-bottom:72px; }
+    h1 { font-family:'Archivo',sans-serif; font-size:clamp(1.8rem,5vw,2.4rem); font-weight:900; letter-spacing:-.01em; margin-bottom:24px; }
+    .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin-bottom:28px; }
+    .stat { background:var(--white); border-radius:14px; padding:18px 20px; box-shadow:0 10px 28px rgba(17,17,17,.06); }
+    .stat b { display:block; font-family:'Archivo',sans-serif; font-size:2rem; font-weight:900; line-height:1; margin-bottom:6px; }
+    .stat small { color:var(--muted); font-size:.82rem; }
+    .tools { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:16px; }
+    .tools input[type=search] { flex:1 1 240px; font:inherit; padding:11px 14px; border:1px solid var(--line); border-radius:10px; background:var(--white); }
+    .tools input:focus { outline:2px solid var(--orange); outline-offset:1px; }
+    .chip { font:inherit; font-size:.85rem; font-weight:600; padding:9px 14px; border:1px solid var(--line); border-radius:999px; background:var(--white); color:var(--text); cursor:pointer; }
+    .chip.on { background:var(--orange); border-color:var(--orange); color:var(--black); }
+    .card { background:var(--white); border-radius:14px; box-shadow:0 10px 28px rgba(17,17,17,.06); overflow:hidden; }
+    table { width:100%; border-collapse:collapse; font-size:.92rem; }
+    th, td { text-align:left; padding:13px 16px; border-bottom:1px solid var(--line); vertical-align:top; }
+    th { font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); background:#FBFAF8; }
+    tr.row { cursor:pointer; }
+    tr.row:hover td { background:#FBFAF8; }
+    tr.detail td { background:#FBFAF8; padding:18px 16px 22px; }
+    dl { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px 24px; }
+    dt { font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+    dd { word-break:break-word; }
+    dd.wide { grid-column:1 / -1; }
+    .tag { display:inline-block; font-size:.75rem; font-weight:600; padding:3px 9px; border-radius:999px; background:#FDE3E1; color:#8A2A24; }
+    .msg { padding:40px 24px; text-align:center; color:var(--muted); }
+    a { color:inherit; }
+    @media (max-width:700px) { .hide-sm { display:none; } th, td { padding:11px 12px; } }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="inner">
+      <img src="/logo.png" alt="Somos Reino" />
+      <span>Guest dashboard</span>
+    </div>
+  </header>
+  <main id="app" hidden>
+    <h1>New guests</h1>
+    <section class="stats" id="stats"></section>
+    <div class="tools">
+      <input type="search" id="q" placeholder="Search name, email, phone…" aria-label="Search guests" />
+      <button class="chip on" data-f="all">All</button>
+      <button class="chip" data-f="follow">Wants follow-up</button>
+      <button class="chip" data-f="home">Looking for a church home</button>
+      <button class="chip" data-f="week">Last 7 days</button>
+    </div>
+    <div class="card"><div id="list"></div></div>
+  </main>
+  <p class="msg" id="msg" hidden></p>
+
+  <script>
+    (function () {
+      var LABELS = [
+        ['phone', 'Phone'], ['email', 'Email'], ['address', 'Address / ZIP'], ['adults', 'Adults'],
+        ['kids', 'Children'], ['kidsAges', 'Children ages'], ['visit', 'Visit status'],
+        ['churchHome', 'Looking for a church home'], ['otherChurch', 'Attends another church'],
+        ['interests', 'Interests'], ['contactMethod', 'Preferred contact'], ['bestTime', 'Best time'],
+        ['birthday', 'Birthday'], ['source', 'Heard about us'], ['invitedBy', 'Invited by'],
+        ['followUp', 'Wants follow-up'],
+      ];
+      var guests = [], filter = 'all', query = '', open = null;
+      var $ = function (id) { return document.getElementById(id); };
+
+      function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+      function show(text) { $('app').hidden = true; $('msg').hidden = false; $('msg').textContent = text; }
+      function when(g) {
+        var d = new Date(g.timestamp);
+        return isNaN(d) ? null : d;
+      }
+      function fmtDate(g) {
+        var d = when(g);
+        return d ? d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : esc(g.timestamp);
+      }
+      function yes(v) { return /^(yes|sí|si|true)$/i.test(String(v).trim()); }
+      function recent(g) { var d = when(g); return !!d && Date.now() - d.getTime() < 7 * 864e5; }
+
+      function matches(g) {
+        if (filter === 'follow' && !yes(g.followUp)) return false;
+        if (filter === 'home' && !yes(g.churchHome)) return false;
+        if (filter === 'week' && !recent(g)) return false;
+        if (!query) return true;
+        return (g.name + ' ' + g.email + ' ' + g.phone).toLowerCase().indexOf(query) !== -1;
+      }
+
+      function renderStats() {
+        var stats = [
+          [guests.length, 'Total guests'],
+          [guests.filter(recent).length, 'Last 7 days'],
+          [guests.filter(function (g) { return yes(g.followUp); }).length, 'Want follow-up'],
+          [guests.filter(function (g) { return yes(g.churchHome); }).length, 'Looking for a church home'],
+        ];
+        $('stats').innerHTML = stats.map(function (s) {
+          return '<div class="stat"><b>' + s[0] + '</b><small>' + s[1] + '</small></div>';
+        }).join('');
+      }
+
+      function renderList() {
+        var rows = guests.map(function (g, i) { return [g, i]; }).filter(function (p) { return matches(p[0]); });
+        if (!rows.length) { $('list').innerHTML = '<p class="msg">No guests match.</p>'; return; }
+        var html = '<table><thead><tr><th>Date</th><th>Name</th><th class="hide-sm">Email</th><th class="hide-sm">Phone</th><th>Follow-up</th></tr></thead><tbody>';
+        rows.forEach(function (p) {
+          var g = p[0], i = p[1];
+          html += '<tr class="row" data-i="' + i + '"><td>' + fmtDate(g) + '</td><td>' + esc(g.name) + '</td>' +
+            '<td class="hide-sm">' + esc(g.email) + '</td><td class="hide-sm">' + esc(g.phone) + '</td>' +
+            '<td>' + (yes(g.followUp) ? '<span class="tag">Yes</span>' : 'No') + '</td></tr>';
+          if (open === i) {
+            html += '<tr class="detail"><td colspan="5"><dl>' + LABELS.map(function (l) {
+              return g[l[0]] ? '<div><dt>' + l[1] + '</dt><dd>' + esc(g[l[0]]) + '</dd></div>' : '';
+            }).join('') + (g.message ? '<div class="wide"><dt>Message</dt><dd>' + esc(g.message) + '</dd></div>' : '') + '</dl></td></tr>';
+          }
+        });
+        $('list').innerHTML = html + '</tbody></table>';
+      }
+
+      $('list').addEventListener('click', function (e) {
+        var tr = e.target.closest && e.target.closest('tr.row');
+        if (!tr) return;
+        var i = Number(tr.getAttribute('data-i'));
+        open = open === i ? null : i;
+        renderList();
+      });
+      $('q').addEventListener('input', function () { query = this.value.trim().toLowerCase(); open = null; renderList(); });
+      Array.prototype.forEach.call(document.querySelectorAll('.chip'), function (b) {
+        b.addEventListener('click', function () {
+          filter = b.getAttribute('data-f'); open = null;
+          Array.prototype.forEach.call(document.querySelectorAll('.chip'), function (c) { c.classList.toggle('on', c === b); });
+          renderList();
+        });
+      });
+
+      // The dashboard URL is /d/<key>; without a key there is nothing to show.
+      var m = location.pathname.match(/^\/d\/([^/]+)\/?$/);
+      if (!m) { show('Not found.'); return; }
+      fetch('/api/guests', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key: decodeURIComponent(m[1]) }),
+        cache: 'no-store',
+      }).then(function (r) {
+        if (r.status === 404) throw new Error('Not found.');
+        if (!r.ok) throw new Error('Could not load guests. Try again in a moment.');
+        return r.json();
+      }).then(function (data) {
+        guests = data.guests || [];
+        $('app').hidden = false;
+        renderStats();
+        renderList();
+      }).catch(function (err) { show(err.message || 'Could not load guests.'); });
+    })();
+  </script>
+</body>
+</html>

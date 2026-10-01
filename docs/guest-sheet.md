@@ -11,6 +11,12 @@ function doPost(e) {
   try {
     const d = JSON.parse(e.postData.contents);
     if (d.secret !== SECRET) return out({ ok: false });
+    if (d.action === 'list') {
+      const rows = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0]
+        .getDataRange().getValues().slice(1)
+        .map(r => r.map(v => v instanceof Date ? v.toISOString() : v));
+      return out({ ok: true, rows });
+    }
     SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].appendRow([
       new Date(), d.name, d.phone, d.email, d.address, d.adults, d.kids,
       d.kidsAges, d.visit, d.churchHome, d.otherChurch, d.interests,
@@ -31,3 +37,9 @@ function out(o) {
 
 3. Deploy → New deployment → type **Web app** → Execute as **Me**, Who has access **Anyone** → Deploy, and authorize. Copy the `/exec` URL.
 4. In Vercel add env vars `GUEST_SHEET_WEBHOOK_URL` (that URL) and `GUEST_SHEET_SECRET` (same value as `SECRET`), then redeploy.
+
+## Staff dashboard
+
+The dashboard lists the sheet's entries at `/d/<GUEST_DASHBOARD_KEY>`. Set `GUEST_DASHBOARD_KEY` in Vercel to a long random string (for example `openssl rand -hex 24`) and redeploy. Only people who have the full link can open it, and `/api/guests` refuses any request that doesn't carry the key. The key is not stored in the repo. To revoke access, change the env var and share the new link.
+
+If you set up the Apps Script before the dashboard existed, replace it with the version above (it adds the `list` action), then Deploy → Manage deployments → edit → New version.
