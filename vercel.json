@@ -1,9 +1,10 @@
 {
-  "rewrites": [
+  "routes": [
     {
-      "source": "/",
+      "src": "/",
       "has": [{ "type": "host", "value": "(welcome|visit)\\..*" }],
-      "destination": "/welcome.html"
-    }
+      "dest": "/welcome.html"
+    },
+    { "handle": "filesystem" }
   ]
 }
