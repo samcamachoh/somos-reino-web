@@ -17,8 +17,10 @@
     .header { background:var(--black); padding:22px 0; }
     .header .inner { max-width:700px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; }
     .header img { height:34px; width:auto; display:block; }
-    .lang { font-family:'Archivo',sans-serif; font-size:.78rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:rgba(255,255,255,.7); background:none; border:0; cursor:pointer; }
-    .lang:hover { color:var(--action); }
+    .lang-toggle { display:flex; align-items:center; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.16); border-radius:100px; padding:3px; gap:2px; flex-shrink:0; }
+    .lang-option { font-family:'Archivo',sans-serif; font-size:0.66rem; font-weight:700; letter-spacing:0.04em; color:rgba(255,255,255,0.55); background:none; border:none; padding:6px 12px; border-radius:100px; cursor:pointer; transition:background .25s ease,color .25s ease; }
+    .lang-option.active { background:var(--action); color:var(--white); }
+    .lang-option:not(.active):hover { color:var(--white); }
     main { max-width:700px; margin:0 auto; padding:56px 24px 80px; }
     h1 { font-family:'Archivo',sans-serif; font-size:clamp(2.2rem,6vw,3rem); font-weight:900; letter-spacing:-.01em; line-height:1.05; margin-bottom:14px; }
     h1 .reg { font-weight:400; }
@@ -48,7 +50,10 @@
   <header class="header">
     <div class="inner">
       <a href="https://somosreino.org"><img src="logo.png" alt="Somos Reino" /></a>
-      <button class="lang" id="lang" type="button">English</button>
+      <div class="lang-toggle" role="group" aria-label="Language selector">
+        <button type="button" class="lang-option active" data-lang="es">ES</button>
+        <button type="button" class="lang-option" data-lang="en">EN</button>
+      </div>
     </div>
   </header>
 
@@ -57,6 +62,15 @@
     <p class="intro" data-es="Cuéntanos un poco sobre ti para que podamos saludarte y acompañarte. Solo toma un minuto." data-en="Tell us a little about yourself so we can say hello and walk with you. It only takes a minute.">Cuéntanos un poco sobre ti para que podamos saludarte y acompañarte. Solo toma un minuto.</p>
 
     <form id="form" novalidate>
+      <div class="field">
+        <label for="visit" data-es="¿Es tu primera visita?" data-en="Is this your first visit?">¿Es tu primera visita?</label>
+        <select id="visit" name="visit">
+          <option value="" data-es="Selecciona…" data-en="Select…">Selecciona…</option>
+          <option value="First time" data-es="Primera vez" data-en="First time">Primera vez</option>
+          <option value="Returning" data-es="He venido antes" data-en="I've been before">He venido antes</option>
+          <option value="Member elsewhere" data-es="Soy miembro de otra iglesia" data-en="I'm a member of another church">Soy miembro de otra iglesia</option>
+        </select>
+      </div>
       <div class="field">
         <label for="name" data-es="Nombre completo *" data-en="Full name *">Nombre completo *</label>
         <input id="name" name="name" autocomplete="name" maxlength="120" required />
@@ -67,8 +81,8 @@
           <input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="40" />
         </div>
         <div class="field">
-          <label for="email" data-es="Correo electrónico" data-en="Email">Correo electrónico</label>
-          <input id="email" name="email" type="email" autocomplete="email" maxlength="200" />
+          <label for="email" data-es="Correo electrónico *" data-en="Email *">Correo electrónico *</label>
+          <input id="email" name="email" type="email" autocomplete="email" maxlength="200" required />
         </div>
       </div>
       <div class="field">
@@ -90,15 +104,6 @@
         <input id="kidsAges" name="kidsAges" maxlength="100" placeholder="3, 7, 10" />
       </div>
       <div class="field">
-        <label for="visit" data-es="¿Es tu primera visita?" data-en="Is this your first visit?">¿Es tu primera visita?</label>
-        <select id="visit" name="visit">
-          <option value="" data-es="Selecciona…" data-en="Select…">Selecciona…</option>
-          <option value="First time" data-es="Primera vez" data-en="First time">Primera vez</option>
-          <option value="Returning" data-es="He venido antes" data-en="I've been before">He venido antes</option>
-          <option value="Member elsewhere" data-es="Soy miembro de otra iglesia" data-en="I'm a member of another church">Soy miembro de otra iglesia</option>
-        </select>
-      </div>
-      <div class="field">
         <label for="churchHome" data-es="¿Buscas una iglesia?" data-en="Are you looking for a church home?">¿Buscas una iglesia?</label>
         <select id="churchHome" name="churchHome">
           <option value="" data-es="Selecciona…" data-en="Select…">Selecciona…</option>
@@ -118,7 +123,8 @@
       <div class="field">
         <label data-es="Me interesa…" data-en="I'm interested in…">Me interesa…</label>
         <div class="checks">
-          <label class="check"><input type="checkbox" name="interests" value="Small groups" /><span data-es="Grupos pequeños" data-en="Small groups">Grupos pequeños</span></label>
+          <label class="check"><input type="checkbox" name="interests" value="Men's ministry" /><span data-es="Ministerio de hombres" data-en="Men's ministry">Ministerio de hombres</span></label>
+          <label class="check"><input type="checkbox" name="interests" value="Women's ministry" /><span data-es="Ministerio de mujeres" data-en="Women's ministry">Ministerio de mujeres</span></label>
           <label class="check"><input type="checkbox" name="interests" value="Serving" /><span data-es="Servir / voluntariado" data-en="Serving / volunteering">Servir / voluntariado</span></label>
           <label class="check"><input type="checkbox" name="interests" value="Kids" /><span data-es="Ministerio de niños" data-en="Kids ministry">Ministerio de niños</span></label>
           <label class="check"><input type="checkbox" name="interests" value="Youth" /><span data-es="Ministerio de jóvenes" data-en="Youth ministry">Ministerio de jóvenes</span></label>
@@ -179,18 +185,24 @@
   </main>
 
   <script>
-    var lang = (navigator.language || '').toLowerCase().indexOf('en') === 0 ? 'en' : 'es';
+    var LANG_KEY = 'somos-reino-lang', lang = 'es';
+    try { lang = localStorage.getItem(LANG_KEY) === 'en' ? 'en' : 'es'; } catch (e) {}
     var msgs = {
-      es: { required: 'Escribe tu nombre y un teléfono o correo.', fail: 'No pudimos enviar el formulario. Inténtalo de nuevo.' },
-      en: { required: 'Please enter your name and a phone or email.', fail: "We couldn't send the form. Please try again." }
+      es: { required: 'Escribe tu nombre y un correo electrónico válido.', fail: 'No pudimos enviar el formulario. Inténtalo de nuevo.' },
+      en: { required: 'Please enter your name and a valid email.', fail: "We couldn't send the form. Please try again." }
     };
-    var langBtn = document.getElementById('lang');
     function applyLang() {
       document.documentElement.lang = lang;
       document.querySelectorAll('[data-es]').forEach(function (el) { el.textContent = el.getAttribute('data-' + lang); });
-      langBtn.textContent = lang === 'es' ? 'English' : 'Español';
+      document.querySelectorAll('.lang-option').forEach(function (b) { b.classList.toggle('active', b.dataset.lang === lang); });
     }
-    langBtn.addEventListener('click', function () { lang = lang === 'es' ? 'en' : 'es'; applyLang(); });
+    document.querySelectorAll('.lang-option').forEach(function (b) {
+      b.addEventListener('click', function () {
+        lang = b.dataset.lang;
+        try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+        applyLang();
+      });
+    });
     applyLang();
 
     document.getElementById('source').addEventListener('change', function () {
@@ -204,7 +216,7 @@
       var fd = new FormData(form), d = Object.fromEntries(fd);
       d.interests = fd.getAll('interests');
       d.followUp = form.elements.followUp.checked;
-      if (!d.name.trim() || (!d.phone.trim() && !d.email.trim())) { err.textContent = msgs[lang].required; return; }
+      if (!d.name.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email.trim())) { err.textContent = msgs[lang].required; return; }
       btn.disabled = true;
       fetch('/api/guest', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) })
         .then(function (r) { if (!r.ok) throw new Error(); form.style.display = 'none'; document.getElementById('thanks').style.display = 'block'; })
