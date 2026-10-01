@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "(welcome|visit)\\..*" }],
+      "destination": "/welcome.html"
+    }
+  ]
+}

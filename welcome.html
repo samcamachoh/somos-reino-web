@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bienvenido — Somos Reino</title>
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400..900;1,400..900&family=Inter:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --black:#111; --white:#fff; --cream:#F6F4F1; --orange:#F7746D; --text:#171412; --muted:#6E6862; --line:#E2DED9; --action:var(--orange); }
+    body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--text); }
+    .header { background:var(--black); padding:22px 0; }
+    .header .inner { max-width:700px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; }
+    .header img { height:34px; width:auto; display:block; }
+    .lang { font-family:'Archivo',sans-serif; font-size:.78rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:rgba(255,255,255,.7); background:none; border:0; cursor:pointer; }
+    .lang:hover { color:var(--action); }
+    main { max-width:700px; margin:0 auto; padding:56px 24px 80px; }
+    h1 { font-family:'Archivo',sans-serif; font-size:clamp(2.2rem,6vw,3rem); font-weight:900; letter-spacing:-.01em; line-height:1.05; margin-bottom:14px; }
+    h1 .reg { font-weight:400; }
+    h1 em { font-style:italic; color:var(--action); }
+    .intro { font-size:1.02rem; line-height:1.65; color:var(--muted); max-width:520px; margin-bottom:36px; }
+    form, .thanks { background:var(--white); border-radius:18px; padding:32px; box-shadow:0 20px 48px rgba(17,17,17,.08); }
+    .field { margin-bottom:20px; }
+    .row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    label { display:block; font-size:.85rem; font-weight:600; margin-bottom:6px; }
+    input, select, textarea { width:100%; font:inherit; font-size:1rem; padding:12px 14px; border:1px solid var(--line); border-radius:10px; background:var(--white); color:var(--text); }
+    input:focus, select:focus, textarea:focus { outline:2px solid var(--action); outline-offset:1px; }
+    textarea { min-height:110px; resize:vertical; }
+    .check { display:flex; gap:10px; align-items:flex-start; font-weight:400; }
+    .check input { width:auto; margin-top:4px; }
+    .checks { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .hp { position:absolute; left:-9999px; height:0; overflow:hidden; }
+    button.submit { width:100%; font-family:'Archivo',sans-serif; font-weight:800; font-size:.95rem; letter-spacing:.04em; text-transform:uppercase; padding:16px; border:0; border-radius:999px; background:var(--action); color:var(--black); cursor:pointer; }
+    button.submit:disabled { opacity:.6; cursor:default; }
+    .error { color:#B3261E; font-size:.9rem; margin-bottom:14px; min-height:1.2em; }
+    .thanks { display:none; }
+    .thanks h2 { font-family:'Archivo',sans-serif; font-size:1.8rem; font-weight:900; margin-bottom:10px; }
+    .thanks p { color:var(--muted); line-height:1.65; }
+    @media (max-width:600px) { main { padding:40px 20px 56px; } form,.thanks { padding:24px 20px; } .row { grid-template-columns:1fr; gap:0; } }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="inner">
+      <a href="https://somosreino.org"><img src="logo.png" alt="Somos Reino" /></a>
+      <button class="lang" id="lang" type="button">English</button>
+    </div>
+  </header>
+
+  <main>
+    <h1><span class="reg" data-es="Nos alegra" data-en="We're glad">Nos alegra</span><br><em data-es="que estés aquí" data-en="you're here">que estés aquí</em></h1>
+    <p class="intro" data-es="Cuéntanos un poco sobre ti para que podamos saludarte y acompañarte. Solo toma un minuto." data-en="Tell us a little about yourself so we can say hello and walk with you. It only takes a minute.">Cuéntanos un poco sobre ti para que podamos saludarte y acompañarte. Solo toma un minuto.</p>
+
+    <form id="form" novalidate>
+      <div class="field">
+        <label for="name" data-es="Nombre completo *" data-en="Full name *">Nombre completo *</label>
+        <input id="name" name="name" autocomplete="name" maxlength="120" required />
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="phone" data-es="Teléfono" data-en="Phone">Teléfono</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="40" />
+        </div>
+        <div class="field">
+          <label for="email" data-es="Correo electrónico" data-en="Email">Correo electrónico</label>
+          <input id="email" name="email" type="email" autocomplete="email" maxlength="200" />
+        </div>
+      </div>
+      <div class="field">
+        <label for="address" data-es="Dirección o código postal" data-en="Address or ZIP code">Dirección o código postal</label>
+        <input id="address" name="address" autocomplete="street-address" maxlength="300" />
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="adults" data-es="Adultos" data-en="Adults">Adultos</label>
+          <input id="adults" name="adults" type="number" min="0" max="20" inputmode="numeric" />
+        </div>
+        <div class="field">
+          <label for="kids" data-es="Niños" data-en="Children">Niños</label>
+          <input id="kids" name="kids" type="number" min="0" max="20" inputmode="numeric" />
+        </div>
+      </div>
+      <div class="field">
+        <label for="kidsAges" data-es="Edades de tus niños" data-en="Ages of your children">Edades de tus niños</label>
+        <input id="kidsAges" name="kidsAges" maxlength="100" placeholder="3, 7, 10" />
+      </div>
+      <div class="field">
+        <label for="visit" data-es="¿Es tu primera visita?" data-en="Is this your first visit?">¿Es tu primera visita?</label>
+        <select id="visit" name="visit">
+          <option value="" data-es="Selecciona…" data-en="Select…">Selecciona…</option>
+          <option value="First time" data-es="Primera vez" data-en="First time">Primera vez</option>
+          <option value="Returning" data-es="He venido antes" data-en="I've been before">He venido antes</option>
+          <option value="Member elsewhere" data-es="Soy miembro de otra iglesia" data-en="I'm a member of another church">Soy miembro de otra iglesia</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="churchHome" data-es="¿Buscas una iglesia?" data-en="Are you looking for a church home?">¿Buscas una iglesia?</label>
+        <select id="churchHome" name="churchHome">
+          <option value="" data-es="Selecciona…" data-en="Select…">Selecciona…</option>
+          <option value="Yes" data-es="Sí" data-en="Yes">Sí</option>
+          <option value="No" data-es="No" data-en="No">No</option>
+          <option value="Not sure" data-es="No estoy seguro" data-en="Not sure">No estoy seguro</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="otherChurch" data-es="¿Asistes a otra iglesia?" data-en="Do you attend another church?">¿Asistes a otra iglesia?</label>
+        <select id="otherChurch" name="otherChurch">
+          <option value="" data-es="Selecciona…" data-en="Select…">Selecciona…</option>
+          <option value="Yes" data-es="Sí" data-en="Yes">Sí</option>
+          <option value="No" data-es="No" data-en="No">No</option>
+        </select>
+      </div>
+      <div class="field">
+        <label data-es="Me interesa…" data-en="I'm interested in…">Me interesa…</label>
+        <div class="checks">
+          <label class="check"><input type="checkbox" name="interests" value="Small groups" /><span data-es="Grupos pequeños" data-en="Small groups">Grupos pequeños</span></label>
+          <label class="check"><input type="checkbox" name="interests" value="Serving" /><span data-es="Servir / voluntariado" data-en="Serving / volunteering">Servir / voluntariado</span></label>
+          <label class="check"><input type="checkbox" name="interests" value="Kids" /><span data-es="Ministerio de niños" data-en="Kids ministry">Ministerio de niños</span></label>
+          <label class="check"><input type="checkbox" name="interests" value="Youth" /><span data-es="Ministerio de jóvenes" data-en="Youth ministry">Ministerio de jóvenes</span></label>
+          <label class="check"><input type="checkbox" name="interests" value="Baptism" /><span data-es="Bautismo" data-en="Baptism">Bautismo</span></label>
+          <label class="check"><input type="checkbox" name="interests" value="Prayer" /><span data-es="Oración" data-en="Prayer">Oración</span></label>
+          <label class="check"><input type="checkbox" name="interests" value="Discipleship" /><span data-es="Discipulado" data-en="Discipleship">Discipulado</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label for="contactMethod" data-es="¿Cómo prefieres que te contactemos?" data-en="Preferred way to be contacted">¿Cómo prefieres que te contactemos?</label>
+        <select id="contactMethod" name="contactMethod">
+          <option value="" data-es="Selecciona…" data-en="Select…">Selecciona…</option>
+          <option value="Call" data-es="Llamada" data-en="Call">Llamada</option>
+          <option value="Text" data-es="Mensaje de texto" data-en="Text">Mensaje de texto</option>
+          <option value="WhatsApp" data-es="WhatsApp" data-en="WhatsApp">WhatsApp</option>
+          <option value="Email" data-es="Correo electrónico" data-en="Email">Correo electrónico</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="bestTime" data-es="Mejor horario para contactarte" data-en="Best time to reach you">Mejor horario para contactarte</label>
+        <input id="bestTime" name="bestTime" maxlength="100" />
+      </div>
+      <div class="field">
+        <label for="birthday" data-es="Cumpleaños" data-en="Birthday">Cumpleaños</label>
+        <input id="birthday" name="birthday" type="date" />
+      </div>
+      <div class="field">
+        <label for="source" data-es="¿Cómo te enteraste de nosotros?" data-en="How did you hear about us?">¿Cómo te enteraste de nosotros?</label>
+        <select id="source" name="source">
+          <option value="" data-es="Selecciona…" data-en="Select…">Selecciona…</option>
+          <option value="Facebook" data-es="Facebook" data-en="Facebook">Facebook</option>
+          <option value="Instagram" data-es="Instagram" data-en="Instagram">Instagram</option>
+          <option value="Threads" data-es="Threads" data-en="Threads">Threads</option>
+          <option value="Google" data-es="Google" data-en="Google">Google</option>
+          <option value="Church member" data-es="Un miembro de la iglesia" data-en="A church member">Un miembro de la iglesia</option>
+        </select>
+      </div>
+      <div class="field" id="invited-wrap" style="display:none">
+        <label for="invitedBy" data-es="¿Quién te invitó?" data-en="Who invited you?">¿Quién te invitó?</label>
+        <input id="invitedBy" name="invitedBy" maxlength="120" />
+      </div>
+      <div class="field">
+        <label for="message" data-es="Petición de oración o comentario" data-en="Prayer request or comment">Petición de oración o comentario</label>
+        <textarea id="message" name="message" maxlength="2000"></textarea>
+      </div>
+      <div class="field">
+        <label class="check"><input type="checkbox" name="followUp" checked /><span data-es="Me gustaría que alguien de la iglesia me contacte." data-en="I'd like someone from the church to reach out to me.">Me gustaría que alguien de la iglesia me contacte.</span></label>
+      </div>
+      <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off" /></label></div>
+      <p class="error" id="error" role="alert"></p>
+      <button class="submit" id="submit" type="submit" data-es="Enviar" data-en="Send">Enviar</button>
+    </form>
+
+    <div class="thanks" id="thanks" role="status">
+      <h2 data-es="¡Gracias por visitarnos!" data-en="Thanks for visiting!">¡Gracias por visitarnos!</h2>
+      <p data-es="Recibimos tu información. Esperamos verte pronto. ¡Eres bienvenido en tu casa!" data-en="We got your info. We hope to see you again soon. You're welcome here!">Recibimos tu información. Esperamos verte pronto. ¡Eres bienvenido en tu casa!</p>
+    </div>
+  </main>
+
+  <script>
+    var lang = (navigator.language || '').toLowerCase().indexOf('en') === 0 ? 'en' : 'es';
+    var msgs = {
+      es: { required: 'Escribe tu nombre y un teléfono o correo.', fail: 'No pudimos enviar el formulario. Inténtalo de nuevo.' },
+      en: { required: 'Please enter your name and a phone or email.', fail: "We couldn't send the form. Please try again." }
+    };
+    var langBtn = document.getElementById('lang');
+    function applyLang() {
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-es]').forEach(function (el) { el.textContent = el.getAttribute('data-' + lang); });
+      langBtn.textContent = lang === 'es' ? 'English' : 'Español';
+    }
+    langBtn.addEventListener('click', function () { lang = lang === 'es' ? 'en' : 'es'; applyLang(); });
+    applyLang();
+
+    document.getElementById('source').addEventListener('change', function () {
+      document.getElementById('invited-wrap').style.display = this.value === 'Church member' ? 'block' : 'none';
+    });
+
+    var form = document.getElementById('form'), err = document.getElementById('error'), btn = document.getElementById('submit');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      err.textContent = '';
+      var fd = new FormData(form), d = Object.fromEntries(fd);
+      d.interests = fd.getAll('interests');
+      d.followUp = form.elements.followUp.checked;
+      if (!d.name.trim() || (!d.phone.trim() && !d.email.trim())) { err.textContent = msgs[lang].required; return; }
+      btn.disabled = true;
+      fetch('/api/guest', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) })
+        .then(function (r) { if (!r.ok) throw new Error(); form.style.display = 'none'; document.getElementById('thanks').style.display = 'block'; })
+        .catch(function () { err.textContent = msgs[lang].fail; btn.disabled = false; });
+    });
+  </script>
+</body>
+</html>
