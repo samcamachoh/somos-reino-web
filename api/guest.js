@@ -1,19 +1,15 @@
 // Serverless function: receives the new-guest form from welcome.html and
-// emails it to the pastoral team via Resend (https://resend.com).
+// appends it as a row to a Google Sheet through a Google Apps Script web app
+// (see docs/guest-sheet.md for setup).
 //
-// Required env vars (Vercel → Project → Settings → Environment Variables):
-//   RESEND_API_KEY      API key from Resend
-//   GUEST_TO_EMAIL      where submissions go (comma-separated for several)
-//   GUEST_FROM_EMAIL    verified sender, e.g. "Somos Reino <welcome@yourdomain.org>"
+// Required env var (Vercel → Project → Settings → Environment Variables):
+//   GUEST_SHEET_WEBHOOK_URL   the Apps Script web app URL (ends in /exec)
+//   GUEST_SHEET_SECRET        shared secret; must match SECRET in the script
 
 const MAX = { name: 120, phone: 40, email: 200, source: 60, message: 2000 };
 
 function clean(value, max) {
   return String(value == null ? '' : value).replace(/[\u0000-\u001f\u007f]+/g, ' ').trim().slice(0, max);
-}
-
-function escapeHtml(s) {
-  return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
 module.exports = async function handler(req, res) {
@@ -45,38 +41,23 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'Invalid email.' });
   }
 
-  const { RESEND_API_KEY, GUEST_TO_EMAIL, GUEST_FROM_EMAIL } = process.env;
-  if (!RESEND_API_KEY || !GUEST_TO_EMAIL || !GUEST_FROM_EMAIL) {
+  const { GUEST_SHEET_WEBHOOK_URL, GUEST_SHEET_SECRET } = process.env;
+  if (!GUEST_SHEET_WEBHOOK_URL || !GUEST_SHEET_SECRET) {
     return res.status(500).json({ error: 'Form is not configured.' });
   }
 
-  const rows = [
-    ['Name', data.name], ['Phone', data.phone], ['Email', data.email],
-    ['Adults', data.adults], ['Children', data.kids],
-    ['How they heard about us', data.source], ['Wants a follow-up', data.followUp],
-    ['Message / prayer request', data.message],
-  ].filter(([, v]) => v);
-
-  const html = '<table cellpadding="6">' + rows.map(([k, v]) =>
-    `<tr><td><strong>${escapeHtml(k)}</strong></td><td>${escapeHtml(v).replace(/\n/g, '<br>')}</td></tr>`).join('') + '</table>';
-  const text = rows.map(([k, v]) => `${k}: ${v}`).join('\n');
-
   try {
-    const r = await fetch('https://api.resend.com/emails', {
+    const r = await fetch(GUEST_SHEET_WEBHOOK_URL, {
       method: 'POST',
-      headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        from: GUEST_FROM_EMAIL,
-        to: GUEST_TO_EMAIL.split(',').map(s => s.trim()).filter(Boolean),
-        reply_to: data.email || undefined,
-        subject: `New guest: ${data.name}`,
-        html, text,
-      }),
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ secret: GUEST_SHEET_SECRET, ...data }),
+      redirect: 'follow',
     });
-    if (!r.ok) return res.status(502).json({ error: 'Could not send.' });
+    const out = await r.json().catch(() => ({}));
+    if (!r.ok || !out.ok) return res.status(502).json({ error: 'Could not save.' });
     return res.status(200).json({ ok: true });
   } catch (e) {
-    return res.status(502).json({ error: 'Could not send.' });
+    return res.status(502).json({ error: 'Could not save.' });
   }
 };
 
