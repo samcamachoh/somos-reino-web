@@ -46,10 +46,10 @@ module.exports = async function handler(req, res) {
     message: String(body.message || '').trim().slice(0, 2000),
   };
 
-  if (!data.name || (!data.phone && !data.email)) {
-    return res.status(400).json({ error: 'Name and a phone or email are required.' });
+  if (!data.name || !data.email) {
+    return res.status(400).json({ error: 'Name and email are required.' });
   }
-  if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
     return res.status(400).json({ error: 'Invalid email.' });
   }
 
