@@ -6,8 +6,6 @@
 //   GUEST_SHEET_WEBHOOK_URL   the Apps Script web app URL (ends in /exec)
 //   GUEST_SHEET_SECRET        shared secret; must match SECRET in the script
 
-const MAX = { name: 120, phone: 40, email: 200, source: 60, message: 2000 };
-
 function clean(value, max) {
   return String(value == null ? '' : value).replace(/[\u0000-\u001f\u007f]+/g, ' ').trim().slice(0, max);
 }
@@ -23,15 +21,29 @@ module.exports = async function handler(req, res) {
   // Honeypot: real visitors never fill this hidden field. Pretend success.
   if (body.website) return res.status(200).json({ ok: true });
 
+  const interests = Array.isArray(body.interests)
+    ? body.interests.slice(0, 12).map(v => clean(v, 40)).filter(Boolean).join(', ')
+    : '';
+
   const data = {
-    name: clean(body.name, MAX.name),
-    phone: clean(body.phone, MAX.phone),
-    email: clean(body.email, MAX.email),
+    name: clean(body.name, 120),
+    phone: clean(body.phone, 40),
+    email: clean(body.email, 200),
+    address: clean(body.address, 300),
     adults: clean(body.adults, 3),
     kids: clean(body.kids, 3),
-    source: clean(body.source, MAX.source),
+    kidsAges: clean(body.kidsAges, 100),
+    visit: clean(body.visit, 60),
+    churchHome: clean(body.churchHome, 60),
+    otherChurch: clean(body.otherChurch, 60),
+    interests,
+    contactMethod: clean(body.contactMethod, 60),
+    bestTime: clean(body.bestTime, 100),
+    birthday: clean(body.birthday, 10),
+    source: clean(body.source, 60),
+    invitedBy: clean(body.invitedBy, 120),
     followUp: body.followUp ? 'Yes' : 'No',
-    message: String(body.message || '').trim().slice(0, MAX.message),
+    message: String(body.message || '').trim().slice(0, 2000),
   };
 
   if (!data.name || (!data.phone && !data.email)) {
