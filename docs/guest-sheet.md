@@ -17,6 +17,8 @@ function doPost(e) {
         .map(r => r.map(v => v instanceof Date ? v.toISOString() : v));
       return out({ ok: true, rows });
     }
+    // The guest form sends no action; anything else is not a new guest.
+    if (d.action !== undefined) return out({ ok: false });
     SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].appendRow([
       new Date(), d.name, d.phone, d.email, d.address, d.adults, d.kids,
       d.kidsAges, d.visit, d.churchHome, d.otherChurch, d.interests,
