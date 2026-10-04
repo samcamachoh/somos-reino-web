@@ -1211,37 +1211,33 @@
     a.event-tag:hover { background: var(--action); color: var(--white); transform: translateY(-1px); }
     .event-tag-static { border-color: var(--rule); color: var(--muted); }
     .event-row-special {
-      display: grid;
-      grid-template-columns: 1fr minmax(0, 1.1fr);
-      grid-template-rows: 1fr auto;
-      column-gap: clamp(24px, 4vw, 56px);
-      align-items: start;
+      --card-pad: clamp(28px, 5vw, 64px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
       margin-bottom: 24px;
-      padding: clamp(28px, 5vw, 64px);
+      padding: 0 var(--card-pad) var(--card-pad);
       border-radius: 20px;
       background: var(--near-black);
       color: var(--white);
+      overflow: hidden;
     }
-    .event-row-special .event-info { grid-column: 1; grid-row: 1; align-self: end; }
-    .event-row-special .event-tag-special { grid-column: 1; grid-row: 2; justify-self: start; align-self: start; }
+    /* photo fills the top half edge-to-edge and fades into the details below */
     .event-special-photo {
-      grid-column: 2;
-      grid-row: 1 / span 2;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
       display: block;
-      /* fade every edge into the dark card */
-      -webkit-mask-image: radial-gradient(ellipse 54% 52% at 50% 50%, #000 34%, transparent 100%);
-      mask-image: radial-gradient(ellipse 54% 52% at 50% 50%, #000 34%, transparent 100%);
+      width: calc(100% + 2 * var(--card-pad));
+      max-width: none;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      object-position: center 30%;
+      margin: 0 calc(-1 * var(--card-pad)) calc(-1 * clamp(40px, 8vw, 110px));
+      -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+      mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
     }
-    @media (max-width: 860px) {
-      .event-row-special { grid-template-columns: 1fr; grid-template-rows: auto; }
-      .event-row-special .event-info,
-      .event-row-special .event-tag-special,
-      .event-special-photo { grid-column: 1; grid-row: auto; }
-      .event-special-photo { order: -1; margin-bottom: 28px; height: auto; }
-    }
+    .event-row-special .event-info,
+    .event-row-special .event-tag-special { position: relative; }
     .event-special-label {
       display: inline-block;
       margin-bottom: 20px;
