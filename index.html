@@ -894,6 +894,11 @@
     body.hero-light #nav:not(.scrolled) .lang-toggle { background: rgba(91,23,36,0.06); border-color: rgba(91,23,36,0.25); }
     body.hero-light #nav:not(.scrolled) .lang-option:not(.active) { color: rgba(91,23,36,0.65); }
     body.hero-light #nav:not(.scrolled) .nav-hamburger span { background: #5b1724; }
+    body.hero-light #nav:not(.scrolled) .nav-btn { background: #5b1724; color: #f4d0d2; }
+    body.hero-light #nav:not(.scrolled) .nav-btn:hover { background: #3f0f19; }
+    body.hero-light #nav:not(.scrolled) .lang-option.active { background: #5b1724; color: #f4d0d2; }
+    .nav-logo img, .nav-links a, .lang-toggle, .nav-hamburger span { transition: filter 0.5s ease, color 0.5s ease, background 0.5s ease, border-color 0.5s ease, transform 0.3s ease, opacity 0.2s ease; }
+    #hero { touch-action: pan-y; -webkit-user-select: none; user-select: none; }
 
     @media (max-width: 800px) {
       .hero-slide-event { flex-direction: column; align-items: stretch; justify-content: flex-start; }
@@ -2624,6 +2629,23 @@
       }
 
       dots.forEach(d => d.addEventListener('click', () => { go(Number(d.dataset.slide)); stop(); start(); }));
+      // Swipe / drag between slides (horizontal only, so vertical scroll still works)
+      let sx = 0, sy = 0, tracking = false;
+      hero.addEventListener('pointerdown', e => {
+        if (e.target.closest('.hero-dots, .hero-unmute-btn')) return;
+        sx = e.clientX; sy = e.clientY; tracking = true;
+      });
+      hero.addEventListener('pointerup', e => {
+        if (!tracking) return;
+        tracking = false;
+        const dx = e.clientX - sx, dy = e.clientY - sy;
+        if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+        go((current + (dx < 0 ? 1 : total - 1)) % total);
+        stop(); start();
+      });
+      hero.addEventListener('pointercancel', () => { tracking = false; });
+      hero.addEventListener('dragstart', e => e.preventDefault());
+
       hero.addEventListener('mouseenter', stop);
       hero.addEventListener('mouseleave', start);
       hero.addEventListener('focusin', stop);
