@@ -1212,6 +1212,8 @@
     .event-tag-static { border-color: var(--rule); color: var(--muted); }
     .event-row-special {
       --card-pad: clamp(28px, 5vw, 64px);
+      --rose-bg: #f4d0d2;
+      --rose-ink: #5b1724;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -1219,8 +1221,8 @@
       margin-bottom: 24px;
       padding: 0 var(--card-pad) var(--card-pad);
       border-radius: 20px;
-      background: var(--near-black);
-      color: var(--white);
+      background: var(--rose-bg);
+      color: var(--rose-ink);
       overflow: hidden;
     }
     /* photo fills the top half edge-to-edge and fades into the details below */
@@ -1243,14 +1245,14 @@
       display: inline-block;
       margin-bottom: 20px;
       padding: 7px 12px;
-      border: 1px solid var(--rule-dark);
+      border: 1px solid var(--rose-ink);
       border-radius: 100px;
       font-family: 'Archivo', sans-serif;
       font-size: 0.68rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       font-weight: 700;
-      color: var(--white);
+      color: var(--rose-ink);
     }
     .event-row-special .event-title {
       max-width: 18ch;
@@ -1259,26 +1261,28 @@
       font-weight: 800;
       line-height: 1.05;
       letter-spacing: -0.04em;
-      color: var(--white);
+      color: var(--rose-ink);
       overflow-wrap: break-word;
     }
     .event-row-special .event-details {
       margin: 0;
       font-size: clamp(0.95rem, 2vw, 1.1rem);
-      color: rgba(255,255,255,0.8);
+      color: var(--rose-ink);
+      opacity: 0.85;
     }
     .event-row-special .event-tag-special {
       display: inline-flex;
       margin-top: 28px;
       padding: 15px 26px;
-      background: var(--action);
-      color: var(--near-black);
+      background: var(--rose-ink);
+      border-color: var(--rose-ink);
+      color: var(--rose-bg);
       font-size: 0.75rem;
     }
     .event-row-special a.event-tag-special:hover {
-      background: var(--white);
-      border-color: var(--white);
-      color: var(--near-black);
+      background: transparent;
+      border-color: var(--rose-ink);
+      color: var(--rose-ink);
     }
 
 
