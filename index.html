@@ -793,6 +793,131 @@
       animation: fadeUp 0.45s ease-out 0.15s forwards;
     }
 
+
+    /* ── HERO CAROUSEL: second slide (Respuesta De Gracia) ── */
+    .hero-slide-event {
+      --rose-bg: #f4d0d2;
+      --rose-ink: #5b1724;
+      position: absolute;
+      inset: 0 0 54px 0;
+      z-index: 11;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background: var(--rose-bg);
+      color: var(--rose-ink);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.9s ease, visibility 0.9s;
+    }
+    #hero[data-slide="1"] .hero-slide-event { opacity: 1; visibility: visible; }
+    .hero-slide-photo {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 66%;
+      height: auto;
+      max-height: 100%;
+      object-fit: cover;
+      object-position: right bottom;
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 30%),
+                          linear-gradient(to bottom, transparent 0, #000 14%);
+      -webkit-mask-composite: source-in;
+      mask-image: linear-gradient(to right, transparent 0, #000 30%),
+                  linear-gradient(to bottom, transparent 0, #000 14%);
+      mask-composite: intersect;
+    }
+    .hero-slide-event > .container { width: 100%; }
+    .hero-slide-text { position: relative; z-index: 2; padding: 130px 0 80px; max-width: 520px; }
+    .hero-slide-event .hero-eyebrow {
+      color: var(--rose-ink);
+      opacity: 1;
+      animation: none;
+      margin-bottom: 18px;
+    }
+    .hero-slide-event .hero-eyebrow::before { background: var(--rose-ink); opacity: 0.5; }
+    .hero-slide-event .hero-title { color: var(--rose-ink); margin-bottom: 18px; font-size: clamp(2.6rem, 5vw, 4.8rem); }
+    .hero-slide-details {
+      font-size: 1.15rem;
+      font-weight: 500;
+      line-height: 1.5;
+      color: var(--rose-ink);
+      opacity: 0.85;
+      margin-bottom: 32px;
+    }
+    .hero-slide-btn {
+      display: inline-flex;
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 16px 30px;
+      border-radius: 100px;
+      border: 1px solid var(--rose-ink);
+      background: var(--rose-ink);
+      color: var(--rose-bg);
+      text-decoration: none;
+      transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+    }
+    .hero-slide-btn:hover { background: transparent; color: var(--rose-ink); transform: translateY(-1px); }
+
+    .hero-dots {
+      position: absolute;
+      right: 32px;
+      bottom: 76px;
+      z-index: 12;
+      display: flex;
+      gap: 10px;
+    }
+    .hero-dot {
+      width: 10px;
+      height: 10px;
+      padding: 0;
+      border-radius: 100px;
+      border: 1.5px solid rgba(255,255,255,0.8);
+      background: transparent;
+      cursor: pointer;
+      transition: width 0.35s var(--ease), background 0.3s ease, border-color 0.3s ease;
+    }
+    .hero-dot[aria-current="true"] { width: 28px; background: rgba(255,255,255,0.9); }
+    #hero[data-slide="1"] .hero-dot { border-color: #5b1724; }
+    #hero[data-slide="1"] .hero-dot[aria-current="true"] { background: #5b1724; }
+    #hero.hero-live .hero-slide-event,
+    #hero.hero-live .hero-dots { display: none; }
+
+    /* Nav goes dark-on-light while the pink slide is showing */
+    body.hero-light #nav:not(.scrolled)::before { opacity: 0; }
+    body.hero-light #nav:not(.scrolled) .nav-logo img { filter: brightness(0); }
+    body.hero-light #nav:not(.scrolled) .nav-links a { color: rgba(91,23,36,0.8); }
+    body.hero-light #nav:not(.scrolled) .nav-links a:hover { color: #5b1724; }
+    body.hero-light #nav:not(.scrolled) .lang-toggle { background: rgba(91,23,36,0.06); border-color: rgba(91,23,36,0.25); }
+    body.hero-light #nav:not(.scrolled) .lang-option:not(.active) { color: rgba(91,23,36,0.65); }
+    body.hero-light #nav:not(.scrolled) .nav-hamburger span { background: #5b1724; }
+
+    @media (max-width: 800px) {
+      .hero-slide-event { flex-direction: column; align-items: stretch; justify-content: flex-start; }
+      .hero-slide-photo {
+        position: relative;
+        order: -1;
+        width: 100%;
+        max-width: none;
+        max-height: none;
+        height: auto;
+        margin-top: 56px;
+        object-position: center;
+        -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+        mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+        -webkit-mask-composite: source-over;
+        mask-composite: add;
+      }
+      .hero-slide-text { padding: 0 0 40px; margin-top: -36px; max-width: none; }
+      .hero-dots { right: 50%; transform: translateX(50%); bottom: 68px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-slide-event { transition: none; }
+    }
+
     /* ────────────────────────────────────────
        SERVICIOS
     ──────────────────────────────────────── */
@@ -1881,7 +2006,7 @@
   </div>
 
   <!-- ── HERO ── -->
-  <section id="hero">
+  <section id="hero" data-slide="0">
     <div class="hero-bg" id="hero-bg"><div class="hero-bg-img"></div></div>
 
     <!-- Live YouTube video — hidden until the channel goes live -->
@@ -1928,6 +2053,24 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- Carousel slide 2: Respuesta De Gracia -->
+    <div class="hero-slide-event" id="hero-slide-event" aria-roledescription="slide">
+      <img class="hero-slide-photo" src="respuesta-de-gracia.jpg" alt="Jen Camacho, Joanirie Ferrer Font y Mariela Merced — Respuesta De Gracia" width="1024" height="768">
+      <div class="container">
+        <div class="hero-slide-text">
+          <span class="hero-eyebrow" data-en="Special Event">Evento Especial</span>
+          <h2 class="hero-title">Respuesta<br>De Gracia</h2>
+          <p class="hero-slide-details" data-en="Friday, November 13 · 7:00 PM">Viernes, 13 de noviembre · 7:00 PM</p>
+          <a class="hero-slide-btn" href="https://casafamiliar.churchtrac.com/connect?ei=ADCNQ99" target="_blank" rel="noopener" data-en="Register">Registrarse</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-dots" id="hero-dots" role="group" aria-label="Hero slides">
+      <button type="button" class="hero-dot" data-slide="0" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" class="hero-dot" data-slide="1" aria-current="false" aria-label="Slide 2"></button>
     </div>
 
     <!-- Scroll cue -->
@@ -2459,6 +2602,42 @@
     applyStagger();
     observeReveals();
 
+    // ── HERO CAROUSEL ──
+    (function() {
+      const hero = document.getElementById('hero');
+      const dots = document.querySelectorAll('.hero-dot');
+      const total = dots.length;
+      let current = 0;
+      let timer = null;
+
+      function go(n) {
+        current = n;
+        hero.dataset.slide = String(n);
+        document.body.classList.toggle('hero-light', n === 1);
+        dots.forEach((d, k) => d.setAttribute('aria-current', k === n ? 'true' : 'false'));
+      }
+      function stop() { clearInterval(timer); timer = null; }
+      function start() {
+        if (timer || hero.classList.contains('hero-live')) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        timer = setInterval(() => go((current + 1) % total), 8000);
+      }
+
+      dots.forEach(d => d.addEventListener('click', () => { go(Number(d.dataset.slide)); stop(); start(); }));
+      hero.addEventListener('mouseenter', stop);
+      hero.addEventListener('mouseleave', start);
+      hero.addEventListener('focusin', stop);
+      hero.addEventListener('focusout', start);
+
+      // The live stream takes over the hero: park the carousel on slide 1
+      window.stopHeroCarousel = function() {
+        stop();
+        go(0);
+        hero.classList.add('hero-live');
+      };
+      start();
+    })();
+
     // ── HERO SCROLL CUE — fades out as soon as you start scrolling ──
     (function() {
       const cue = document.getElementById('hero-cue');
@@ -2558,6 +2737,7 @@
 
     function handleLiveStatus(data) {
       if (data.live) {
+        if (window.stopHeroCarousel) window.stopHeroCarousel();
         // Show live badge
         const badge = document.getElementById('live-badge');
         badge.style.display = 'flex';
