@@ -2167,12 +2167,12 @@
     }
     .hero-title { line-height: 1; margin-bottom: 20px; }
     h2.display { line-height: 1.04; }
-    .hero-body { font-size: 1.05rem; line-height: 1.5; max-width: 400px; margin-bottom: 32px; }
+    .hero-body { font-size: 1.05rem; line-height: 1.5; max-width: 400px; margin-bottom: 0; }
     .hero-actions { gap: 12px; }
     .section-lead { font-size: 1rem; line-height: 1.55; margin-top: 14px; max-width: 440px; }
     .visit-text, .dar-body, .contacto-intro { line-height: 1.55; }
     @media (max-width: 600px) {
-      .hero-body { font-size: 1rem; margin-bottom: 24px; }
+      .hero-body { font-size: 1rem; margin-bottom: 0; }
       .hero-actions { gap: 10px; }
     }
   </style>
@@ -2249,10 +2249,6 @@
             y nadie camina solo. Vengas como vengas, aquí hay lugar para ti.
           </p>
 
-          <div class="hero-actions">
-            <a href="#contacto" class="btn-primary" data-en="Come This Sunday">Ven Este Domingo</a>
-            <a id="live-btn" href="#sermones" class="btn-outline" data-en="Watch Sermons">Ver Sermones</a>
-          </div>
         </div>
       </div>
     </div>
@@ -2982,16 +2978,7 @@
         // Show live badge
         const badge = document.getElementById('live-badge');
         badge.style.display = 'flex';
-        // Swap "Ver Sermones" button to "Ver En Vivo"
-        const btn = document.getElementById('live-btn');
-        btn.dataset.es = '🔴 Ver En Vivo';
-        btn.dataset.en = '🔴 Watch Live';
-        btn.textContent = t('🔴 Ver En Vivo', '🔴 Watch Live');
-        btn.href = data.url;
-        btn.target = '_blank';
-        btn.rel = 'noopener';
-        btn.style.borderColor = '#E53E3E';
-        btn.style.color = '#E53E3E';
+
 
         // Turn the hero background into the live stream, muted, after 5s
         const videoId = extractYouTubeId(data.url);
