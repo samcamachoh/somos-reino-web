@@ -446,128 +446,6 @@
 
     .lang-option:not(.active):hover { color: var(--white); }
 
-    /* Mobile hamburger */
-    .nav-hamburger {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      padding: 4px;
-    }
-
-    .nav-hamburger span {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: var(--white);
-      transition: transform 0.3s ease, opacity 0.2s ease;
-      transform-origin: center;
-    }
-
-    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
-    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    /* ── MOBILE MENU OVERLAY ── */
-    .mobile-menu {
-      position: fixed;
-      inset: 0;
-      z-index: 300;
-      background: var(--black);
-      display: flex;
-      flex-direction: column;
-      padding: 20px 24px 32px;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-16px);
-      transition: opacity 0.35s ease, transform 0.35s ease, visibility 0s linear 0.35s;
-    }
-
-    .mobile-menu.open {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-      transition: opacity 0.35s ease, transform 0.35s ease, visibility 0s linear 0s;
-    }
-
-    .mobile-menu-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 44px;
-    }
-
-    .mobile-menu-close {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      background: rgba(255,255,255,0.06);
-      border: none;
-      border-radius: 50%;
-      color: var(--white);
-      font-size: 1.4rem;
-      line-height: 1;
-      cursor: pointer;
-      transition: background 0.3s ease, transform 0.2s ease;
-    }
-
-    .mobile-menu-close:hover {
-      background: var(--action);
-      transform: rotate(90deg);
-    }
-
-    .mobile-menu-links {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .mobile-menu-links a {
-      font-family: 'Archivo', sans-serif;
-      font-size: 1.7rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      color: var(--white);
-      text-decoration: none;
-      display: block;
-      padding: 16px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      opacity: 0;
-      transform: translateY(14px);
-      transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
-    }
-
-    .mobile-menu.open .mobile-menu-links a {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .mobile-menu-links a:active { color: var(--action); }
-
-    .mobile-menu-links li:nth-child(1) a { transition-delay: 0.06s; }
-    .mobile-menu-links li:nth-child(2) a { transition-delay: 0.11s; }
-    .mobile-menu-links li:nth-child(3) a { transition-delay: 0.16s; }
-    .mobile-menu-links li:nth-child(4) a { transition-delay: 0.21s; }
-    .mobile-menu-links li:nth-child(5) a { transition-delay: 0.26s; }
-
-    .mobile-menu-footer {
-      margin-top: auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding-top: 28px;
-    }
-
-    .mobile-menu-footer .btn-primary { flex: 1; text-align: center; }
-
     /* ────────────────────────────────────────
        HERO
     ──────────────────────────────────────── */
@@ -979,11 +857,10 @@
     body.hero-light #nav:not(.scrolled) .nav-links a:hover { color: #5b1724; }
     body.hero-light #nav:not(.scrolled) .lang-toggle { background: rgba(91,23,36,0.06); border-color: rgba(91,23,36,0.25); }
     body.hero-light #nav:not(.scrolled) .lang-option:not(.active) { color: rgba(91,23,36,0.65); }
-    body.hero-light #nav:not(.scrolled) .nav-hamburger span { background: #5b1724; }
     body.hero-light #nav:not(.scrolled) .nav-btn { background: #5b1724; color: #f4d0d2; }
     body.hero-light #nav:not(.scrolled) .nav-btn:hover { background: #3f0f19; }
     body.hero-light #nav:not(.scrolled) .lang-option.active { background: #5b1724; color: #f4d0d2; }
-    .nav-logo img, .nav-links a, .lang-toggle, .nav-hamburger span { transition: filter 0.5s ease, color 0.5s ease, background 0.5s ease, border-color 0.5s ease, transform 0.3s ease, opacity 0.2s ease; }
+    .nav-logo img, .nav-links a, .lang-toggle { transition: filter 0.5s ease, color 0.5s ease, background 0.5s ease, border-color 0.5s ease, transform 0.3s ease, opacity 0.2s ease; }
     #hero { touch-action: pan-y; -webkit-user-select: none; user-select: none; }
 
     @media (max-width: 1000px) {
@@ -1885,7 +1762,6 @@
 
       #nav { padding: 16px 0; }
       .nav-links, .nav-btn { display: none; }
-      .nav-hamburger { display: flex; }
 
       .hero-title { font-size: clamp(2.8rem, 10vw, 5rem); }
       .hero-body { font-size: 0.95rem; }
@@ -2057,7 +1933,6 @@
     .hero-line { padding-right: 0.08em; }
     h2.display { text-wrap: balance; }
     .section-lead, .hero-body { text-wrap: pretty; }
-    .mobile-menu { overflow-y: auto; overscroll-behavior: contain; }
     #nav:focus-within { transform: none; }
     .contacto-inner > *, .dar-inner > * { min-width: 0; }
     .contacto-inner a { overflow-wrap: anywhere; }
@@ -2161,6 +2036,56 @@
       content-visibility: auto;
       contain-intrinsic-size: auto 720px;
     }
+
+    /* ── MOBILE TAB BAR ──
+       Under 900px the hidden hamburger menu gives way to an always-visible
+       row of icon tabs. Scrolling down tucks the logo row away but keeps
+       the tabs in reach. */
+    .nav-tabs { display: none; }
+    @media (max-width: 900px) {
+      #nav, #nav.scrolled { padding: 0; --nav-top-h: 60px; }
+      #nav .container { padding-top: 12px; padding-bottom: 10px; }
+      #nav.nav-hidden { transform: translateY(calc(-1 * var(--nav-top-h))); }
+      section[id] { scroll-margin-top: 84px; }
+
+      .nav-tabs {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        background: rgba(17, 17, 17, 0.9);
+        backdrop-filter: blur(16px) saturate(150%);
+        -webkit-backdrop-filter: blur(16px) saturate(150%);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+      }
+      .nav-tabs a {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        min-height: 56px;
+        padding: 9px 2px 8px;
+        color: rgba(255, 255, 255, 0.62);
+        font: 600 0.64rem/1.1 'Archivo', sans-serif;
+        letter-spacing: 0.03em;
+        text-decoration: none;
+        -webkit-tap-highlight-color: transparent;
+        transition: color 0.3s ease, transform 0.3s var(--ease-back);
+      }
+      .nav-tabs svg { width: 22px; height: 22px; transition: transform 0.4s var(--ease-back); }
+      .nav-tabs a::after {
+        content: '';
+        position: absolute; top: -1px; left: 30%; right: 30%;
+        height: 2px; border-radius: 2px;
+        background: var(--action);
+        transform: scaleX(0);
+        transition: transform 0.4s var(--ease);
+      }
+      .nav-tabs a[aria-current="true"] { color: var(--action); }
+      .nav-tabs a[aria-current="true"]::after { transform: scaleX(1); }
+      .nav-tabs a[aria-current="true"] svg { transform: translateY(-1px) scale(1.08); }
+      .nav-tabs a:active { transform: scale(0.94); }
+    }
   </style>
 </head>
 <body>
@@ -2187,35 +2112,17 @@
           <button type="button" class="lang-option" data-lang="en">EN</button>
         </div>
         <a href="give.html" class="nav-btn" data-en="Give">Dar</a>
-        <button class="nav-hamburger" id="hamburger" type="button" aria-label="Menú" data-en-label="Menu" aria-controls="mobile-menu" aria-expanded="false">
-          <span></span><span></span><span></span>
-        </button>
       </div>
+    </div>
+    <!-- Mobile tab bar — always in view, like an app -->
+    <div class="nav-tabs" role="navigation" aria-label="Secciones" data-en-label="Sections">
+      <a href="#sermones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5-6-3.5Z" fill="currentColor"/></svg><span data-en="Sermons">Sermones</span></a>
+      <a href="#eventos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span data-en="Events">Eventos</span></a>
+      <a href="#esencial"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg><span>Podcast</span></a>
+      <a href="give.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9.6C12 7.3 9 6.2 7.6 8.2 6.3 10 7.7 11.6 12 15c4.3-3.4 5.7-5 4.4-6.8C15 6.2 12 7.3 12 9.6Z" transform="translate(0 -3)"/><path d="M3 15h4l3 1.5h4a1.5 1.5 0 0 1 0 3H9.5M7 15v5.5H3M14 19.5l5-2a1.6 1.6 0 0 1 1.7 2.7L14 22l-4.5-.5"/></svg><span data-en="Give">Dar</span></a>
+      <a href="#contacto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span data-en="Contact">Contacto</span></a>
     </div>
   </nav>
-
-  <!-- ── MOBILE MENU OVERLAY ── -->
-  <div class="mobile-menu" id="mobile-menu">
-    <div class="mobile-menu-header">
-      <a href="/" class="nav-logo">
-        <img src="logo.png" alt="Somos Reino" style="height:34px;width:auto;display:block;" />
-      </a>
-      <button class="mobile-menu-close" id="mobile-menu-close" type="button" aria-label="Cerrar menú" data-en-label="Close menu">&times;</button>
-    </div>
-    <ul class="mobile-menu-links">
-      <li><a href="#sermones" data-en="Sermons">Sermones</a></li>
-      <li><a href="#eventos" data-en="Events">Eventos</a></li>
-      <li><a href="#esencial">Podcast</a></li>
-      <li><a href="#contacto" data-en="Contact">Contacto</a></li>
-    </ul>
-    <div class="mobile-menu-footer">
-      <div class="lang-toggle" id="lang-toggle-mobile" role="group" aria-label="Language selector">
-        <button type="button" class="lang-option active" data-lang="es">ES</button>
-        <button type="button" class="lang-option" data-lang="en">EN</button>
-      </div>
-      <a href="give.html" class="btn-primary" data-en="Give">Dar</a>
-    </div>
-  </div>
 
   <main id="main">
   <!-- ── HERO ── -->
@@ -2749,9 +2656,8 @@
 
         // Out of the way going down, back on the way up — but never while a
         // menu is open, and never over the hero.
-        const menuOpen = document.getElementById('mobile-menu').classList.contains('open');
         const goingDown = y > lastY;
-        nav.classList.toggle('nav-hidden', goingDown && y > 420 && !menuOpen);
+        nav.classList.toggle('nav-hidden', goingDown && y > 420);
 
         // Hero photo drifts slower than the page — a quiet sense of depth
         if (parallaxOK && heroBg && hero && !hero.classList.contains('hero-live')) {
@@ -3131,38 +3037,24 @@
         });
     })();
 
-    // ── MOBILE MENU ──
-    const hamburger = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    function openMobileMenu() {
-      mobileMenu.classList.add('open');
-      hamburger.classList.add('open');
-      hamburger.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeMobileMenu() {
-      mobileMenu.classList.remove('open');
-      hamburger.classList.remove('open');
-      hamburger.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    }
-
-    hamburger.addEventListener('click', () => {
-      mobileMenu.classList.contains('open') ? closeMobileMenu() : openMobileMenu();
-    });
-
-    document.getElementById('mobile-menu-close').addEventListener('click', closeMobileMenu);
-    mobileMenu.querySelectorAll('.mobile-menu-links a, .mobile-menu-footer a').forEach(a => {
-      a.addEventListener('click', closeMobileMenu);
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && mobileMenu.classList.contains('open')) closeMobileMenu();
-    });
-    window.addEventListener('resize', () => {
-      if (window.innerWidth > 900 && mobileMenu.classList.contains('open')) closeMobileMenu();
-    });
+    // ── TAB BAR: highlight the section in view ──
+    (function() {
+      const tabs = [...document.querySelectorAll('.nav-tabs a[href^="#"]')];
+      if (!tabs.length || !('IntersectionObserver' in window)) return;
+      const byId = new Map(tabs.map(a => [a.getAttribute('href').slice(1), a]));
+      const spy = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          tabs.forEach(a => a.removeAttribute('aria-current'));
+          byId.get(e.target.id).setAttribute('aria-current', 'true');
+        });
+      }, { rootMargin: '-35% 0px -55% 0px' });
+      byId.forEach((_, id) => { const el = document.getElementById(id); if (el) spy.observe(el); });
+      // Back at the very top, nothing is selected
+      window.addEventListener('scroll', () => {
+        if (window.scrollY < 200) tabs.forEach(a => a.removeAttribute('aria-current'));
+      }, { passive: true });
+    })();
   </script>
 
 </body>
