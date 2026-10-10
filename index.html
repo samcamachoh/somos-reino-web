@@ -2033,7 +2033,8 @@
       #nav::before { display: none; }
       /* White header and tab bar with black icons — same look on every slide */
       #nav .nav-logo img, body.hero-light #nav:not(.scrolled) .nav-logo img { filter: invert(1) hue-rotate(180deg); }
-      #nav .nav-profile, body.hero-light #nav:not(.scrolled) .nav-profile { background: var(--black); color: var(--white); }
+      /* On the white header the icon is always plain black */
+      #nav .nav-profile, body.hero-light #nav:not(.scrolled) .nav-profile { color: var(--black); }
       /* The hero begins below the fixed header instead of sliding under it,
          so the photo is never clipped and the content centres in what's visible. */
       body { padding-top: 122px; }
@@ -2129,16 +2130,14 @@
     .nav-profile {
       display: grid; place-items: center;
       width: 40px; height: 40px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.16);
       color: var(--white);
       flex-shrink: 0;
-      transition: background 0.3s ease, color 0.3s ease, transform 0.3s var(--ease-back);
+      transition: color 0.3s ease, transform 0.3s var(--ease-back);
     }
-    .nav-profile svg { width: 20px; height: 20px; }
-    @media (hover: hover) { .nav-profile:hover { background: var(--action); transform: translateY(-1px); } }
+    .nav-profile svg { width: 26px; height: 26px; }
+    @media (hover: hover) { .nav-profile:hover { color: var(--action); transform: translateY(-1px); } }
     .nav-profile:active { transform: scale(0.94); }
-    body.hero-light #nav:not(.scrolled) .nav-profile { background: rgba(91,23,36,0.12); color: #5b1724; }
+    body.hero-light #nav:not(.scrolled) .nav-profile { color: #5b1724; }
 
     /* Language switch lives in the footer now */
     .footer-lang { margin-top: 28px; }
@@ -2163,7 +2162,7 @@
       </ul>
       <div class="nav-right">
         <a href="give.html" class="nav-btn" data-en="Give">Dar</a>
-        <a href="https://casafamiliar.churchtrac.com/profile" class="nav-profile" target="_blank" rel="noopener" aria-label="Mi perfil" data-en-label="My profile"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20.5c0-3.6 3.6-6 8-6s8 2.4 8 6v.5H4v-.5Z"/></svg></a>
+        <a href="https://casafamiliar.churchtrac.com/profile" class="nav-profile" target="_blank" rel="noopener" aria-label="Mi perfil" data-en-label="My profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c.6-3.7 3.7-6 7.5-6s6.9 2.3 7.5 6"/></svg></a>
       </div>
     </div>
     <!-- Mobile tab bar — always in view, like an app -->
