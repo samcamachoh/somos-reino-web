@@ -2094,6 +2094,31 @@
       .nav-tabs a[aria-current="true"] svg { transform: translateY(-1px) scale(1.08); }
       .nav-tabs a:active { transform: scale(0.94); }
     }
+
+    /* ── EVENT SLIDE: clean hand-off + centred composition ──
+       The first slide's copy clears out quickly before the pink slide comes
+       up, so the two never sit on top of each other as ghosted text. */
+    #hero[data-slide="1"] .hero-content { transition: opacity 0.25s ease, transform 0.4s var(--ease); }
+    #hero[data-slide="0"] .hero-content:not(.hero-faded) { transition: opacity 0.6s ease 0.35s, transform 1s var(--ease) 0.35s; }
+    .hero-slide-event { transition: opacity 0.6s var(--ease-soft) 0.12s, visibility 0.6s linear 0.12s; }
+    #hero[data-slide="0"] .hero-slide-event { transition: opacity 0.5s var(--ease-soft), visibility 0.5s linear; }
+
+    @media (min-width: 1001px) {
+      /* Photo sits in its own right-hand column, centred vertically, clear of the headline */
+      .hero-slide-photo {
+        top: 0; bottom: 0; margin-block: auto;
+        width: min(58%, 900px);
+        max-height: 100%;
+        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 12%), linear-gradient(to bottom, #000 78%, transparent 100%);
+        -webkit-mask-composite: source-in;
+        mask-image: linear-gradient(to right, transparent 0, #000 12%), linear-gradient(to bottom, #000 78%, transparent 100%);
+        mask-composite: intersect;
+      }
+      .hero-slide-text { padding-top: 0; padding-bottom: 0; }
+    }
+    @media (max-width: 900px) {
+      .hero-slide-photo { margin-top: 8px; }
+    }
   </style>
 </head>
 <body>
