@@ -2180,6 +2180,14 @@
       #nav .nav-profile, body.hero-light #nav:not(.scrolled) .nav-profile { color: var(--black); }
     }
 
+    /* ── TIGHT HEADING LEADING ── */
+    h1, h2, .display, .hero-title, .whatsapp-title { line-height: 0.95; }
+    .hero-title { line-height: 0.92; }
+    /* the headline's line mask keeps descenders (g, y, p) visible at this leading */
+    .hero-line { padding-bottom: 0.14em; margin-bottom: -0.08em; }
+    h3, .event-title, .sermon-title, .visit-title { line-height: 1.1; }
+    .event-row-special .event-title { line-height: 0.95; }
+
     /* ── TIGHTER TEXT ── */
     h1, h2, h3, .display, .hero-title, .event-title, .sermon-title, .visit-title, .whatsapp-title {
       letter-spacing: -0.035em;
