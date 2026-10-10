@@ -2116,8 +2116,18 @@
       }
       .hero-slide-text { padding-top: 0; padding-bottom: 0; }
     }
+    @media (max-width: 1000px) {
+      /* Cap the photo so the headline, date and button always fit beneath it */
+      .hero-slide-photo {
+        height: clamp(200px, 36svh, 300px);
+        object-fit: cover;
+        object-position: center top;
+      }
+      .hero-slide-text { padding-bottom: 72px; }
+    }
     @media (max-width: 900px) {
       .hero-slide-photo { margin-top: 8px; }
+      #hero { min-height: max(calc(100svh - 122px), 640px); }
     }
   </style>
 </head>
