@@ -2160,6 +2160,21 @@
     p[style*="font-weight:300"] { font-weight: 400 !important; }
     /* The hero headline is one colour */
     .hero-title .line2 { color: inherit; }
+
+    /* ── TIGHTER TEXT ── */
+    h1, h2, h3, .display, .hero-title, .event-title, .sermon-title, .visit-title, .whatsapp-title {
+      letter-spacing: -0.035em;
+    }
+    .hero-title { line-height: 1; margin-bottom: 20px; }
+    h2.display { line-height: 1.04; }
+    .hero-body { font-size: 1.05rem; line-height: 1.5; max-width: 400px; margin-bottom: 32px; }
+    .hero-actions { gap: 12px; }
+    .section-lead { font-size: 1rem; line-height: 1.55; margin-top: 14px; max-width: 440px; }
+    .visit-text, .dar-body, .contacto-intro { line-height: 1.55; }
+    @media (max-width: 600px) {
+      .hero-body { font-size: 1rem; margin-bottom: 24px; }
+      .hero-actions { gap: 10px; }
+    }
   </style>
 </head>
 <body>
