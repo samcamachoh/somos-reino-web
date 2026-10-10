@@ -2166,6 +2166,20 @@
     .hero-content { padding: 40px 0 112px; }
     @media (max-width: 900px) { .hero-content { padding: 40px 0 96px; } }
 
+    /* Event slide copy sits low in the frame, like the first slide */
+    @media (min-width: 1001px) {
+      .hero-slide-event { align-items: flex-end; }
+      .hero-slide-text { padding-bottom: 96px; }
+    }
+    @media (max-width: 1000px) {
+      .hero-slide-text { justify-content: flex-end; padding-bottom: 80px; }
+    }
+
+    /* Profile icon is plain black on the white mobile header, on every slide */
+    @media (max-width: 900px) {
+      #nav .nav-profile, body.hero-light #nav:not(.scrolled) .nav-profile { color: var(--black); }
+    }
+
     /* ── TIGHTER TEXT ── */
     h1, h2, h3, .display, .hero-title, .event-title, .sermon-title, .visit-title, .whatsapp-title {
       letter-spacing: -0.035em;
