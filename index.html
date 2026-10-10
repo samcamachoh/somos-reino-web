@@ -19,9 +19,6 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400..900;1,400..900&family=Inter:wght@300..700&display=swap" rel="stylesheet" />
 
   <link rel="preconnect" href="https://img.youtube.com" />
   <link rel="preload" as="image" href="hero-mobile.webp" media="(max-width: 600px)" fetchpriority="high" />
@@ -31,6 +28,7 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
+      --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
       --black:      #111111;
       --near-black: #1A1816;
       --white:      #FFFFFF;
@@ -72,7 +70,7 @@
     }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: var(--font);
       background: var(--white);
       color: var(--text);
       overflow-x: hidden;
@@ -91,7 +89,7 @@
        picks two, and which one leads alternates down the page so no two
        sections open the same way. */
     h2.display {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: clamp(2.4rem, 5vw, 4rem);
       font-weight: 900;
       letter-spacing: -0.01em;
@@ -121,7 +119,7 @@
 
     /* Section eyebrow — small label above a heading */
     .eyebrow {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.66rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -177,7 +175,7 @@
 
     /* ── BUTTONS (pill, bold, flat) ── */
     .btn-primary, .btn-outline, .btn-ghost {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.8rem;
       letter-spacing: 0.04em;
       text-transform: uppercase;
@@ -212,7 +210,7 @@
       position: fixed; top: 8px; left: 8px; z-index: 1000;
       padding: 12px 18px; border-radius: 8px;
       background: var(--black); color: var(--white);
-      font: 700 0.85rem 'Archivo', sans-serif; text-decoration: none;
+      font: 700 0.85rem var(--font); text-decoration: none;
       transform: translateY(-200%);
     }
     .skip-link:focus { transform: none; }
@@ -345,7 +343,7 @@
     }
 
     .nav-links a {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.78rem;
       letter-spacing: 0.06em;
       text-transform: uppercase;
@@ -373,7 +371,7 @@
     .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
 
     .nav-btn {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.75rem;
       letter-spacing: 0.04em;
       font-weight: 700;
@@ -412,7 +410,7 @@
     }
 
     .lang-option {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.66rem;
       font-weight: 700;
       letter-spacing: 0.04em;
@@ -536,7 +534,7 @@
       background: rgba(17,17,17,0.55);
       border: 1.5px solid rgba(255,255,255,0.4);
       color: var(--white);
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.72rem;
       letter-spacing: 0.04em;
       text-transform: uppercase;
@@ -580,7 +578,7 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.7rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -600,7 +598,7 @@
     }
 
     .hero-title {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: clamp(3.4rem, 7.5vw, 6.2rem);
       font-weight: 900;
       letter-spacing: -0.02em;
@@ -735,7 +733,7 @@
     }
     .hero-slide-btn {
       display: inline-flex;
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.78rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -906,7 +904,7 @@
     }
 
     .servicio-day {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 1.6rem;
       font-weight: 800;
       color: var(--black);
@@ -915,7 +913,7 @@
     }
 
     .servicio-time {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 1rem;
       font-weight: 700;
       color: var(--near-black);
@@ -950,7 +948,7 @@
     .hero-ticker:hover .ticker-track { animation-play-state: paused; }
 
     .ticker-track span {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.85rem;
       letter-spacing: 0.03em;
       text-transform: uppercase;
@@ -1026,7 +1024,7 @@
     }
 
     .link-arrow {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.78rem;
       letter-spacing: 0.05em;
       text-transform: uppercase;
@@ -1121,7 +1119,7 @@
     }
 
     .sermon-series {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.68rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -1132,7 +1130,7 @@
     }
 
     .sermon-title {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-weight: 800;
       font-size: 1.1rem;
       line-height: 1.25;
@@ -1249,7 +1247,7 @@
     .event-row:hover { padding-left: 16px; background: var(--cream); }
     .event-date-box { text-align: center; }
     .event-date-num {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 2.6rem;
       font-weight: 900;
       color: var(--action);
@@ -1257,7 +1255,7 @@
       display: block;
     }
     .event-date-month {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.65rem;
       letter-spacing: 0.16em;
       text-transform: uppercase;
@@ -1267,7 +1265,7 @@
       margin-top: 6px;
     }
     .event-title {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 1.4rem;
       font-weight: 800;
       color: var(--black);
@@ -1277,7 +1275,7 @@
     .event-details { font-size: 0.88rem; color: var(--muted); font-weight: 500; line-height: 1.55; }
     .event-note { display: block; margin-top: 5px; color: var(--action-dark); font-weight: 700; }
     .event-tag {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.68rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -1329,7 +1327,7 @@
       padding: 7px 12px;
       border: 1px solid var(--rose-ink);
       border-radius: 100px;
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.68rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
@@ -1421,7 +1419,7 @@
     }
 
     .dar-scripture p {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-weight: 700;
       font-size: 1.1rem;
       line-height: 1.6;
@@ -1430,7 +1428,7 @@
     }
 
     .dar-scripture cite {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.68rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -1467,7 +1465,7 @@
     }
 
     .info-block-label {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.66rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -1478,7 +1476,7 @@
     }
 
     .info-block-value {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 1.15rem;
       font-weight: 700;
       color: var(--black);
@@ -1585,7 +1583,7 @@
     }
 
     .whatsapp-label {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.66rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -1596,7 +1594,7 @@
     }
 
     .whatsapp-title {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: clamp(1.5rem, 2.6vw, 2rem);
       font-weight: 900;
       letter-spacing: -0.01em;
@@ -1642,7 +1640,7 @@
     }
 
     .footer-tagline {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-weight: 600;
       font-size: 1rem;
       color: rgba(255,255,255,0.55);
@@ -1666,7 +1664,7 @@
     }
 
     .footer-col-title {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.68rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -1710,7 +1708,7 @@
     }
 
     .footer-verse {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-weight: 700;
       font-size: 0.78rem;
       color: rgba(255,255,255,0.3);
@@ -1989,7 +1987,7 @@
     }
     .visit-icon svg { width: 22px; height: 22px; }
     .visit-title {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 1.1rem;
       font-weight: 800;
       letter-spacing: -0.01em;
@@ -2057,7 +2055,7 @@
         min-height: 56px;
         padding: 9px 2px 8px;
         color: var(--black);
-        font: 600 0.64rem/1.1 'Archivo', sans-serif;
+        font: 600 0.64rem/1.1 var(--font);
         letter-spacing: 0.03em;
         text-decoration: none;
         -webkit-tap-highlight-color: transparent;
@@ -2145,6 +2143,21 @@
 
     /* The header shows the logo mark alone, in its own colours on every slide */
     #nav .nav-logo img, body.hero-light #nav:not(.scrolled) .nav-logo img { filter: none; }
+
+    /* ── TYPE: plain Helvetica ──
+       Headings are one bold weight in sentence case; paragraphs are regular. */
+    h1, h2, h3, h4, .display, .hero-title, .event-title, .event-row-special .event-title,
+    .sermon-title, .visit-title, .whatsapp-title {
+      font-weight: 700;
+      font-style: normal;
+      text-transform: none;
+      letter-spacing: -0.02em;
+    }
+    h2.display .reg, .hero-title .reg, h1 .reg, .whatsapp-title .reg,
+    h2.display em, .hero-title .line2, .whatsapp-title em { font-weight: 700; font-style: normal; }
+    .whatsapp-title .reg { color: inherit; letter-spacing: inherit; }
+    p, .section-lead, .hero-body, .info-block-sub, .visit-text { font-weight: 400; }
+    p[style*="font-weight:300"] { font-weight: 400 !important; }
   </style>
 </head>
 <body>
@@ -2199,13 +2212,13 @@
           <!-- Live badge — hidden by default, shown when live -->
           <div id="live-badge" style="display:none;align-items:center;gap:10px;margin-bottom:22px;">
             <div style="width:10px;height:10px;border-radius:50%;background:#E53E3E;animation:livePulse 1.5s ease-in-out infinite;"></div>
-            <span data-en="Live Now" style="font-family:'Archivo',sans-serif;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:#E53E3E;">En Vivo Ahora</span>
+            <span data-en="Live Now" style="font-family:var(--font);font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:#E53E3E;">En Vivo Ahora</span>
           </div>
 
           <!-- Upcoming stream badge — hidden by default, shown when a stream is scheduled and we're not live -->
           <a id="upcoming-badge" href="#" target="_blank" rel="noopener" style="display:none;align-items:center;gap:10px;margin-bottom:22px;text-decoration:none;">
             <div style="width:10px;height:10px;border-radius:50%;background:var(--action);"></div>
-            <span id="upcoming-badge-text" style="font-family:'Archivo',sans-serif;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--action);"></span>
+            <span id="upcoming-badge-text" style="font-family:var(--font);font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--action);"></span>
           </a>
 
 
@@ -2372,7 +2385,7 @@
       <div class="live-chat-inner">
         <div class="live-chat-badge">
           <div style="width:10px;height:10px;border-radius:50%;background:#E53E3E;animation:livePulse 1.5s ease-in-out infinite;"></div>
-          <span data-en="Live Now" style="font-family:'Archivo',sans-serif;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:#E53E3E;">En Vivo Ahora</span>
+          <span data-en="Live Now" style="font-family:var(--font);font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:#E53E3E;">En Vivo Ahora</span>
         </div>
         <h2 class="display" data-en="Live <em>chat</em>" style="color:var(--white);margin-bottom:32px;">Chat <em>en vivo</em></h2>
         <div class="live-chat-frame">
@@ -2397,7 +2410,7 @@
       <!-- Loading state -->
       <div id="sermons-loading" style="text-align:center;padding:60px 0;">
         <div style="width:40px;height:40px;border:2px solid var(--gray-100);border-top-color:var(--near-black);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;"></div>
-        <p data-en="Loading messages..." style="font-family:'Archivo',sans-serif;font-size:0.82rem;color:var(--muted);letter-spacing:0.08em;font-weight:600;">Cargando mensajes...</p>
+        <p data-en="Loading messages..." style="font-family:var(--font);font-size:0.82rem;color:var(--muted);letter-spacing:0.08em;font-weight:600;">Cargando mensajes...</p>
       </div>
 
       <!-- Error / fallback -->
@@ -2471,10 +2484,10 @@
 
           <!-- Scripture -->
           <div style="padding:20px 24px;border-left:4px solid var(--rule-dark);background:rgba(255,255,255,0.04);border-radius:0 14px 14px 0;max-width:280px;">
-            <p data-en="&quot;Man shall not live on bread alone, but on every word that comes from the mouth of God.&quot;" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:0.95rem;line-height:1.6;color:rgba(255,255,255,0.75);margin:0 0 8px;">
+            <p data-en="&quot;Man shall not live on bread alone, but on every word that comes from the mouth of God.&quot;" style="font-family:var(--font);font-weight:700;font-size:0.95rem;line-height:1.6;color:rgba(255,255,255,0.75);margin:0 0 8px;">
               "No solo de pan vivirá el hombre, sino de toda palabra que sale de la boca de Dios."
             </p>
-            <cite data-en="Matthew 4:4" style="font-family:'Archivo',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--label-dark);font-style:normal;">Mateo 4:4</cite>
+            <cite data-en="Matthew 4:4" style="font-family:var(--font);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--label-dark);font-style:normal;">Mateo 4:4</cite>
           </div>
 
         </div>
@@ -2493,7 +2506,7 @@
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="white"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
               </div>
               <div>
-                <span style="font-family:'Archivo',sans-serif;font-size:0.95rem;font-weight:800;color:var(--white);display:block;">Spotify</span>
+                <span style="font-family:var(--font);font-size:0.95rem;font-weight:800;color:var(--white);display:block;">Spotify</span>
                 <span data-en="Listen now →" style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,0.4);">Escuchar ahora →</span>
               </div>
             </a>
@@ -2503,7 +2516,7 @@
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="white"><path d="M18.5 12c0 3.59-2.91 6.5-6.5 6.5S5.5 15.59 5.5 12 8.41 5.5 12 5.5s6.5 2.91 6.5 6.5zm1.5 0c0-4.42-3.58-8-8-8s-8 3.58-8 8 3.58 8 8 8 8-3.58 8-8zm-8-3c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
               </div>
               <div>
-                <span style="font-family:'Archivo',sans-serif;font-size:0.95rem;font-weight:800;color:var(--white);display:block;">Apple Podcasts</span>
+                <span style="font-family:var(--font);font-size:0.95rem;font-weight:800;color:var(--white);display:block;">Apple Podcasts</span>
                 <span data-en="Listen now →" style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,0.4);">Escuchar ahora →</span>
               </div>
             </a>
@@ -2513,7 +2526,7 @@
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="white"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
               </div>
               <div>
-                <span style="font-family:'Archivo',sans-serif;font-size:0.95rem;font-weight:800;color:var(--white);display:block;">YouTube</span>
+                <span style="font-family:var(--font);font-size:0.95rem;font-weight:800;color:var(--white);display:block;">YouTube</span>
                 <span data-en="Watch now →" style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,0.4);">Ver ahora →</span>
               </div>
             </a>

@@ -12,14 +12,12 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400..900;1,400..900&family=Inter:wght@300..700&display=swap" rel="stylesheet" />
 
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
+      --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
       --black:      #111111;
       --near-black: #1A1816;
       --white:      #FFFFFF;
@@ -42,7 +40,7 @@
     @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: var(--font);
       background: var(--cream);
       color: var(--text);
       overflow-x: hidden;
@@ -56,7 +54,7 @@
       position: fixed; top: 8px; left: 8px; z-index: 1000;
       padding: 12px 18px; border-radius: 8px;
       background: var(--black); color: var(--white);
-      font: 700 0.85rem 'Archivo', sans-serif; text-decoration: none;
+      font: 700 0.85rem var(--font); text-decoration: none;
       transform: translateY(-200%);
     }
     .skip-link:focus { transform: none; }
@@ -81,7 +79,7 @@
       position: absolute; left: 50%; transform: translateX(-50%);
     }
     .nav-links a {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
       color: var(--muted); text-decoration: none;
       transition: color 0.3s;
@@ -90,7 +88,7 @@
 
     .nav-right { display: flex; align-items: center; gap: 16px; }
     .nav-btn {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: 0.75rem; letter-spacing: 0.04em; font-weight: 700; text-transform: uppercase;
       color: var(--white); background: var(--action);
       padding: 12px 26px; border-radius: 100px; text-decoration: none;
@@ -122,7 +120,7 @@
         display: flex; flex-direction: column; align-items: center; gap: 4px;
         min-height: 56px; padding: 9px 2px 8px;
         color: var(--black);
-        font: 600 0.64rem/1.1 'Archivo', sans-serif; letter-spacing: 0.03em;
+        font: 600 0.64rem/1.1 var(--font); letter-spacing: 0.03em;
         text-decoration: none;
         -webkit-tap-highlight-color: transparent;
         transition: color 0.3s ease, transform 0.3s var(--ease-back);
@@ -147,24 +145,24 @@
     .give-inner > * { min-width: 0; }
 
     h1.display {
-      font-family: 'Archivo', sans-serif;
+      font-family: var(--font);
       font-size: clamp(2.4rem, 5vw, 4rem);
-      font-weight: 900; letter-spacing: -0.01em; line-height: 1.05;
+      font-weight: 700; letter-spacing: -0.02em; line-height: 1.05;
       color: var(--black);
       text-wrap: balance;
     }
-    h1.display .reg { font-weight: 400; }
+    h1.display .reg { font-weight: 700; }
 
     .give-scripture {
       margin: 32px 0 36px; padding: 26px 30px;
       background: var(--white); border-radius: 16px; border: 1px solid var(--rule);
     }
     .give-scripture p {
-      font-family: 'Archivo', sans-serif; font-weight: 700;
+      font-family: var(--font); font-weight: 700;
       font-size: 1.1rem; line-height: 1.6; color: var(--black); margin-bottom: 14px;
     }
     .give-scripture cite {
-      font-family: 'Archivo', sans-serif; font-size: 0.68rem; letter-spacing: 0.14em;
+      font-family: var(--font); font-size: 0.68rem; letter-spacing: 0.14em;
       text-transform: uppercase; font-weight: 700; color: var(--label); font-style: normal;
     }
     .give-body { font-size: 1.02rem; line-height: 1.75; color: var(--muted); text-wrap: pretty; }
@@ -194,11 +192,11 @@
     .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 56px; }
     .footer-brand img { display: block; height: 32px; width: auto; }
     .footer-tagline {
-      font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 1rem;
+      font-family: var(--font); font-weight: 600; font-size: 1rem;
       color: rgba(255,255,255,0.55); margin: 20px 0 24px; line-height: 1.5;
     }
     .footer-col-title {
-      font-family: 'Archivo', sans-serif; font-size: 0.68rem; letter-spacing: 0.18em;
+      font-family: var(--font); font-size: 0.68rem; letter-spacing: 0.18em;
       text-transform: uppercase; font-weight: 700; color: var(--label-dark);
       margin-bottom: 22px; display: block;
     }
@@ -220,7 +218,7 @@
       background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.16); border-radius: 100px;
     }
     .lang-option {
-      font-family: 'Archivo', sans-serif; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.04em;
+      font-family: var(--font); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.04em;
       color: rgba(255,255,255,0.55); background: none; border: none;
       padding: 6px 12px; border-radius: 100px; cursor: pointer;
       transition: background 0.25s ease, color 0.25s ease;
@@ -232,7 +230,7 @@
       display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
     }
     .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.3); font-weight: 500; }
-    .footer-verse { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+    .footer-verse { font-family: var(--font); font-weight: 700; font-size: 0.78rem; color: rgba(255,255,255,0.3); }
     @media (max-width: 900px) {
       .footer-top { grid-template-columns: 1fr 1fr; gap: 32px 20px; }
       .footer-top > :first-child { grid-column: 1 / -1; }
