@@ -1,4 +1,4 @@
-// Serverless function: returns the 3 latest sermon videos from the church's
+// Serverless function: returns the latest sermon videos (3 by default, up to 15 with ?limit=) from the church's
 // YouTube playlist, read from YouTube's public RSS feed (no API key needed).
 // The feed is already ordered newest-first by YouTube.
 const PLAYLIST_ID = 'PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7';
@@ -52,8 +52,11 @@ module.exports = async (req, res) => {
     if (!feedRes.ok) throw new Error(`YouTube feed returned ${feedRes.status}`);
     const xml = await feedRes.text();
 
+    // Home page asks for the default 3; the sermons page asks for more (the feed holds the latest 15).
+    const limit = Math.min(Math.max(parseInt((req.query || {}).limit, 10) || 3, 1), 15);
+
     const videos = extractAll(xml, 'entry')
-      .slice(0, 3)
+      .slice(0, limit)
       .map(parseEntry)
       .filter(Boolean);
 

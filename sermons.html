@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dar — Somos Reino</title>
-  <meta name="description" content="Dar es un acto de fe. Tu generosidad mantiene el evangelio en movimiento en Kissimmee, FL." />
+  <title>Sermones — Somos Reino</title>
+  <meta name="description" content="Cada mensaje de Somos Reino, aquí mismo. Mira los sermones más recientes desde Kissimmee, FL." />
   <meta name="theme-color" content="#FFFFFF" />
-  <link rel="canonical" href="https://somosreino.org/give.html" />
+  <link rel="canonical" href="https://somosreino.org/sermons.html" />
   <link rel="icon" href="favicon.ico" sizes="any" />
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
@@ -138,55 +138,92 @@
       .nav-tabs a:active { transform: scale(0.94); }
     }
 
-    /* ── GIVE ── */
+    /* ── SERMONS ── */
     main { padding: 72px 0 96px; }
-    .give-inner {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
-    }
-    .give-inner > * { min-width: 0; }
-
     h1.display {
-      font-family: var(--font);
       font-size: clamp(2.4rem, 5vw, 4rem);
       font-weight: 700; letter-spacing: -0.035em; line-height: 1.04;
-      color: var(--black);
-      text-wrap: balance;
+      color: var(--black); text-wrap: balance;
     }
-    h1.display .reg { font-weight: 700; }
+    h1.display em { font-style: normal; font-weight: 700; }
+    .lead { font-size: 1rem; line-height: 1.55; color: var(--muted); margin-top: 14px; max-width: 440px; text-wrap: pretty; }
 
-    .give-scripture {
-      margin: 32px 0 36px; padding: 26px 30px;
-      background: var(--white); border-radius: 16px; border: 1px solid var(--rule);
+    .sermons-grid { display: none; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+    .sermon-card {
+      background: var(--white); border-radius: 18px; overflow: hidden; cursor: pointer;
+      display: flex; flex-direction: column; width: 100%; text-align: left;
+      border: 1px solid var(--line); padding: 0; font: inherit; color: inherit;
+      transition: transform 0.45s var(--ease), box-shadow 0.45s ease, border-color 0.35s ease;
     }
-    .give-scripture p {
-      font-family: var(--font); font-weight: 700;
-      font-size: 1.1rem; line-height: 1.6; color: var(--black); margin-bottom: 14px;
+    @media (hover: hover) {
+      .sermon-card:hover, .sermon-card:focus-visible {
+        transform: translateY(-8px); box-shadow: 0 24px 56px rgba(17,17,17,0.14); border-color: rgba(247,116,109,0.4);
+      }
     }
-    .give-scripture cite {
-      font-family: var(--font); font-size: 0.68rem; letter-spacing: 0.14em;
-      text-transform: uppercase; font-weight: 700; color: var(--label); font-style: normal;
+    .sermon-thumb { position: relative; width: 100%; aspect-ratio: 16/9; background: var(--black); overflow: hidden; flex-shrink: 0; }
+    .sermon-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease); }
+    .sermon-card:hover .sermon-thumb img { transform: scale(1.06); }
+    .sermon-scrim {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(to top, rgba(17,17,17,0.45), rgba(17,17,17,0.06));
     }
-    .give-body { font-size: 1.02rem; line-height: 1.75; color: var(--muted); text-wrap: pretty; }
+    .sermon-play {
+      position: relative; z-index: 2; width: 54px; height: 54px; border-radius: 50%;
+      background: var(--action); display: flex; align-items: center; justify-content: center;
+      transition: transform 0.4s var(--ease-back), box-shadow 0.4s ease;
+    }
+    .sermon-play svg { width: 18px; height: 18px; fill: white; margin-left: 3px; }
+    .sermon-card:hover .sermon-play { transform: scale(1.14); box-shadow: 0 0 0 12px rgba(247,116,109,0.16); }
+    .sermon-body { padding: 22px 24px 26px; flex: 1; }
+    .sermon-title { font-size: 1.05rem; font-weight: 700; line-height: 1.25; letter-spacing: -0.02em; color: var(--black); margin-bottom: 10px; }
+    .sermon-meta { font-size: 0.78rem; color: var(--muted); display: flex; gap: 12px; font-weight: 500; }
+    .sermon-meta .play { color: var(--action); }
 
-    .give-embed {
-      background: var(--white); border-radius: 18px; overflow: hidden;
-      border: 1px solid var(--line);
+    .sermons-state { text-align: center; padding: 60px 0; color: var(--muted); }
+    .spinner {
+      width: 40px; height: 40px; margin: 0 auto 16px;
+      border: 2px solid var(--gray-100); border-top-color: var(--near-black); border-radius: 50%;
+      animation: spin 0.8s linear infinite;
     }
-    .give-embed iframe { display: block; width: 100%; height: 700px; border: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .btn-primary {
+      display: inline-block; padding: 16px 32px; border-radius: 100px;
+      background: var(--action); color: var(--white); text-decoration: none;
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+      transition: transform 0.3s var(--ease-back), box-shadow 0.3s ease;
+    }
+    @media (hover: hover) { .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(247,116,109,0.35); } }
+    .all-link {
+      display: inline-flex; align-items: center; gap: 8px; margin-top: 48px;
+      color: var(--action); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+    }
+    .all-link:hover { text-decoration: underline; }
 
-    /* Entrance: long expo-out, staggered */
+    /* Video modal */
+    .video-modal { position: fixed; inset: 0; z-index: 500; display: none; align-items: center; justify-content: center; padding: 24px; }
+    .video-modal.open { display: flex; }
+    .video-modal-backdrop { position: absolute; inset: 0; background: rgba(17,17,17,0.92); backdrop-filter: blur(6px); }
+    .video-modal-inner { position: relative; width: 100%; max-width: 1000px; aspect-ratio: 16/9; z-index: 1; }
+    .video-modal-frame, .video-modal-frame iframe { width: 100%; height: 100%; border: none; border-radius: 12px; display: block; }
+    .video-modal-close {
+      position: absolute; top: -48px; right: 0; width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,0.1); border: 1.5px solid rgba(255,255,255,0.3); color: var(--white);
+      font-size: 1.5rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .video-modal-close:hover { background: var(--action); border-color: var(--action); }
+
+    /* Entrance */
     @keyframes rise { from { opacity: 0; transform: translate3d(0, 40px, 0) scale(0.985); } to { opacity: 1; transform: none; } }
     .rise { opacity: 0; animation: rise 1.1s var(--ease) forwards; }
     .rise-2 { animation-delay: 0.12s; }
-    .rise-3 { animation-delay: 0.24s; }
-    .rise-4 { animation-delay: 0.36s; }
-    @media (prefers-reduced-motion: reduce) { .rise { animation: none; opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { .rise, .sermon-card { animation: none; opacity: 1; } }
 
     @media (max-width: 900px) {
       main { padding: 40px 0 64px; }
-      .give-inner { grid-template-columns: 1fr; gap: 40px; }
-      .give-embed iframe { height: 640px; }
+      .sermons-grid { grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 36px; }
     }
+    @media (max-width: 600px) { .sermons-grid { grid-template-columns: 1fr; } }
 
     /* ── FOOTER ── */
     footer { background: var(--black); padding: 72px 0 32px; }
@@ -327,7 +364,7 @@
         <a href="/" class="nav-logo"><img src="logo-mark.png" alt="Somos Reino" width="40" height="40" /></a>
       </div>
       <ul class="nav-links">
-        <li><a href="/#sermones" data-en="Sermons">Sermones</a></li>
+        <li><a href="/sermons.html" aria-current="page" data-en="Sermons">Sermones</a></li>
         <li><a href="/#eventos" data-en="Events">Eventos</a></li>
         <li><a href="/#esencial">Podcast</a></li>
         <li><a href="/#contacto" data-en="Contact">Contacto</a></li>
@@ -339,10 +376,10 @@
     </div>
     <!-- Mobile tab bar — same as the home page -->
     <div class="nav-tabs" role="navigation" aria-label="Secciones" data-en-label="Sections">
-      <a href="/#sermones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5-6-3.5Z" fill="currentColor"/></svg><span data-en="Sermons">Sermones</span></a>
+      <a href="/sermons.html" aria-current="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5-6-3.5Z" fill="currentColor"/></svg><span data-en="Sermons">Sermones</span></a>
       <a href="/#eventos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span data-en="Events">Eventos</span></a>
       <a href="/#esencial"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg><span>Podcast</span></a>
-      <a href="give.html" aria-current="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9.6C12 7.3 9 6.2 7.6 8.2 6.3 10 7.7 11.6 12 15c4.3-3.4 5.7-5 4.4-6.8C15 6.2 12 7.3 12 9.6Z" transform="translate(0 -3)"/><path d="M3 15h4l3 1.5h4a1.5 1.5 0 0 1 0 3H9.5M7 15v5.5H3M14 19.5l5-2a1.6 1.6 0 0 1 1.7 2.7L14 22l-4.5-.5"/></svg><span data-en="Give">Dar</span></a>
+      <a href="give.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9.6C12 7.3 9 6.2 7.6 8.2 6.3 10 7.7 11.6 12 15c4.3-3.4 5.7-5 4.4-6.8C15 6.2 12 7.3 12 9.6Z" transform="translate(0 -3)"/><path d="M3 15h4l3 1.5h4a1.5 1.5 0 0 1 0 3H9.5M7 15v5.5H3M14 19.5l5-2a1.6 1.6 0 0 1 1.7 2.7L14 22l-4.5-.5"/></svg><span data-en="Give">Dar</span></a>
       <a href="/#contacto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span data-en="Contact">Contacto</span></a>
     </div>
   </header>
@@ -375,24 +412,31 @@
 
   <main id="main">
     <div class="container">
-      <div class="give-inner">
-        <div class="give-copy">
-          <h1 class="display rise" data-en="<span class='reg'>Giving is</span><br>an act of faith"><span class="reg">Dar es</span><br>un acto de fe</h1>
-          <blockquote class="give-scripture rise rise-2">
-            <p data-en="&quot;Each person should give as they have decided in their heart, not reluctantly or out of obligation, for God loves a cheerful giver.&quot;">"Cada uno dé como propuso en su corazón: no con tristeza, ni por necesidad, porque Dios ama al dador alegre."</p>
-            <cite data-en="2 Corinthians 9:7">2 Corintios 9:7</cite>
-          </blockquote>
-          <p class="give-body rise rise-3" data-en="Your generosity keeps the gospel moving in Kissimmee: every service held, every family walked with, every young person who finds their purpose. Thank you for sowing with us.">
-            Tu generosidad mantiene el evangelio en movimiento en Kissimmee: cada servicio, cada familia acompañada, cada joven que encuentra su propósito. Gracias por sembrar con nosotros.
-          </p>
-        </div>
+      <h1 class="display rise" data-en="A word <em>that stays with you</em>">Palabra <em>que permanece</em></h1>
+      <p class="lead rise rise-2" data-en="Missed Sunday, or want to hear it again? Every message, right here.">¿Te perdiste el domingo o quieres volver a escucharlo? Cada mensaje, aquí mismo.</p>
 
-        <div class="give-embed rise rise-4">
-          <iframe title="Dar en línea" src="https://casafamiliar.churchtrac.com/give/embed" data-en-title="Give online"></iframe>
-        </div>
+      <div id="sermons-loading" class="sermons-state">
+        <div class="spinner"></div>
+        <p data-en="Loading messages...">Cargando mensajes...</p>
       </div>
+      <div id="sermons-error" class="sermons-state" style="display:none;">
+        <p data-en="The list is taking a moment — you can watch every message on YouTube." style="margin-bottom:20px;">La lista está tardando — puedes ver todos los mensajes en YouTube.</p>
+        <a href="https://youtube.com/playlist?list=PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7" target="_blank" rel="noopener" class="btn-primary" data-en="View Playlist →">Ver Playlist →</a>
+      </div>
+
+      <div class="sermons-grid" id="sermons-grid"></div>
+
+      <a href="https://youtube.com/playlist?list=PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7" target="_blank" rel="noopener" class="all-link" data-en="View All on YouTube →">Ver todos en YouTube →</a>
     </div>
   </main>
+
+  <div class="video-modal" id="video-modal" role="dialog" aria-modal="true" aria-label="Reproductor de sermón">
+    <div class="video-modal-backdrop" id="video-modal-backdrop"></div>
+    <div class="video-modal-inner">
+      <button class="video-modal-close" id="video-modal-close" type="button" aria-label="Cerrar video" data-en-label="Close video">&times;</button>
+      <div class="video-modal-frame" id="video-modal-frame"></div>
+    </div>
+  </div>
 
   <footer>
     <div class="container">
@@ -419,7 +463,7 @@
           <span class="footer-col-title" data-en="Explore">Explora</span>
           <ul class="footer-links">
             <li><a href="/" data-en="Home">Inicio</a></li>
-            <li><a href="/#sermones" data-en="Sermons">Sermones</a></li>
+            <li><a href="/sermons.html" data-en="Sermons">Sermones</a></li>
             <li><a href="/#eventos" data-en="Events">Eventos</a></li>
             <li><a href="/#esencial">Podcast</a></li>
             <li><a href="/#contacto" data-en="Contact">Contacto</a></li>
@@ -457,11 +501,6 @@
         if (el.dataset.esLabel === undefined) el.dataset.esLabel = el.getAttribute('aria-label') || '';
         el.setAttribute('aria-label', next === 'en' ? el.dataset.enLabel : el.dataset.esLabel);
       });
-      const frame = document.querySelector('.give-embed iframe');
-      if (frame) {
-        if (frame.dataset.esTitle === undefined) frame.dataset.esTitle = frame.title;
-        frame.title = next === 'en' ? frame.dataset.enTitle : frame.dataset.esTitle;
-      }
       document.querySelectorAll('.lang-option').forEach(b => b.classList.toggle('active', b.dataset.lang === next));
       document.querySelectorAll('.yr').forEach(el => { el.textContent = new Date().getFullYear(); });
     }
@@ -488,6 +527,79 @@
       document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.body.classList.contains('menu-open')) setOpen(false); });
     })();
     applyLanguage(lang);
+
+    // ── SERMONS ──
+    (function() {
+      const loading = document.getElementById('sermons-loading');
+      const grid = document.getElementById('sermons-grid');
+      const error = document.getElementById('sermons-error');
+      const modal = document.getElementById('video-modal');
+      const frame = document.getElementById('video-modal-frame');
+      let lastFocus = null;
+
+      function esc(v) {
+        return String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+      }
+      function card(v) {
+        const title = esc(String(v.title || 'Sermón').split('|')[0].trim());
+        return `<button type="button" class="sermon-card rise" data-video-id="${v.videoId}" aria-label="Reproducir: ${title}">
+          <div class="sermon-thumb">
+            <img src="https://img.youtube.com/vi/${v.videoId}/hqdefault.jpg" alt="" loading="lazy" />
+            <div class="sermon-scrim"><span class="sermon-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span></div>
+          </div>
+          <div class="sermon-body">
+            <h3 class="sermon-title">${title}</h3>
+            <div class="sermon-meta"><span>${esc(v.date)}</span><span>·</span><span class="play" data-en="Play →">Reproducir →</span></div>
+          </div>
+        </button>`;
+      }
+      function render(data) {
+        const vids = Array.isArray(data.videos) ? data.videos.filter(v => v && /^[\w-]{11}$/.test(v.videoId)) : [];
+        if (!vids.length) throw new Error('No videos');
+        grid.innerHTML = vids.map(card).join('');
+        grid.querySelectorAll('.sermon-card').forEach((el, i) => { el.style.animationDelay = Math.min(i, 8) * 0.06 + 's'; });
+        loading.style.display = 'none';
+        grid.style.display = 'grid';
+        applyLanguage(lang);
+      }
+
+      function open(id) {
+        frame.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1" title="Sermón" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        lastFocus = document.activeElement;
+        document.getElementById('video-modal-close').focus();
+      }
+      function close() {
+        modal.classList.remove('open');
+        frame.innerHTML = '';
+        document.body.style.overflow = '';
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+      }
+      grid.addEventListener('click', e => {
+        const c = e.target.closest('.sermon-card');
+        if (c && c.dataset.videoId) open(c.dataset.videoId);
+      });
+      document.getElementById('video-modal-close').addEventListener('click', close);
+      document.getElementById('video-modal-backdrop').addEventListener('click', close);
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) close(); });
+
+      async function load(url) {
+        const ctl = new AbortController();
+        const t = setTimeout(() => ctl.abort(), 10000);
+        try {
+          const r = await fetch(url, { signal: ctl.signal });
+          if (!r.ok) throw new Error('API unavailable');
+          return await r.json();
+        } finally { clearTimeout(t); }
+      }
+      load('/api/videos?limit=15').then(render).catch(() => {
+        load('https://somos-reino-api.vercel.app/api/videos').then(render).catch(() => {
+          loading.style.display = 'none';
+          error.style.display = 'block';
+        });
+      });
+    })();
   </script>
 </body>
 </html>
