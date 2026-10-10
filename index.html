@@ -2161,6 +2161,11 @@
     /* The hero headline is one colour */
     .hero-title .line2 { color: inherit; }
 
+    /* Hero copy sits low in the frame, clear of the dots and ticker */
+    #hero { align-items: flex-end; }
+    .hero-content { padding: 40px 0 112px; }
+    @media (max-width: 900px) { .hero-content { padding: 40px 0 96px; } }
+
     /* ── TIGHTER TEXT ── */
     h1, h2, h3, .display, .hero-title, .event-title, .sermon-title, .visit-title, .whatsapp-title {
       letter-spacing: -0.035em;
