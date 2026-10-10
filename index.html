@@ -2335,6 +2335,34 @@
     .hero-bg-img { opacity: 0; transition: opacity 1.4s ease; }
     .hero-bg-img.on { opacity: 1; }
     @media (prefers-reduced-motion: reduce) { .hero-bg-img { transition: none; } }
+
+    /* ── PODCAST: just a nudge to listen, and the links ── */
+    #esencial { padding: var(--section-pad); background: var(--black); position: relative; overflow: hidden; }
+    .podcast-inner { max-width: 560px; }
+    #esencial h2.display { color: var(--white); }
+    .podcast-lead { margin-top: 14px; font-size: 1rem; line-height: 1.55; color: rgba(255,255,255,0.62); }
+    .podcast-links { display: flex; flex-direction: column; gap: 12px; margin-top: 36px; }
+    .podcast-link {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 20px; border-radius: 16px;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+      color: var(--white); text-decoration: none;
+      transition: background 0.3s ease, border-color 0.3s ease, transform 0.4s var(--ease);
+    }
+    .podcast-ico { display: grid; place-items: center; flex: none; width: 40px; height: 40px; border-radius: 10px; }
+    .podcast-ico svg { width: 22px; height: 22px; fill: white; }
+    .podcast-name { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; }
+    .podcast-go { margin-left: auto; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.45); transition: color 0.3s ease; }
+    .podcast-name, .podcast-go { white-space: nowrap; }
+    /* On phones the prompt text drops away and just the arrow stays */
+    @media (max-width: 480px) {
+      .podcast-go { font-size: 0; }
+      .podcast-go::after { content: '\2192'; font-size: 1.1rem; letter-spacing: 0; }
+    }
+    @media (hover: hover) {
+      .podcast-link:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.18); transform: translateX(4px); }
+      .podcast-link:hover .podcast-go { color: var(--action); }
+    }
   </style>
 </head>
 <body>
@@ -2679,75 +2707,27 @@
 
 
   <!-- ── ESENCIAL PODCAST ── -->
-  <section id="esencial" style="padding:108px 0;background:var(--black);position:relative;overflow:hidden;">
-
-    <div class="container" style="position:relative;z-index:1;">
-      <div class="reveal" style="text-align:center;margin-bottom:56px;">
-        <h2 class="display" data-en="<em>Our</em> Podcast" style="color:var(--white);"><em>Nuestro</em> Podcast</h2>
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;">
-
-        <!-- Left: Cover art -->
-        <div class="reveal-left" style="display:flex;flex-direction:column;align-items:center;gap:32px;">
-
-          <!-- Podcast cover -->
-          <div style="position:relative;width:280px;height:280px;flex-shrink:0;">
-            <img src="esencial-cover.png" loading="lazy" decoding="async" width="280" height="280" alt="Esencial" style="position:absolute;inset:0;width:100%;height:100%;border-radius:22px;object-fit:cover;" />
-            <!-- Glow -->
-            <div style="position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);width:200px;height:30px;background:rgba(255,255,255,0.22);filter:blur(24px);border-radius:50%;"></div>
-          </div>
-
-          <!-- Scripture -->
-          <div style="padding:20px 24px;border-left:4px solid var(--rule-dark);background:rgba(255,255,255,0.04);border-radius:0 14px 14px 0;max-width:280px;">
-            <p data-en="&quot;Man shall not live on bread alone, but on every word that comes from the mouth of God.&quot;" style="font-family:var(--font);font-weight:700;font-size:0.95rem;line-height:1.6;color:rgba(255,255,255,0.75);margin:0 0 8px;">
-              "No solo de pan vivirá el hombre, sino de toda palabra que sale de la boca de Dios."
-            </p>
-            <cite data-en="Matthew 4:4" style="font-family:var(--font);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--label-dark);font-style:normal;">Mateo 4:4</cite>
-          </div>
-
-        </div>
-
-        <!-- Right: Podcast info -->
-        <div class="reveal-right">
-          <p data-en="Conversations about faith and everyday life.<br>For anyone who walks, doubts, believes, and keeps going.<br><br>New episodes on Spotify, Apple Podcasts and YouTube." style="font-size:1.1rem;font-weight:300;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:40px;">
-            Conversaciones de fe y vida cotidiana.<br>Para el que camina, duda, cree y sigue adelante.<br><br>Nuevos episodios en Spotify, Apple Podcasts y YouTube.
-          </p>
-
-          <!-- Platform links -->
-          <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:40px;">
-
-            <a href="https://open.spotify.com/show/7hPqVVCSXma0FkD6zP0R1G?si=clq1VjnhSemF-9fD8qQT2g" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);text-decoration:none;border-radius:14px;transition:background 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.09)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
-              <div style="width:40px;height:40px;border-radius:10px;background:#1DB954;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="white"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
-              </div>
-              <div>
-                <span style="font-family:var(--font);font-size:0.95rem;font-weight:800;color:var(--white);display:block;">Spotify</span>
-                <span data-en="Listen now →" style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,0.4);">Escuchar ahora →</span>
-              </div>
-            </a>
-
-            <a href="https://podcasts.apple.com/us/podcast/esencial-principios-del-reino/id1894268031" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);text-decoration:none;border-radius:14px;transition:background 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.09)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
-              <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#F452FF,#832BC1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="white"><path d="M18.5 12c0 3.59-2.91 6.5-6.5 6.5S5.5 15.59 5.5 12 8.41 5.5 12 5.5s6.5 2.91 6.5 6.5zm1.5 0c0-4.42-3.58-8-8-8s-8 3.58-8 8 3.58 8 8 8 8-3.58 8-8zm-8-3c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
-              </div>
-              <div>
-                <span style="font-family:var(--font);font-size:0.95rem;font-weight:800;color:var(--white);display:block;">Apple Podcasts</span>
-                <span data-en="Listen now →" style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,0.4);">Escuchar ahora →</span>
-              </div>
-            </a>
-
-            <a href="https://youtube.com/playlist?list=PLsHpz1KAchvpaUhBiFyCSsFPlWAw8ZF16&si=7uUmU4VSB26cqvlE" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);text-decoration:none;border-radius:14px;transition:background 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.09)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
-              <div style="width:40px;height:40px;border-radius:10px;background:#FF0000;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="white"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-              </div>
-              <div>
-                <span style="font-family:var(--font);font-size:0.95rem;font-weight:800;color:var(--white);display:block;">YouTube</span>
-                <span data-en="Watch now →" style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,0.4);">Ver ahora →</span>
-              </div>
-            </a>
-
-          </div>
+  <section id="esencial">
+    <div class="container">
+      <div class="podcast-inner">
+        <h2 class="display reveal" data-en="Listen to our podcast">Escucha nuestro podcast</h2>
+        <p class="podcast-lead reveal" data-en="New episodes are out now — pick your favorite app and press play.">Nuevos episodios disponibles — elige tu app favorita y dale play.</p>
+        <div class="podcast-links" data-stagger>
+        <a class="podcast-link reveal" href="https://open.spotify.com/show/7hPqVVCSXma0FkD6zP0R1G?si=clq1VjnhSemF-9fD8qQT2g" target="_blank" rel="noopener">
+          <span class="podcast-ico" style="background:#1DB954;"><svg aria-hidden="true" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg></span>
+          <span class="podcast-name">Spotify</span>
+          <span class="podcast-go" data-en="Listen now →">Escuchar ahora →</span>
+        </a>
+        <a class="podcast-link reveal" href="https://podcasts.apple.com/us/podcast/esencial-principios-del-reino/id1894268031" target="_blank" rel="noopener">
+          <span class="podcast-ico" style="background:linear-gradient(135deg,#F452FF,#832BC1);"><svg aria-hidden="true" viewBox="0 0 24 24" fill="white"><path d="M18.5 12c0 3.59-2.91 6.5-6.5 6.5S5.5 15.59 5.5 12 8.41 5.5 12 5.5s6.5 2.91 6.5 6.5zm1.5 0c0-4.42-3.58-8-8-8s-8 3.58-8 8 3.58 8 8 8 8-3.58 8-8zm-8-3c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg></span>
+          <span class="podcast-name">Apple Podcasts</span>
+          <span class="podcast-go" data-en="Listen now →">Escuchar ahora →</span>
+        </a>
+        <a class="podcast-link reveal" href="https://youtube.com/playlist?list=PLsHpz1KAchvpaUhBiFyCSsFPlWAw8ZF16&si=7uUmU4VSB26cqvlE" target="_blank" rel="noopener">
+          <span class="podcast-ico" style="background:#FF0000;"><svg aria-hidden="true" viewBox="0 0 24 24" fill="white"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></span>
+          <span class="podcast-name">YouTube</span>
+          <span class="podcast-go" data-en="Watch now →">Ver ahora →</span>
+        </a>
         </div>
       </div>
     </div>
