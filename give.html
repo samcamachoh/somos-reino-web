@@ -336,6 +336,34 @@
       .menu-social-list a:hover { color: var(--action); }
       .menu-social-list a:hover .ico { background: var(--action); color: var(--white); transform: translateY(-2px); }
     }
+
+    /* Menu entrance: panel glides in, then its contents follow one by one */
+    .menu-head, .menu-links li, .menu-social > .menu-label, .menu-social-list li, .menu-foot {
+      opacity: 0;
+      transform: translate3d(-22px, 0, 0);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    body.menu-open .menu-head, body.menu-open .menu-links li, body.menu-open .menu-social > .menu-label,
+    body.menu-open .menu-social-list li, body.menu-open .menu-foot {
+      opacity: 1;
+      transform: none;
+      transition: opacity 0.5s ease, transform 0.7s var(--ease);
+      transition-delay: calc(0.12s + var(--i, 0) * 0.045s);
+    }
+    .menu-head { --i: 0; }
+    .menu-links li:nth-child(1) { --i: 1; } .menu-links li:nth-child(2) { --i: 2; } .menu-links li:nth-child(3) { --i: 3; }
+    .menu-links li:nth-child(4) { --i: 4; } .menu-links li:nth-child(5) { --i: 5; } .menu-links li:nth-child(6) { --i: 6; }
+    .menu-links li:nth-child(7) { --i: 7; }
+    .menu-social > .menu-label { --i: 8; }
+    .menu-social-list li:nth-child(1) { --i: 9; }  .menu-social-list li:nth-child(2) { --i: 10; }
+    .menu-social-list li:nth-child(3) { --i: 11; } .menu-social-list li:nth-child(4) { --i: 12; }
+    .menu-social-list li:nth-child(5) { --i: 13; }
+    .menu-foot { --i: 14; }
+    @media (prefers-reduced-motion: reduce) {
+      .menu-head, .menu-links li, .menu-social > .menu-label, .menu-social-list li, .menu-foot {
+        opacity: 1; transform: none; transition: none; transition-delay: 0s;
+      }
+    }
   </style>
 </head>
 <body>
