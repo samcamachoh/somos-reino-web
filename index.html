@@ -2129,6 +2129,18 @@
       .hero-slide-photo { margin-top: 8px; }
       #hero { min-height: max(calc(100svh - 122px), 640px); }
     }
+
+    /* ── CAROUSEL DOTS: small, close together, easy to ignore ──
+       The visible mark is tiny and quiet; an invisible pad around each
+       button keeps the touch target comfortable. */
+    .hero-dots { gap: 0; opacity: 0.75; transition: opacity 0.4s ease; }
+    .hero-dots:hover, .hero-dots:focus-within { opacity: 1; }
+    .hero-dot { position: relative; width: 14px; height: 20px; }
+    .hero-dot::after { content: ''; position: absolute; inset: -12px -4px; }
+    .hero-dot[aria-current="true"] { width: 30px; }
+    .hero-dot span { height: 3px; max-width: 4px; }
+    .hero-dot[aria-current="true"] span { max-width: 20px; }
+    @media (max-width: 1000px) { .hero-dots { bottom: 62px; } }
   </style>
 </head>
 <body>
