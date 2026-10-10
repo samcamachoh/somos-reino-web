@@ -161,20 +161,6 @@
 
     .section-lead-light { color: rgba(255,255,255,0.55); }
 
-    /* ── CURSOR GLOW ── */
-    /* ── SMOOTH SCROLL PROGRESS ── */
-    .scroll-progress {
-      position: fixed;
-      top: 0; left: 0;
-      height: 3px;
-      width: 100%;
-      background: linear-gradient(90deg, var(--action-dark), var(--action));
-      z-index: 9999;
-      transform: scaleX(0);
-      transform-origin: left;
-      will-change: transform;
-    }
-
     /* Content is visible by default; JS opts only offscreen items into motion. */
     .reveal-pending {
       opacity: 0;
@@ -2146,9 +2132,6 @@
 <body>
   <a class="skip-link" href="#main" data-en="Skip to content">Saltar al contenido</a>
 
-  <!-- Scroll progress bar -->
-  <div class="scroll-progress" id="scroll-progress"></div>
-
   <!-- ── NAV ── -->
   <nav id="nav">
     <div class="container">
@@ -2690,10 +2673,9 @@
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // ── SCROLL: progress bar and nav state ──
+    // ── SCROLL: nav state ──
     // Share a single rAF-throttled listener.
     (function() {
-      const progressBar = document.getElementById('scroll-progress');
       const nav = document.getElementById('nav');
       const hero = document.getElementById('hero');
       const heroBg = document.getElementById('hero-bg');
@@ -2704,9 +2686,7 @@
       function update() {
         ticking = false;
         const y = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
 
-        progressBar.style.transform = `scaleX(${docHeight > 0 ? Math.min(y / docHeight, 1) : 0})`;
         nav.classList.toggle('scrolled', y > 60);
 
         // Out of the way going down, back on the way up — but never while a
