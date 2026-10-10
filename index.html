@@ -2330,6 +2330,11 @@
         opacity: 1; transform: none; transition: none; transition-delay: 0s;
       }
     }
+
+    /* Hero photo rotation: the first card cross-fades between the photos */
+    .hero-bg-img { opacity: 0; transition: opacity 1.4s ease; }
+    .hero-bg-img.on { opacity: 1; }
+    @media (prefers-reduced-motion: reduce) { .hero-bg-img { transition: none; } }
   </style>
 </head>
 <body>
@@ -2404,7 +2409,11 @@
   <main id="main">
   <!-- ── HERO ── -->
   <section id="hero" data-slide="0">
-    <div class="hero-bg" id="hero-bg"><div class="hero-bg-img"></div></div>
+    <div class="hero-bg" id="hero-bg">
+      <div class="hero-bg-img on"></div>
+      <div class="hero-bg-img" data-d="hero-worship.webp" data-m="hero-worship-m.webp" data-pos="center 28%" data-pos-m="58% 30%"></div>
+      <div class="hero-bg-img" data-d="hero-speaker.webp" data-m="hero-speaker-m.webp" data-pos="center 42%" data-pos-m="50% 40%"></div>
+    </div>
 
     <!-- Live YouTube video — hidden until the channel goes live -->
     <div class="hero-video-wrap" id="hero-video-wrap">
@@ -3069,6 +3078,40 @@
         restartFill();
       };
       restartFill();
+    })();
+
+    // ── HERO PHOTO ROTATION ──
+    // The first card cycles through the photos with a slow cross-fade. The extra
+    // photos load after the page, so the first one still paints as fast as before.
+    (function() {
+      const hero = document.getElementById('hero');
+      const imgs = [...document.querySelectorAll('#hero-bg .hero-bg-img')];
+      if (imgs.length < 2 || !hero) return;
+      const mobile = window.matchMedia('(max-width: 600px)').matches;
+      let current = 0, timer = null;
+
+      function prepare() {
+        imgs.forEach(el => {
+          if (!el.dataset.d) return;
+          el.style.backgroundImage = `url('${mobile ? el.dataset.m : el.dataset.d}')`;
+          el.style.backgroundSize = 'cover';
+          el.style.backgroundPosition = mobile ? el.dataset.posM || el.dataset.pos : el.dataset.pos;
+        });
+      }
+      function next() {
+        // Hold while the pink event slide or the live video is up
+        if (hero.dataset.slide === '1' || hero.classList.contains('hero-live') || document.hidden) return;
+        imgs[current].classList.remove('on');
+        current = (current + 1) % imgs.length;
+        imgs[current].classList.add('on');
+      }
+      function start() {
+        prepare();
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        timer = setInterval(next, 6500);
+      }
+      if (document.readyState === 'complete') start();
+      else window.addEventListener('load', () => setTimeout(start, 400), { once: true });
     })();
 
     // ── HERO SCROLL CUE — fades out as soon as you start scrolling ──
