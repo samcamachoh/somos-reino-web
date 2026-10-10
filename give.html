@@ -111,6 +111,7 @@
       .container { padding: 0 24px; }
       .site-header .container { min-height: 60px; }
       .nav-links, .nav-btn { display: none; }
+      .nav-logo img { width: 36px; height: 36px; }
       .nav-tabs {
         display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
         background: var(--white);
@@ -236,6 +237,84 @@
       .footer-top > :first-child { grid-column: 1 / -1; }
       .footer-bottom { flex-direction: column; text-align: center; gap: 8px; }
     }
+
+    /* ── HAMBURGER MENU (left of the logo) ── */
+    .nav-left { display: flex; align-items: center; gap: 8px; }
+    .nav-menu-btn {
+      display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;
+      width: 40px; height: 40px; padding: 0;
+      background: none; border: 0; cursor: pointer;
+      color: var(--black);
+      transition: color 0.3s ease;
+    }
+    .nav-menu-btn span {
+      display: block; width: 22px; height: 2px; border-radius: 2px;
+      background: currentColor;
+      transition: transform 0.35s var(--ease), opacity 0.2s ease;
+    }
+    .nav-menu-btn[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-menu-btn[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .nav-menu-btn[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    @media (hover: hover) { .nav-menu-btn:hover { color: var(--action); } }
+    @media (max-width: 900px) {
+      .nav-menu-btn, body.hero-light #nav:not(.scrolled) .nav-menu-btn { color: var(--black); }
+    }
+
+    .menu-backdrop {
+      position: fixed; inset: 0; z-index: 290;
+      background: rgba(17,17,17,0.45);
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0s linear 0.35s;
+    }
+    .menu-panel {
+      position: fixed; top: 0; bottom: 0; left: 0; z-index: 300;
+      width: min(86vw, 340px);
+      display: flex; flex-direction: column;
+      padding: 20px 28px 28px;
+      background: var(--white); color: var(--black);
+      transform: translate3d(-100%, 0, 0); visibility: hidden;
+      transition: transform 0.5s var(--ease), visibility 0s linear 0.5s;
+      overflow-y: auto; overscroll-behavior: contain;
+    }
+    body.menu-open { overflow: hidden; }
+    body.menu-open .menu-backdrop { opacity: 1; visibility: visible; transition-delay: 0s; }
+    body.menu-open .menu-panel { transform: none; visibility: visible; transition-delay: 0s; }
+    .menu-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+    .menu-head img { display: block; width: 40px; height: 40px; }
+    .menu-close {
+      width: 40px; height: 40px; border: 0; background: none; cursor: pointer;
+      font-size: 2rem; line-height: 1; color: var(--black);
+    }
+    .menu-links { list-style: none; display: flex; flex-direction: column; }
+    .menu-links a {
+      display: block; padding: 14px 0;
+      font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em;
+      color: var(--black); text-decoration: none;
+      border-bottom: 1px solid rgba(17,17,17,0.08);
+      transition: color 0.25s ease, padding-left 0.35s var(--ease);
+    }
+    @media (hover: hover) { .menu-links a:hover { color: var(--action); padding-left: 6px; } }
+    .menu-foot { margin-top: auto; padding-top: 32px; }
+    .menu-label {
+      display: block; margin-bottom: 12px;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .menu-panel .lang-toggle {
+      display: inline-flex; align-items: center; gap: 2px; padding: 3px;
+      background: var(--cream); border: 1px solid rgba(17,17,17,0.14); border-radius: 100px;
+    }
+    .menu-panel .lang-option {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em;
+      color: var(--muted); background: none; border: 0;
+      padding: 8px 16px; border-radius: 100px; cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+    .menu-panel .lang-option.active { background: var(--black); color: var(--white); }
+    .menu-panel .lang-option:not(.active):hover { color: var(--black); }
+    @media (prefers-reduced-motion: reduce) {
+      .menu-panel, .menu-backdrop { transition-duration: 0.01ms; }
+    }
   </style>
 </head>
 <body>
@@ -243,7 +322,10 @@
 
   <header class="site-header">
     <div class="container">
-      <a href="/" class="nav-logo"><img src="logo-mark.png" alt="Somos Reino" width="40" height="40" /></a>
+      <div class="nav-left">
+        <button type="button" class="nav-menu-btn" id="menu-btn" aria-label="Menú" data-en-label="Menu" aria-controls="menu-panel" aria-expanded="false"><span></span><span></span><span></span></button>
+        <a href="/" class="nav-logo"><img src="logo-mark.png" alt="Somos Reino" width="40" height="40" /></a>
+      </div>
       <ul class="nav-links">
         <li><a href="/#sermones" data-en="Sermons">Sermones</a></li>
         <li><a href="/#eventos" data-en="Events">Eventos</a></li>
@@ -264,6 +346,32 @@
       <a href="/#contacto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span data-en="Contact">Contacto</span></a>
     </div>
   </header>
+
+
+  <!-- ── MENU PANEL ── -->
+  <div class="menu-backdrop" id="menu-backdrop"></div>
+  <aside class="menu-panel" id="menu-panel" aria-label="Menú" data-en-label="Menu">
+    <div class="menu-head">
+      <a href="/"><img src="logo-mark.png" alt="Somos Reino" width="40" height="40" /></a>
+      <button type="button" class="menu-close" id="menu-close" aria-label="Cerrar menú" data-en-label="Close menu">&times;</button>
+    </div>
+    <ul class="menu-links">
+      <li><a href="/" data-en="Home">Inicio</a></li>
+      <li><a href="/#sermones" data-en="Sermons">Sermones</a></li>
+      <li><a href="/#eventos" data-en="Events">Eventos</a></li>
+      <li><a href="/#esencial">Podcast</a></li>
+      <li><a href="give.html" data-en="Give">Dar</a></li>
+      <li><a href="/#contacto" data-en="Contact">Contacto</a></li>
+      <li><a href="https://casafamiliar.churchtrac.com/profile" target="_blank" rel="noopener" data-en="My profile">Mi perfil</a></li>
+    </ul>
+    <div class="menu-foot">
+      <span class="menu-label" data-en="Language">Idioma</span>
+      <div class="lang-toggle" role="group" aria-label="Language selector">
+        <button type="button" class="lang-option active" data-lang="es">ES</button>
+        <button type="button" class="lang-option" data-lang="en">EN</button>
+      </div>
+    </div>
+  </aside>
 
   <main id="main">
     <div class="container">
@@ -361,6 +469,24 @@
       try { localStorage.setItem(LANG_KEY, b.dataset.lang); } catch {}
       applyLanguage(b.dataset.lang);
     }));
+
+    // ── HAMBURGER MENU ──
+    (function() {
+      const btn = document.getElementById('menu-btn');
+      const panel = document.getElementById('menu-panel');
+      if (!btn || !panel) return;
+      function setOpen(open) {
+        document.body.classList.toggle('menu-open', open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open) { const c = document.getElementById('menu-close'); if (c) c.focus(); }
+        else if (document.activeElement && panel.contains(document.activeElement)) btn.focus();
+      }
+      btn.addEventListener('click', () => setOpen(!document.body.classList.contains('menu-open')));
+      document.getElementById('menu-close').addEventListener('click', () => setOpen(false));
+      document.getElementById('menu-backdrop').addEventListener('click', () => setOpen(false));
+      panel.querySelectorAll('.menu-links a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.body.classList.contains('menu-open')) setOpen(false); });
+    })();
     applyLanguage(lang);
   </script>
 </body>
