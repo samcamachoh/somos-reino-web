@@ -2051,13 +2051,11 @@
       #nav .lang-option:not(.active), body.hero-light #nav:not(.scrolled) .lang-option:not(.active) { color: var(--muted); }
       #nav .lang-option:not(.active):hover { color: var(--black); }
       #nav .lang-option.active, body.hero-light #nav:not(.scrolled) .lang-option.active { background: var(--black); color: var(--white); }
-      /* The event slide starts below the taller, opaque header */
-      .hero-slide-event { padding-top: 122px; }
-      /* Solid black header on every slide — undo the light-slide recolouring */
-      body.hero-light #nav:not(.scrolled) .nav-logo img { filter: none; }
-      body.hero-light #nav:not(.scrolled) .lang-toggle { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.2); }
-      body.hero-light #nav:not(.scrolled) .lang-option:not(.active) { color: rgba(255,255,255,0.6); }
-      body.hero-light #nav:not(.scrolled) .lang-option.active { background: var(--action); color: var(--white); }
+      /* The hero begins below the fixed header instead of sliding under it,
+         so the photo is never clipped and the content centres in what's visible. */
+      body { padding-top: 122px; }
+      #hero { min-height: max(calc(100svh - 122px), 620px); }
+      .hero-content { padding: 40px 0 84px; }
       #nav .container { padding-top: 12px; padding-bottom: 10px; }
       #nav.nav-hidden { transform: translateY(calc(-1 * var(--nav-top-h))); }
       section[id] { scroll-margin-top: 84px; }
