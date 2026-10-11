@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eventos — Somos Reino</title>
+  <meta name="description" content="Próximos eventos y encuentros semanales de Somos Reino en Kissimmee, FL." />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#181614" media="(prefers-color-scheme: dark)" />
+  <link rel="canonical" href="https://somosreino.org/events.html" />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --surface:    #FFFFFF;
+      --ink:        #111111;
+      --ink-faint:  rgba(17,17,17,0.28);
+      --black:      #111111;
+      --near-black: #1A1816;
+      --white:      #FFFFFF;
+      --cream:      #F6F4F1;
+      --gray-100:   #ECE9E4;
+      --line:       rgba(17,17,17,0.1);
+      --rule:       rgba(17,17,17,0.16);
+      --orange:     #F7746D;
+      --text:       #171412;
+      --muted:      #6E6862;
+      --label:      var(--muted);
+      --label-dark: rgba(255,255,255,0.45);
+      /* Coral is the action color: buttons, links, hover and selected states */
+      --action:     var(--orange);
+      --ease:       cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-back:  cubic-bezier(0.34, 1.4, 0.64, 1);
+      --header-h:   72px;
+      --orange-dark:#C05A55;
+      --action-dark: var(--orange-dark);
+    }
+
+    /* ── DARK MODE ── follows the device setting (prefers-color-scheme) */
+    :root { color-scheme: light dark; }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --surface:    #221F1C;
+        --cream:      #181614;
+        --gray-100:   #2E2A26;
+        --ink:        #F3EFEA;
+        --ink-faint:  rgba(255,255,255,0.28);
+        --text:       #F3EFEA;
+        --muted:      #ABA59E;
+        --line:       rgba(255,255,255,0.12);
+        --rule:       rgba(255,255,255,0.18);
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+    body {
+      font-family: var(--font);
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--action);
+      outline-offset: 3px;
+    }
+    .skip-link {
+      position: fixed; top: 8px; left: 8px; z-index: 1000;
+      padding: 12px 18px; border-radius: 8px;
+      background: var(--black); color: var(--white);
+      font: 700 0.85rem var(--font); text-decoration: none;
+      transform: translateY(-200%);
+    }
+    .skip-link:focus { transform: none; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+
+    /* ── HEADER ── white, logo mark left, profile right ── */
+    header.site-header {
+      position: sticky; top: 0; z-index: 200;
+      background: var(--surface);
+    }
+    .site-header .container {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 32px;
+      min-height: var(--header-h);
+    }
+    .nav-logo { display: block; text-decoration: none; }
+    .nav-logo img { display: block; width: 40px; height: 40px; }
+
+    .nav-links {
+      list-style: none; display: flex; gap: 32px;
+      position: absolute; left: 50%; transform: translateX(-50%);
+    }
+    .nav-links a {
+      font-family: var(--font);
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--ink); }
+
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .nav-btn {
+      font-family: var(--font);
+      font-size: 0.75rem; letter-spacing: 0.04em; font-weight: 700; text-transform: uppercase;
+      color: var(--white); background: var(--action);
+      padding: 12px 26px; border-radius: 100px; text-decoration: none;
+      transition: transform 0.3s var(--ease-back), box-shadow 0.3s ease;
+    }
+    @media (hover: hover) { .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(247,116,109,0.35); } }
+
+    .nav-profile {
+      display: grid; place-items: center;
+      width: 40px; height: 40px;
+      color: var(--ink);
+      transition: color 0.3s ease, transform 0.3s var(--ease-back);
+    }
+    .nav-profile svg { width: 26px; height: 26px; }
+    @media (hover: hover) { .nav-profile:hover { color: var(--action); transform: translateY(-1px); } }
+
+    /* Mobile tab bar — same as the home page */
+    .nav-tabs { display: none; }
+    @media (max-width: 900px) {
+      .container { padding: 0 24px; }
+      .site-header .container { min-height: 60px; }
+      .nav-links, .nav-btn { display: none; }
+      .nav-logo img { width: 36px; height: 36px; }
+      .nav-tabs {
+        display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+        background: var(--surface);
+      }
+      .nav-tabs a {
+        position: relative;
+        display: flex; flex-direction: column; align-items: center; gap: 4px;
+        min-height: 56px; padding: 9px 2px 8px;
+        color: var(--ink);
+        font: 600 0.64rem/1.1 var(--font); letter-spacing: 0.03em;
+        text-decoration: none;
+        -webkit-tap-highlight-color: transparent;
+        transition: color 0.3s ease, transform 0.3s var(--ease-back);
+      }
+      .nav-tabs svg { width: 22px; height: 22px; transition: transform 0.4s var(--ease-back); }
+      .nav-tabs a::after {
+        content: ''; position: absolute; top: -1px; left: 30%; right: 30%;
+        height: 2px; border-radius: 2px; background: var(--action);
+        transform: scaleX(0); transition: transform 0.4s var(--ease);
+      }
+      .nav-tabs a[aria-current="true"] { color: var(--action); }
+      .nav-tabs a[aria-current="true"]::after { transform: scaleX(1); }
+      .nav-tabs a[aria-current="true"] svg { transform: translateY(-1px) scale(1.08); }
+      .nav-tabs a:active { transform: scale(0.94); }
+    }
+
+    /* ── GIVE ── */
+    /* ── EVENTS PAGE ── */
+    main { padding: 72px 0 96px; }
+    h1.display { margin-bottom: 0; }
+    .events-lead { font-size: 1.02rem; line-height: 1.75; color: var(--muted); max-width: 480px; margin: 20px 0 48px; text-wrap: pretty; }
+    .section-lead { font-size: 1.02rem; line-height: 1.75; color: var(--muted); max-width: 480px; margin-top: 20px; }
+    .event-title { font-family: var(--font); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+    .event-row-special .event-title { line-height: 0.95; }
+    @keyframes rise { from { opacity: 0; transform: translate3d(0, 40px, 0) scale(0.985); } to { opacity: 1; transform: none; } }
+    .rise { opacity: 0; animation: rise 1.1s var(--ease) forwards; }
+    .rise-2 { animation-delay: 0.12s; }
+    .rise-3 { animation-delay: 0.24s; }
+    @media (prefers-reduced-motion: reduce) { .rise { animation: none; opacity: 1; } }
+    @media (max-width: 900px) { main { padding: 40px 0 64px; } }
+    h1.display {
+      font-family: var(--font);
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 700; letter-spacing: -0.035em; line-height: 0.95;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+    h1.display .reg { font-weight: 700; }
+    .events-list { display: flex; flex-direction: column; }
+    .recurring-head { margin-top: 72px; margin-bottom: 8px; }
+    .recurring-title { font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 8px; }
+    .recurring-head .section-lead { margin-bottom: 20px; }
+    .event-row {
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      align-items: center;
+      gap: 32px;
+      padding: 30px 0;
+      border-bottom: 1px solid var(--line);
+      transition: padding-left 0.35s var(--ease), background 0.3s ease;
+    }
+    .event-row:first-child { border-top: 1px solid var(--line); }
+    /* Recurring rows carry no date box — just title and schedule */
+    .event-row.event-row-plain { grid-template-columns: 1fr; }
+    .event-row-registration { margin-top: 24px; border-top: 1px solid var(--line); }
+    .event-row:hover { padding-left: 16px; background: var(--cream); }
+    .event-date-box { text-align: center; }
+    .event-date-num {
+      font-family: var(--font);
+      font-size: 2.6rem;
+      font-weight: 900;
+      color: var(--action);
+      line-height: 1;
+      display: block;
+    }
+    .event-date-month {
+      font-family: var(--font);
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--muted);
+      display: block;
+      margin-top: 6px;
+    }
+    .event-title {
+      font-family: var(--font);
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 7px;
+      line-height: 1.2;
+    }
+    .event-details { font-size: 0.88rem; color: var(--muted); font-weight: 500; line-height: 1.55; }
+    .event-note { display: block; margin-top: 5px; color: var(--action-dark); font-weight: 700; }
+    .event-tag {
+      font-family: var(--font);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 11px 18px;
+      border-radius: 100px;
+      border: 1px solid var(--action);
+      color: var(--action-dark);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+    }
+    a.event-tag:hover { background: var(--action); color: var(--white); transform: translateY(-1px); }
+    .event-tag-static { border-color: var(--rule); color: var(--muted); }
+    .event-row-special {
+      --card-pad: clamp(28px, 5vw, 64px);
+      --rose-bg: #f4d0d2;
+      --rose-ink: #5b1724;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      margin-bottom: 24px;
+      padding: 0 var(--card-pad) var(--card-pad);
+      border-radius: 20px;
+      background: var(--rose-bg);
+      color: var(--rose-ink);
+      overflow: hidden;
+    }
+    /* photo fills the top half edge-to-edge and fades into the details below */
+    .event-special-photo {
+      display: block;
+      width: calc(100% + 2 * var(--card-pad));
+      max-width: none;
+      height: auto;
+      aspect-ratio: 2 / 1;
+      object-fit: cover;
+      object-position: center 22%;
+      margin: 0 calc(-1 * var(--card-pad)) calc(-1 * clamp(40px, 8vw, 110px));
+      -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+      mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+    }
+    @media (max-width: 600px) { .event-special-photo { aspect-ratio: 4 / 3; object-position: center 35%; } }
+    .event-row-special .event-info,
+    .event-row-special .event-tag-special { position: relative; }
+    .event-special-label {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 7px 12px;
+      border: 1px solid var(--rose-ink);
+      border-radius: 100px;
+      font-family: var(--font);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--rose-ink);
+    }
+    .event-row-special .event-title {
+      max-width: 18ch;
+      margin: 0 0 10px;
+      font-size: clamp(2.3rem, 5.5vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--rose-ink);
+      overflow-wrap: break-word;
+    }
+    .event-row-special .event-details {
+      margin: 0;
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      color: var(--rose-ink);
+      opacity: 0.85;
+    }
+    .event-row-special .event-tag-special {
+      display: inline-flex;
+      margin-top: 20px;
+      padding: 15px 26px;
+      background: var(--rose-ink);
+      border-color: var(--rose-ink);
+      color: var(--rose-bg);
+      font-size: 0.75rem;
+    }
+    .event-row-special a.event-tag-special:hover {
+      background: transparent;
+      border-color: var(--rose-ink);
+      color: var(--rose-ink);
+    }
+    /* Desktop: photo beside the details instead of a full-width banner,
+       so the featured event reads at a glance without a wall of pink. */
+    @media (min-width: 901px) {
+      .event-row-special {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+        align-items: center;
+        column-gap: clamp(24px, 4vw, 56px);
+        padding: 0 var(--card-pad) 0 0;
+      }
+      .event-row-special .event-special-photo {
+        grid-row: 1 / span 2;
+        align-self: end;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 3;
+        margin: 0;
+        object-position: center;
+        -webkit-mask-image: linear-gradient(to bottom, #000 82%, transparent 100%), linear-gradient(to right, #000 90%, transparent 100%);
+        -webkit-mask-composite: source-in;
+        mask-image: linear-gradient(to bottom, #000 82%, transparent 100%), linear-gradient(to right, #000 90%, transparent 100%);
+        mask-composite: intersect;
+      }
+      .event-row-special .event-info { grid-column: 2; padding-top: var(--card-pad); }
+      .event-row-special .event-tag-special { grid-column: 2; justify-self: start; margin: 0 0 var(--card-pad); }
+      .event-row-special .event-title { font-size: clamp(2.3rem, 4vw, 3.6rem); }
+    }
+
+    @media (max-width: 900px) {
+      .event-row { grid-template-columns: 72px 1fr; gap: 16px; padding: 22px 0; }
+      .event-date-num { font-size: 2rem; }
+      .event-tag { grid-column: 2; justify-self: start; margin-top: 4px; }
+    }
+    @media (max-width: 600px) {
+      .event-row { grid-template-columns: 60px 1fr; gap: 12px; }
+      .event-date-num { font-size: 1.7rem; }
+      .event-title { font-size: 1.1rem; }
+    }
+
+    /* ── FOOTER ── */
+    footer { background: var(--black); padding: 72px 0 32px; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 56px; }
+    .footer-brand img { display: block; height: 32px; width: auto; }
+    .footer-tagline {
+      font-family: var(--font); font-weight: 600; font-size: 1rem;
+      color: rgba(255,255,255,0.55); margin: 20px 0 24px; line-height: 1.5;
+    }
+    .footer-col-title {
+      font-family: var(--font); font-size: 0.68rem; letter-spacing: 0.18em;
+      text-transform: uppercase; font-weight: 700; color: var(--label-dark);
+      margin-bottom: 22px; display: block;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .footer-links a { font-size: 0.9rem; font-weight: 500; color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.3s; }
+    .footer-links a:hover { color: var(--white); }
+    .footer-social { display: flex; gap: 12px; }
+    .social-link {
+      display: flex; align-items: center; justify-content: center;
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6);
+      text-decoration: none; transition: background 0.3s, color 0.3s, transform 0.2s;
+    }
+    .social-link:hover { background: var(--action); color: var(--white); transform: translateY(-2px); }
+    .footer-lang { margin-top: 28px; }
+    .footer-lang .footer-col-title { margin-bottom: 12px; }
+    .lang-toggle {
+      display: inline-flex; align-items: center; gap: 2px; padding: 3px;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.16); border-radius: 100px;
+    }
+    .lang-option {
+      font-family: var(--font); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.55); background: none; border: none;
+      padding: 6px 12px; border-radius: 100px; cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+    .lang-option.active { background: var(--action); color: var(--white); }
+    .lang-option:not(.active):hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.1); padding-top: 28px;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.3); font-weight: 500; }
+    .footer-verse { font-family: var(--font); font-weight: 700; font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+    @media (max-width: 900px) {
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 32px 20px; }
+      .footer-top > :first-child { grid-column: 1 / -1; }
+      .footer-bottom { flex-direction: column; text-align: center; gap: 8px; }
+    }
+
+    /* ── HAMBURGER MENU (left of the logo) ── */
+    .nav-left { display: flex; align-items: center; gap: 8px; }
+    .nav-menu-btn {
+      display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;
+      width: 40px; height: 40px; padding: 0;
+      background: none; border: 0; cursor: pointer;
+      color: var(--ink);
+      transition: color 0.3s ease;
+    }
+    .nav-menu-btn span {
+      display: block; width: 22px; height: 2px; border-radius: 2px;
+      background: currentColor;
+      transition: transform 0.35s var(--ease), opacity 0.2s ease;
+    }
+    .nav-menu-btn[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-menu-btn[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .nav-menu-btn[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    @media (hover: hover) { .nav-menu-btn:hover { color: var(--action); } }
+    @media (max-width: 900px) {
+      .nav-menu-btn, body.hero-light #nav:not(.scrolled) .nav-menu-btn { color: var(--ink); }
+    }
+
+    .menu-backdrop {
+      position: fixed; inset: 0; z-index: 290;
+      background: rgba(17,17,17,0.45);
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0s linear 0.35s;
+    }
+    .menu-panel {
+      position: fixed; top: 0; bottom: 0; left: 0; z-index: 300;
+      width: min(86vw, 340px);
+      display: flex; flex-direction: column;
+      padding: 20px 28px 28px;
+      background: var(--surface); color: var(--ink);
+      transform: translate3d(-100%, 0, 0); visibility: hidden;
+      transition: transform 0.5s var(--ease), visibility 0s linear 0.5s;
+      overflow-y: auto; overscroll-behavior: contain;
+    }
+    body.menu-open { overflow: hidden; }
+    body.menu-open .menu-backdrop { opacity: 1; visibility: visible; transition-delay: 0s; }
+    body.menu-open .menu-panel { transform: none; visibility: visible; transition-delay: 0s; }
+    .menu-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+    .menu-head img { display: block; width: 40px; height: 40px; }
+    .menu-close {
+      width: 40px; height: 40px; border: 0; background: none; cursor: pointer;
+      font-size: 2rem; line-height: 1; color: var(--ink);
+    }
+    .menu-links { list-style: none; display: flex; flex-direction: column; }
+    .menu-links a {
+      display: block; padding: 14px 0;
+      font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em;
+      color: var(--ink); text-decoration: none;
+      border-bottom: 1px solid var(--line);
+      transition: color 0.25s ease, padding-left 0.35s var(--ease);
+    }
+    @media (hover: hover) { .menu-links a:hover { color: var(--action); padding-left: 6px; } }
+    .menu-foot { margin-top: auto; padding-top: 32px; }
+    .menu-label {
+      display: block; margin-bottom: 12px;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .menu-panel .lang-toggle {
+      display: inline-flex; align-items: center; gap: 2px; padding: 3px;
+      background: var(--cream); border: 1px solid var(--rule); border-radius: 100px;
+    }
+    .menu-panel .lang-option {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em;
+      color: var(--muted); background: none; border: 0;
+      padding: 8px 16px; border-radius: 100px; cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+    .menu-panel .lang-option.active { background: var(--ink); color: var(--surface); }
+    .menu-panel .lang-option:not(.active):hover { color: var(--ink); }
+    @media (prefers-reduced-motion: reduce) {
+      .menu-panel, .menu-backdrop { transition-duration: 0.01ms; }
+    }
+
+    /* Follow us (inside the menu) */
+    .menu-social { margin-top: 28px; }
+    .menu-social-list { list-style: none; display: flex; flex-direction: column; }
+    .menu-social-list a {
+      display: flex; align-items: center; gap: 14px;
+      padding: 10px 0; color: var(--ink); text-decoration: none;
+      font-size: 1rem; font-weight: 600; letter-spacing: -0.01em;
+      transition: color 0.25s ease;
+    }
+    .menu-social-list .ico {
+      display: grid; place-items: center; flex: none;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--cream); color: var(--ink);
+      transition: background 0.3s ease, color 0.3s ease, transform 0.4s var(--ease-back);
+    }
+    .menu-social-list .ico svg { width: 18px; height: 18px; }
+    @media (hover: hover) {
+      .menu-social-list a:hover { color: var(--action); }
+      .menu-social-list a:hover .ico { background: var(--action); color: var(--white); transform: translateY(-2px); }
+    }
+
+    /* Menu entrance: panel glides in, then its contents follow one by one */
+    .menu-head, .menu-links li, .menu-social > .menu-label, .menu-social-list li, .menu-foot {
+      opacity: 0;
+      transform: translate3d(-22px, 0, 0);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    body.menu-open .menu-head, body.menu-open .menu-links li, body.menu-open .menu-social > .menu-label,
+    body.menu-open .menu-social-list li, body.menu-open .menu-foot {
+      opacity: 1;
+      transform: none;
+      transition: opacity 0.5s ease, transform 0.7s var(--ease);
+      transition-delay: calc(0.12s + var(--i, 0) * 0.045s);
+    }
+    .menu-head { --i: 0; }
+    .menu-links li:nth-child(1) { --i: 1; } .menu-links li:nth-child(2) { --i: 2; } .menu-links li:nth-child(3) { --i: 3; }
+    .menu-links li:nth-child(4) { --i: 4; } .menu-links li:nth-child(5) { --i: 5; } .menu-links li:nth-child(6) { --i: 6; }
+    .menu-links li:nth-child(7) { --i: 7; }
+    .menu-social > .menu-label { --i: 8; }
+    .menu-social-list li:nth-child(1) { --i: 9; }  .menu-social-list li:nth-child(2) { --i: 10; }
+    .menu-social-list li:nth-child(3) { --i: 11; } .menu-social-list li:nth-child(4) { --i: 12; }
+    .menu-social-list li:nth-child(5) { --i: 13; }
+    .menu-foot { --i: 14; }
+    @media (prefers-reduced-motion: reduce) {
+      .menu-head, .menu-links li, .menu-social > .menu-label, .menu-social-list li, .menu-foot {
+        opacity: 1; transform: none; transition: none; transition-delay: 0s;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-en="Skip to content">Saltar al contenido</a>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="nav-left">
+        <button type="button" class="nav-menu-btn" id="menu-btn" aria-label="Menú" data-en-label="Menu" aria-controls="menu-panel" aria-expanded="false"><span></span><span></span><span></span></button>
+        <a href="/" class="nav-logo"><img src="logo-mark.png" alt="Somos Reino" width="40" height="40" /></a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="/#sermones" data-en="Sermons">Sermones</a></li>
+        <li><a href="/events.html" aria-current="page" data-en="Events">Eventos</a></li>
+        <li><a href="/#esencial">Podcast</a></li>
+        <li><a href="/#contacto" data-en="Contact">Contacto</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="give.html" class="nav-btn" data-en="Give">Dar</a>
+        <a href="https://casafamiliar.churchtrac.com/sign-in" class="nav-profile" target="_blank" rel="noopener" aria-label="Mi perfil" data-en-label="My profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c.6-3.7 3.7-6 7.5-6s6.9 2.3 7.5 6"/></svg></a>
+      </div>
+    </div>
+    <!-- Mobile tab bar — same as the home page -->
+    <div class="nav-tabs" role="navigation" aria-label="Secciones" data-en-label="Sections">
+      <a href="/#sermones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5-6-3.5Z" fill="currentColor"/></svg><span data-en="Sermons">Sermones</span></a>
+      <a href="/events.html" aria-current="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span data-en="Events">Eventos</span></a>
+      <a href="/#esencial"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg><span>Podcast</span></a>
+      <a href="give.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9.6C12 7.3 9 6.2 7.6 8.2 6.3 10 7.7 11.6 12 15c4.3-3.4 5.7-5 4.4-6.8C15 6.2 12 7.3 12 9.6Z" transform="translate(0 -3)"/><path d="M3 15h4l3 1.5h4a1.5 1.5 0 0 1 0 3H9.5M7 15v5.5H3M14 19.5l5-2a1.6 1.6 0 0 1 1.7 2.7L14 22l-4.5-.5"/></svg><span data-en="Give">Dar</span></a>
+      <a href="/#contacto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span data-en="Contact">Contacto</span></a>
+    </div>
+  </header>
+
+
+  <!-- ── MENU PANEL ── -->
+  <div class="menu-backdrop" id="menu-backdrop"></div>
+  <aside class="menu-panel" id="menu-panel" aria-label="Menú" data-en-label="Menu">
+    <div class="menu-head">
+      <a href="/"><img src="logo-mark.png" alt="Somos Reino" width="40" height="40" /></a>
+      <button type="button" class="menu-close" id="menu-close" aria-label="Cerrar menú" data-en-label="Close menu">&times;</button>
+    </div>
+    <ul class="menu-links">
+      <li><a href="/" data-en="Home">Inicio</a></li>
+      <li><a href="/sermons.html" data-en="Sermons">Sermones</a></li>
+      <li><a href="/events.html" data-en="Events">Eventos</a></li>
+      <li><a href="/#esencial">Podcast</a></li>
+      <li><a href="give.html" data-en="Give">Dar</a></li>
+      <li><a href="/#contacto" data-en="Contact">Contacto</a></li>
+      <li><a href="https://casafamiliar.churchtrac.com/sign-in" target="_blank" rel="noopener" data-en="My profile">Mi perfil</a></li>
+    </ul>
+    <div class="menu-social">
+      <span class="menu-label" data-en="Follow us">Síguenos</span>
+      <ul class="menu-social-list">
+      <li><a href="https://www.instagram.com/somosreinofl?igsh=MWx5dWt4NzJmY3Z5cg%3D%3D&utm_source=qr" target="_blank" rel="noopener"><span class="ico"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></span><span>Instagram</span></a></li>
+      <li><a href="https://youtube.com/@somosreinofl?si=o2pavfWMVryrC4az" target="_blank" rel="noopener"><span class="ico"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></span><span>YouTube</span></a></li>
+      <li><a href="https://www.facebook.com/share/1CkYP7Dpob/?mibextid=wwXIfr" target="_blank" rel="noopener"><span class="ico"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></span><span>Facebook</span></a></li>
+      <li><a href="https://www.tiktok.com/@somosreinofl?_r=1&_t=ZT-95coSNg4ni2" target="_blank" rel="noopener"><span class="ico"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg></span><span>TikTok</span></a></li>
+      <li><a href="https://whatsapp.com/channel/0029VaQlt7T2ZjCpaaXFOK0P" target="_blank" rel="noopener"><span class="ico"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.82 9.82 0 016.988 2.898 9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></span><span>WhatsApp</span></a></li>
+      </ul>
+    </div>
+    <div class="menu-foot">
+      <span class="menu-label" data-en="Language">Idioma</span>
+      <div class="lang-toggle" role="group" aria-label="Language selector">
+        <button type="button" class="lang-option active" data-lang="es">ES</button>
+        <button type="button" class="lang-option" data-lang="en">EN</button>
+      </div>
+    </div>
+  </aside>
+
+  <main id="main">
+    <div class="container">
+      <h1 class="display rise" data-en="<span class='reg'>Events</span>"><span class="reg">Eventos</span></h1>
+      <p class="events-lead rise rise-2" data-en="Save the date and join us for what’s happening next at Somos Reino." >Separa la fecha y acompáñanos en lo próximo de Somos Reino.</p>
+      <div class="events-list" id="events-upcoming">
+        <div class="event-row-special" data-end="2026-11-13">
+          <img class="event-special-photo" src="respuesta-de-gracia.webp" alt="Jen Camacho, Joanirie Ferrer Font y Mariela Merced — Respuesta De Gracia" width="1024" height="768" loading="lazy">
+          <div class="event-info">
+            <span class="event-special-label" data-en="Special">Especial</span>
+            <h3 class="event-title">Respuesta De Gracia</h3>
+            <p class="event-details" data-en="Friday, November 13 · 7:00 PM">Viernes, 13 de noviembre · 7:00 PM</p>
+          </div>
+          <a class="event-tag event-tag-special" href="https://casafamiliar.churchtrac.com/connect?ei=ADCNQ99" target="_blank" rel="noopener" data-en="Register">Registrarse</a>
+        </div>
+
+        <div class="event-row" data-end="2026-10-16">
+          <div class="event-date-box">
+            <span class="event-date-num">16</span>
+            <span class="event-date-month">OCT</span>
+          </div>
+          <div class="event-info">
+            <h3 class="event-title">Eikon Men</h3>
+            <p class="event-details" data-en="Friday · Men's Event · 7:30 PM">Viernes · Evento de Hombres · 7:30 PM</p>
+          </div>
+          <span class="event-tag event-tag-static" data-en="October 16">16 de octubre</span>
+        </div>
+      </div>
+      <p class="section-lead" id="events-empty" style="display:none;" data-en="New events are coming soon — follow our WhatsApp channel to be the first to know.">Pronto anunciaremos nuevos eventos — sigue nuestro canal de WhatsApp para enterarte primero.</p>
+
+      <div class="recurring-head rise rise-3">
+        <h3 class="recurring-title" data-en="Every <em>week</em>">Cada <em>semana</em></h3>
+        <p class="section-lead" data-en="Our regular gatherings — come any week.">Nuestros encuentros de cada semana — ven cuando quieras.</p>
+      </div>
+      <div class="events-list" id="events-recurring">
+        <div class="event-row event-row-plain">
+          <div class="event-info">
+            <h3 class="event-title">Somos Reino en Oración</h3>
+            <p class="event-details" data-en="Every Monday · 10:00 AM – 12:00 PM">Todos los lunes · 10:00 AM – 12:00 PM</p>
+          </div>
+        </div>
+        <div class="event-row event-row-plain">
+          <div class="event-info">
+            <h3 class="event-title" data-en="Discipleship">Formación</h3>
+            <p class="event-details" data-en="Every Wednesday · 7:30 PM">Todos los miércoles · 7:30 PM</p>
+          </div>
+        </div>
+        <div class="event-row event-row-plain">
+          <div class="event-info">
+            <h3 class="event-title" data-en="Celebration">Celebración</h3>
+            <p class="event-details" data-en="Every Sunday · 11:00 AM">Todos los domingos · 11:00 AM</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="/"><img src="logo.png" alt="Somos Reino" /></a>
+          <p class="footer-tagline" data-en="&quot;Seek first the kingdom of God<br>and his righteousness.&quot; — Matthew 6:33">"Busquen primeramente el reino de Dios<br>y su justicia." — Mateo 6:33</p>
+          <div class="footer-social">
+            <a href="https://www.instagram.com/somosreinofl?igsh=MWx5dWt4NzJmY3Z5cg%3D%3D&utm_source=qr" target="_blank" rel="noopener" class="social-link" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+            <a href="https://youtube.com/@somosreinofl?si=o2pavfWMVryrC4az" target="_blank" rel="noopener" class="social-link" aria-label="YouTube"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+            <a href="https://www.facebook.com/share/1CkYP7Dpob/?mibextid=wwXIfr" target="_blank" rel="noopener" class="social-link" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+            <a href="https://www.tiktok.com/@somosreinofl?_r=1&_t=ZT-95coSNg4ni2" target="_blank" rel="noopener" class="social-link" aria-label="TikTok"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg></a>
+            <a href="https://whatsapp.com/channel/0029VaQlt7T2ZjCpaaXFOK0P" target="_blank" rel="noopener" class="social-link" aria-label="Canal de WhatsApp" data-en-label="WhatsApp Channel"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.82 9.82 0 016.988 2.898 9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
+          </div>
+          <div class="footer-lang">
+            <span class="footer-col-title" data-en="Language">Idioma</span>
+            <div class="lang-toggle" role="group" aria-label="Language selector">
+              <button type="button" class="lang-option active" data-lang="es">ES</button>
+              <button type="button" class="lang-option" data-lang="en">EN</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <span class="footer-col-title" data-en="Explore">Explora</span>
+          <ul class="footer-links">
+            <li><a href="/" data-en="Home">Inicio</a></li>
+            <li><a href="/#sermones" data-en="Sermons">Sermones</a></li>
+            <li><a href="/events.html" data-en="Events">Eventos</a></li>
+            <li><a href="/#esencial">Podcast</a></li>
+            <li><a href="/#contacto" data-en="Contact">Contacto</a></li>
+          </ul>
+        </div>
+        <div>
+          <span class="footer-col-title" data-en="Resources">Recursos</span>
+          <ul class="footer-links">
+            <li><a href="https://casafamiliar.churchtrac.com/sign-in" target="_blank" rel="noopener" data-en="My profile">Mi perfil</a></li>
+            <li><a href="https://whatsapp.com/channel/0029VaQlt7T2ZjCpaaXFOK0P" target="_blank" rel="noopener" data-en="WhatsApp channel">Canal de WhatsApp</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy" data-en="© <span class=&quot;yr&quot;>2026</span> Somos Reino Church · Kissimmee, FL · All rights reserved">© <span class="yr">2026</span> Somos Reino Church · Kissimmee, FL · Todos los derechos reservados</span>
+        <span class="footer-verse" data-en="A family that transforms its city">Una familia que transforma su ciudad</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Same language switch as the home page; the choice is shared between pages.
+    const LANG_KEY = 'somos-reino-lang';
+    let lang = 'es';
+    try { lang = localStorage.getItem(LANG_KEY) === 'en' ? 'en' : 'es'; } catch {}
+
+    function applyLanguage(next) {
+      lang = next;
+      document.documentElement.lang = next;
+      document.querySelectorAll('[data-en]').forEach(el => {
+        if (el.dataset.es === undefined) el.dataset.es = el.innerHTML;
+        el.innerHTML = next === 'en' ? el.dataset.en : el.dataset.es;
+      });
+      document.querySelectorAll('[data-en-label]').forEach(el => {
+        if (el.dataset.esLabel === undefined) el.dataset.esLabel = el.getAttribute('aria-label') || '';
+        el.setAttribute('aria-label', next === 'en' ? el.dataset.enLabel : el.dataset.esLabel);
+      });
+      document.querySelectorAll('.lang-option').forEach(b => b.classList.toggle('active', b.dataset.lang === next));
+      document.querySelectorAll('.yr').forEach(el => { el.textContent = new Date().getFullYear(); });
+    }
+    document.querySelectorAll('.lang-option').forEach(b => b.addEventListener('click', () => {
+      try { localStorage.setItem(LANG_KEY, b.dataset.lang); } catch {}
+      applyLanguage(b.dataset.lang);
+    }));
+
+    // ── HAMBURGER MENU ──
+    (function() {
+      const btn = document.getElementById('menu-btn');
+      const panel = document.getElementById('menu-panel');
+      if (!btn || !panel) return;
+      function setOpen(open) {
+        document.body.classList.toggle('menu-open', open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open) { const c = document.getElementById('menu-close'); if (c) c.focus(); }
+        else if (document.activeElement && panel.contains(document.activeElement)) btn.focus();
+      }
+      btn.addEventListener('click', () => setOpen(!document.body.classList.contains('menu-open')));
+      document.getElementById('menu-close').addEventListener('click', () => setOpen(false));
+      document.getElementById('menu-backdrop').addEventListener('click', () => setOpen(false));
+      panel.querySelectorAll('.menu-links a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.body.classList.contains('menu-open')) setOpen(false); });
+    })();
+    // Events carry a data-end date (last day, church time). Once it passes the
+    // event drops off the page by itself instead of lingering as stale news.
+    (function() {
+      const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+      let removed = false;
+      document.querySelectorAll('[data-end]').forEach(el => {
+        if (el.dataset.end < today) { el.remove(); removed = true; }
+      });
+      if (removed && !document.querySelector('#events-upcoming .event-row, #events-upcoming .event-row-special')) {
+        document.getElementById('events-empty').style.display = 'block';
+      }
+    })();
+    applyLanguage(lang);
+  </script>
+</body>
+</html>
