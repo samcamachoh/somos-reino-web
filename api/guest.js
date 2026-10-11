@@ -44,6 +44,7 @@ module.exports = async function handler(req, res) {
     invitedBy: clean(body.invitedBy, 120),
     followUp: body.followUp ? 'Yes' : 'No',
     message: String(body.message || '').trim().slice(0, 2000),
+    talents: String(body.talents || '').trim().slice(0, 1000),
   };
 
   if (!data.name || !data.email) {
