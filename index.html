@@ -522,11 +522,11 @@
     /* ── HERO LIVE VIDEO ──
        Contained (not cropped) so YouTube's own controls, seek bar and
        fullscreen button stay fully visible and clickable, and the box
-       stops above the ticker bar so the controls are never hidden behind it. */
+       fills the hero so the controls are never cropped. */
     .hero-video-wrap {
       position: absolute;
       top: 0; left: 0; right: 0;
-      bottom: 54px;
+      bottom: 0;
       overflow: hidden;
       display: none;
       opacity: 0;
@@ -652,7 +652,7 @@
     .hero-cue {
       position: absolute;
       left: 50%;
-      bottom: 84px;
+      bottom: 30px;
       transform: translateX(-50%);
       z-index: 10;
       width: 1px;
@@ -771,7 +771,7 @@
     .hero-dots {
       position: absolute;
       right: 32px;
-      bottom: 76px;
+      bottom: 28px;
       z-index: 12;
       display: flex;
       gap: 10px;
@@ -887,7 +887,7 @@
       .hero-slide-event > .container { flex: 1; display: flex; }
       .hero-slide-details { margin-bottom: 26px; }
       .hero-slide-event .hero-title { font-size: clamp(2.6rem, 12vw, 4.4rem); }
-      .hero-dots { right: 50%; transform: translateX(50%); bottom: 68px; }
+      .hero-dots { right: 50%; transform: translateX(50%); bottom: 20px; }
     }
     @media (prefers-reduced-motion: reduce) {
       .hero-slide-event { transition: none; }
@@ -945,45 +945,6 @@
       font-size: 0.9rem;
       color: var(--muted);
       display: block;
-    }
-
-    /* ── HERO TICKER ── */
-    .hero-ticker {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      background: var(--cream);
-      padding: 15px 0;
-      overflow: hidden;
-      z-index: 10;
-    }
-
-    .ticker-track {
-      display: flex;
-      gap: 60px;
-      animation: ticker 34s linear infinite;
-      white-space: nowrap;
-      will-change: transform;
-    }
-
-    .hero-ticker:hover .ticker-track { animation-play-state: paused; }
-
-    .ticker-track span {
-      font-family: var(--font);
-      font-size: 0.85rem;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: var(--ink);
-      flex-shrink: 0;
-    }
-
-    .ticker-track .dot {
-      color: var(--ink-faint);
-    }
-
-    @keyframes ticker {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
     }
 
     /* ────────────────────────────────────────
@@ -1253,6 +1214,9 @@
       flex-wrap: wrap;
     }
     .events-list { display: flex; flex-direction: column; }
+    .recurring-head { margin-top: 72px; margin-bottom: 8px; }
+    .recurring-title { font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 8px; }
+    .recurring-head .section-lead { margin-bottom: 20px; }
     .event-row {
       display: grid;
       grid-template-columns: 100px 1fr auto;
@@ -1858,7 +1822,6 @@
 
       .servicio-card { padding: 26px 24px; }
 
-      .ticker-track span { font-size: 0.75rem; }
 
       .footer-top { grid-template-columns: 1fr 1fr; gap: 28px 20px; }
       .footer-top > :first-child { grid-column: 1 / -1; }
@@ -1930,7 +1893,6 @@
       .hero-eyebrow, .hero-cue, h2.display em { opacity: 1 !important; }
       .hero-line > span { transform: none !important; }
       .hero-cue::after { display: none; }
-      .ticker-track { animation: none !important; }
     }
     section[id] { scroll-margin-top: 88px; }
     #hero { min-height: 100svh; }
@@ -2141,7 +2103,7 @@
     .hero-dot[aria-current="true"] { width: 30px; }
     .hero-dot span { height: 3px; max-width: 4px; }
     .hero-dot[aria-current="true"] span { max-width: 20px; }
-    @media (max-width: 1000px) { .hero-dots { bottom: 62px; } }
+    @media (max-width: 1000px) { .hero-dots { bottom: 16px; } }
 
     /* ── PROFILE ICON (top right) ── */
     .nav-profile {
@@ -2181,7 +2143,7 @@
     /* The hero headline is one colour */
     .hero-title .line2 { color: inherit; }
 
-    /* Hero copy sits low in the frame, clear of the dots and ticker */
+    /* Hero copy sits low in the frame, clear of the dots */
     #hero { align-items: flex-end; }
     .hero-content { padding: 40px 0 112px; }
     @media (max-width: 900px) { .hero-content { padding: 40px 0 96px; } }
@@ -2523,37 +2485,6 @@
 
     <!-- Scroll cue -->
     <div class="hero-cue" id="hero-cue" aria-hidden="true"></div>
-
-    <!-- Ticker -->
-    <div class="hero-ticker">
-      <div class="ticker-track">
-        <span data-en="There's a place for you here">Aquí hay lugar para ti</span>
-        <span class="dot">·</span>
-        <span data-en="Sundays 11:00 AM · Celebration">Domingos 11:00 AM · Celebración</span>
-        <span class="dot">·</span>
-        <span data-en="Come as you are">Ven tal como estás</span>
-        <span class="dot">·</span>
-        <span data-en="Wednesdays 7:30 PM · Discipleship">Miércoles 7:30 PM · Formación</span>
-        <span class="dot">·</span>
-        <span data-en="Worship · Community · Purpose">Adoración · Comunidad · Propósito</span>
-        <span class="dot">·</span>
-        <span>2824 Michigan Ave Unit F, Kissimmee, FL 34744</span>
-        <span class="dot">·</span>
-        <!-- Exact duplicate — keeps the -50% loop seamless -->
-        <span aria-hidden="true" data-en="There's a place for you here">Aquí hay lugar para ti</span>
-        <span aria-hidden="true" class="dot">·</span>
-        <span aria-hidden="true" data-en="Sundays 11:00 AM · Celebration">Domingos 11:00 AM · Celebración</span>
-        <span aria-hidden="true" class="dot">·</span>
-        <span aria-hidden="true" data-en="Come as you are">Ven tal como estás</span>
-        <span aria-hidden="true" class="dot">·</span>
-        <span aria-hidden="true" data-en="Wednesdays 7:30 PM · Discipleship">Miércoles 7:30 PM · Formación</span>
-        <span aria-hidden="true" class="dot">·</span>
-        <span aria-hidden="true" data-en="Worship · Community · Purpose">Adoración · Comunidad · Propósito</span>
-        <span aria-hidden="true" class="dot">·</span>
-        <span aria-hidden="true">2824 Michigan Ave Unit F, Kissimmee, FL 34744</span>
-        <span aria-hidden="true" class="dot">·</span>
-      </div>
-    </div>
   </section>
 
   <!-- ── PRIMERA VISITA ── -->
@@ -2594,7 +2525,7 @@
           <p class="section-lead" data-en="Save the date and join us for what’s happening next at Somos Reino.">Separa la fecha y acompáñanos en lo próximo de Somos Reino.</p>
         </div>
       </div>
-      <div class="events-list" data-stagger>
+      <div class="events-list" id="events-upcoming" data-stagger>
         <div class="event-row-special reveal" data-end="2026-11-13">
           <img class="event-special-photo" src="respuesta-de-gracia.webp" alt="Jen Camacho, Joanirie Ferrer Font y Mariela Merced — Respuesta De Gracia" width="1024" height="768" loading="lazy">
           <div class="event-info">
@@ -2616,7 +2547,14 @@
           </div>
           <span class="event-tag event-tag-static" data-en="October 16">16 de octubre</span>
         </div>
+      </div>
+      <p class="section-lead" id="events-empty" style="display:none;" data-en="New events are coming soon — follow our WhatsApp channel to be the first to know.">Pronto anunciaremos nuevos eventos — sigue nuestro canal de WhatsApp para enterarte primero.</p>
 
+      <div class="recurring-head reveal">
+        <h3 class="recurring-title" data-en="Every <em>week</em>">Cada <em>semana</em></h3>
+        <p class="section-lead" data-en="Our regular gatherings — come any week.">Nuestros encuentros de cada semana — ven cuando quieras.</p>
+      </div>
+      <div class="events-list" id="events-recurring" data-stagger>
         <div class="event-row reveal">
           <div class="event-date-box">
             <span class="event-date-num" data-en="MON">LUN</span>
@@ -2628,8 +2566,29 @@
           </div>
           <span class="event-tag event-tag-static" data-en="Every Monday">Todos los lunes</span>
         </div>
+        <div class="event-row reveal">
+          <div class="event-date-box">
+            <span class="event-date-num" data-en="WED">MIÉ</span>
+            <span class="event-date-month" data-en="Weekly">Semanal</span>
+          </div>
+          <div class="event-info">
+            <h3 class="event-title" data-en="Discipleship">Formación</h3>
+            <p class="event-details" data-en="Every Wednesday · 7:30 PM">Todos los miércoles · 7:30 PM</p>
+          </div>
+          <span class="event-tag event-tag-static" data-en="Every Wednesday">Todos los miércoles</span>
+        </div>
+        <div class="event-row reveal">
+          <div class="event-date-box">
+            <span class="event-date-num" data-en="SUN">DOM</span>
+            <span class="event-date-month" data-en="Weekly">Semanal</span>
+          </div>
+          <div class="event-info">
+            <h3 class="event-title" data-en="Celebration">Celebración</h3>
+            <p class="event-details" data-en="Every Sunday · 11:00 AM">Todos los domingos · 11:00 AM</p>
+          </div>
+          <span class="event-tag event-tag-static" data-en="Every Sunday">Todos los domingos</span>
+        </div>
       </div>
-      <p class="section-lead" id="events-empty" style="display:none;" data-en="New events are coming soon — follow our WhatsApp channel to be the first to know.">Pronto anunciaremos nuevos eventos — sigue nuestro canal de WhatsApp para enterarte primero.</p>
     </div>
   </section>
 
@@ -3016,7 +2975,7 @@
       document.querySelectorAll('[data-end]').forEach(el => {
         if (eventExpired(el.dataset.end)) { el.remove(); removed = true; }
       });
-      if (removed && !document.querySelector('.event-row, .event-row-special')) {
+      if (removed && !document.querySelector('#events-upcoming .event-row, #events-upcoming .event-row-special')) {
         document.getElementById('events-empty').style.display = 'block';
       }
     })();
