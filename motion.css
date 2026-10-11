@@ -1,0 +1,45 @@
+/* Site-wide "Reduce motion" setting (see motion.js). Mirrors the
+   prefers-reduced-motion rules: everything still arrives, it just stops moving. */
+html.reduce-motion { scroll-behavior: auto !important; }
+html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-delay: 0ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  transition-delay: 0ms !important;
+  scroll-behavior: auto !important;
+}
+html.reduce-motion .reveal, html.reduce-motion .reveal-left, html.reduce-motion .reveal-right,
+html.reduce-motion .rise {
+  opacity: 1 !important; transform: none !important; filter: none !important;
+}
+html.reduce-motion .hero-eyebrow, html.reduce-motion .hero-cue, html.reduce-motion h2.display em { opacity: 1 !important; }
+html.reduce-motion .hero-line > span { transform: none !important; }
+html.reduce-motion .hero-cue::after { display: none; }
+html.reduce-motion .menu-head, html.reduce-motion .menu-links li, html.reduce-motion .menu-social > .menu-label,
+html.reduce-motion .menu-social-list li, html.reduce-motion .menu-settings { opacity: 1; transform: none; }
+
+/* Settings link at the bottom of the menu */
+.menu-settings { margin-top: auto; padding-top: 24px; --i: 17;
+  opacity: 0; transform: translate3d(-22px, 0, 0); transition: opacity 0.2s ease, transform 0.2s ease; }
+body.menu-open .menu-settings { opacity: 1; transform: none;
+  transition: opacity 0.5s ease, transform 0.7s var(--ease); transition-delay: calc(0.12s + var(--i) * 0.045s); }
+.menu-settings a {
+  display: flex; align-items: center; gap: 14px; padding: 10px 0;
+  border-top: 1px solid var(--line);
+  font-size: 1rem; font-weight: 600; letter-spacing: -0.01em;
+  color: var(--ink); text-decoration: none; transition: color 0.25s ease;
+}
+.menu-settings .ico {
+  display: grid; place-items: center; flex: none; width: 36px; height: 36px; border-radius: 50%;
+  background: var(--cream); color: var(--ink);
+  transition: background 0.3s ease, color 0.3s ease, transform 0.4s var(--ease-back);
+}
+.menu-settings .ico svg { width: 18px; height: 18px; }
+@media (hover: hover) {
+  .menu-settings a:hover { color: var(--action); }
+  .menu-settings a:hover .ico { background: var(--action); color: var(--white); transform: translateY(-2px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-settings { opacity: 1; transform: none; transition: none; transition-delay: 0s; }
+}
