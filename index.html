@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Somos Reino — Kissimmee, FL</title>
   <meta name="description" content="Somos Reino es una familia de fe en Kissimmee, FL. Celebración los domingos a las 11:00 AM, formación los miércoles a las 7:30 PM. Hay un lugar para ti." />
+  <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#111111" />
   <link rel="canonical" href="https://somosreino.org/" />
   <meta property="og:type" content="website" />
@@ -29,6 +30,9 @@
 
     :root {
       --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --surface:    #FFFFFF;
+      --ink:        #111111;
+      --ink-faint:  rgba(17,17,17,0.28);
       --black:      #111111;
       --near-black: #1A1816;
       --white:      #FFFFFF;
@@ -65,13 +69,29 @@
       --ease-back: cubic-bezier(0.34, 1.4, 0.64, 1);
     }
 
+    /* ── DARK MODE ── follows the device setting (prefers-color-scheme) */
+    :root { color-scheme: light dark; }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --surface:    #221F1C;
+        --cream:      #181614;
+        --gray-100:   #2E2A26;
+        --ink:        #F3EFEA;
+        --ink-faint:  rgba(255,255,255,0.28);
+        --text:       #F3EFEA;
+        --muted:      #ABA59E;
+        --line:       rgba(255,255,255,0.12);
+        --rule:       rgba(255,255,255,0.18);
+      }
+    }
+
     @media (prefers-reduced-motion: no-preference) {
       html { scroll-behavior: smooth; }
     }
 
     body {
       font-family: var(--font);
-      background: var(--white);
+      background: var(--surface);
       color: var(--text);
       overflow-x: hidden;
     }
@@ -94,7 +114,7 @@
       font-weight: 900;
       letter-spacing: -0.01em;
       line-height: 1.05;
-      color: var(--black);
+      color: var(--ink);
     }
 
     /* The regular voice — a quiet lead-in before the anchor lands */
@@ -889,7 +909,7 @@
     }
 
     .servicio-card {
-      background: var(--white);
+      background: var(--surface);
       border: 1px solid var(--rule);
       border-radius: 18px;
       padding: 34px 36px;
@@ -907,7 +927,7 @@
       font-family: var(--font);
       font-size: 1.6rem;
       font-weight: 800;
-      color: var(--black);
+      color: var(--ink);
       display: block;
       margin-bottom: 10px;
     }
@@ -916,7 +936,7 @@
       font-family: var(--font);
       font-size: 1rem;
       font-weight: 700;
-      color: var(--near-black);
+      color: var(--ink);
       display: block;
       margin-bottom: 6px;
     }
@@ -953,12 +973,12 @@
       letter-spacing: 0.03em;
       text-transform: uppercase;
       font-weight: 700;
-      color: var(--near-black);
+      color: var(--ink);
       flex-shrink: 0;
     }
 
     .ticker-track .dot {
-      color: rgba(17,17,17,0.28);
+      color: var(--ink-faint);
     }
 
     @keyframes ticker {
@@ -1011,7 +1031,7 @@
     ──────────────────────────────────────── */
     #sermones {
       padding: var(--section-pad);
-      background: var(--white);
+      background: var(--surface);
     }
 
     #sermones .container > .row-top {
@@ -1134,7 +1154,7 @@
       font-weight: 800;
       font-size: 1.1rem;
       line-height: 1.25;
-      color: var(--black);
+      color: var(--ink);
       margin-bottom: 12px;
     }
 
@@ -1222,7 +1242,7 @@
     ──────────────────────────────────────── */
     #eventos {
       padding: var(--section-pad);
-      background: var(--white);
+      background: var(--surface);
     }
     #eventos .row-top {
       display: flex;
@@ -1268,7 +1288,7 @@
       font-family: var(--font);
       font-size: 1.4rem;
       font-weight: 800;
-      color: var(--black);
+      color: var(--ink);
       margin-bottom: 7px;
       line-height: 1.2;
     }
@@ -1413,7 +1433,7 @@
     .dar-scripture {
       margin: 32px 0 40px;
       padding: 26px 30px;
-      background: var(--white);
+      background: var(--surface);
       border-radius: 16px;
       border: 1px solid var(--rule);
     }
@@ -1423,7 +1443,7 @@
       font-weight: 700;
       font-size: 1.1rem;
       line-height: 1.6;
-      color: var(--black);
+      color: var(--ink);
       margin-bottom: 14px;
     }
 
@@ -1453,7 +1473,7 @@
     ──────────────────────────────────────── */
     #contacto {
       padding: var(--section-pad);
-      background: var(--white);
+      background: var(--surface);
     }
 
     .contacto-intro {
@@ -1479,7 +1499,7 @@
       font-family: var(--font);
       font-size: 1.15rem;
       font-weight: 700;
-      color: var(--black);
+      color: var(--ink);
       line-height: 1.5;
     }
 
@@ -1497,7 +1517,7 @@
       height: 38px;
       border-radius: 50%;
       background: var(--gray-100);
-      color: var(--black);
+      color: var(--ink);
       text-decoration: none;
       transition: background 0.3s, color 0.3s, transform 0.2s;
     }
@@ -1961,7 +1981,7 @@
     }
 
     /* ── FIRST-VISIT STRIP ── */
-    .visit-strip { padding: 72px 0; background: var(--white); border-bottom: 1px solid var(--line); }
+    .visit-strip { padding: 72px 0; background: var(--surface); border-bottom: 1px solid var(--line); }
     .visit-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1982,7 +2002,7 @@
       width: 48px; height: 48px;
       border-radius: 14px;
       background: var(--cream);
-      color: var(--black);
+      color: var(--ink);
       transition: background 0.4s ease, color 0.4s ease, transform 0.5s var(--ease-back);
     }
     .visit-icon svg { width: 22px; height: 22px; }
@@ -2027,11 +2047,11 @@
        the tabs in reach. */
     .nav-tabs { display: none; }
     @media (max-width: 900px) {
-      #nav, #nav.scrolled { padding: 0; --nav-top-h: 60px; background: var(--white); backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; }
+      #nav, #nav.scrolled { padding: 0; --nav-top-h: 60px; background: var(--surface); backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; }
       #nav::before { display: none; }
       /* White header and tab bar with black icons — same look on every slide */
       /* On the white header the icon is always plain black */
-      #nav .nav-profile, body.hero-light #nav:not(.scrolled) .nav-profile { color: var(--black); }
+      #nav .nav-profile, body.hero-light #nav:not(.scrolled) .nav-profile { color: var(--ink); }
       /* The hero begins below the fixed header instead of sliding under it,
          so the photo is never clipped and the content centres in what's visible. */
       body { padding-top: 122px; }
@@ -2044,7 +2064,7 @@
       .nav-tabs {
         display: grid;
         grid-template-columns: repeat(5, minmax(0, 1fr));
-        background: var(--white);
+        background: var(--surface);
       }
       .nav-tabs a {
         position: relative;
@@ -2054,7 +2074,7 @@
         gap: 4px;
         min-height: 56px;
         padding: 9px 2px 8px;
-        color: var(--black);
+        color: var(--ink);
         font: 600 0.64rem/1.1 var(--font);
         letter-spacing: 0.03em;
         text-decoration: none;
@@ -2177,7 +2197,7 @@
 
     /* Profile icon is plain black on the white mobile header, on every slide */
     @media (max-width: 900px) {
-      #nav .nav-profile, body.hero-light #nav:not(.scrolled) .nav-profile { color: var(--black); }
+      #nav .nav-profile, body.hero-light #nav:not(.scrolled) .nav-profile { color: var(--ink); }
     }
 
     /* ── TIGHT HEADING LEADING ── */
@@ -2223,7 +2243,7 @@
     @media (hover: hover) { .nav-menu-btn:hover { color: var(--action); } }
     body.hero-light #nav:not(.scrolled) .nav-menu-btn { color: #5b1724; }
     @media (max-width: 900px) {
-      .nav-menu-btn, body.hero-light #nav:not(.scrolled) .nav-menu-btn { color: var(--black); }
+      .nav-menu-btn, body.hero-light #nav:not(.scrolled) .nav-menu-btn { color: var(--ink); }
     }
 
     .menu-backdrop {
@@ -2237,7 +2257,7 @@
       width: min(86vw, 340px);
       display: flex; flex-direction: column;
       padding: 20px 28px 28px;
-      background: var(--white); color: var(--black);
+      background: var(--surface); color: var(--ink);
       transform: translate3d(-100%, 0, 0); visibility: hidden;
       transition: transform 0.5s var(--ease), visibility 0s linear 0.5s;
       overflow-y: auto; overscroll-behavior: contain;
@@ -2249,14 +2269,14 @@
     .menu-head img { display: block; width: 40px; height: 40px; }
     .menu-close {
       width: 40px; height: 40px; border: 0; background: none; cursor: pointer;
-      font-size: 2rem; line-height: 1; color: var(--black);
+      font-size: 2rem; line-height: 1; color: var(--ink);
     }
     .menu-links { list-style: none; display: flex; flex-direction: column; }
     .menu-links a {
       display: block; padding: 14px 0;
       font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em;
-      color: var(--black); text-decoration: none;
-      border-bottom: 1px solid rgba(17,17,17,0.08);
+      color: var(--ink); text-decoration: none;
+      border-bottom: 1px solid var(--line);
       transition: color 0.25s ease, padding-left 0.35s var(--ease);
     }
     @media (hover: hover) { .menu-links a:hover { color: var(--action); padding-left: 6px; } }
@@ -2268,7 +2288,7 @@
     }
     .menu-panel .lang-toggle {
       display: inline-flex; align-items: center; gap: 2px; padding: 3px;
-      background: var(--cream); border: 1px solid rgba(17,17,17,0.14); border-radius: 100px;
+      background: var(--cream); border: 1px solid var(--rule); border-radius: 100px;
     }
     .menu-panel .lang-option {
       font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em;
@@ -2276,8 +2296,8 @@
       padding: 8px 16px; border-radius: 100px; cursor: pointer;
       transition: background 0.25s ease, color 0.25s ease;
     }
-    .menu-panel .lang-option.active { background: var(--black); color: var(--white); }
-    .menu-panel .lang-option:not(.active):hover { color: var(--black); }
+    .menu-panel .lang-option.active { background: var(--ink); color: var(--surface); }
+    .menu-panel .lang-option:not(.active):hover { color: var(--ink); }
     @media (prefers-reduced-motion: reduce) {
       .menu-panel, .menu-backdrop { transition-duration: 0.01ms; }
     }
@@ -2287,14 +2307,14 @@
     .menu-social-list { list-style: none; display: flex; flex-direction: column; }
     .menu-social-list a {
       display: flex; align-items: center; gap: 14px;
-      padding: 10px 0; color: var(--black); text-decoration: none;
+      padding: 10px 0; color: var(--ink); text-decoration: none;
       font-size: 1rem; font-weight: 600; letter-spacing: -0.01em;
       transition: color 0.25s ease;
     }
     .menu-social-list .ico {
       display: grid; place-items: center; flex: none;
       width: 36px; height: 36px; border-radius: 50%;
-      background: var(--cream); color: var(--black);
+      background: var(--cream); color: var(--ink);
       transition: background 0.3s ease, color 0.3s ease, transform 0.4s var(--ease-back);
     }
     .menu-social-list .ico svg { width: 18px; height: 18px; }
@@ -2653,7 +2673,7 @@
 
       <!-- Loading state -->
       <div id="sermons-loading" style="text-align:center;padding:60px 0;">
-        <div style="width:40px;height:40px;border:2px solid var(--gray-100);border-top-color:var(--near-black);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;"></div>
+        <div style="width:40px;height:40px;border:2px solid var(--gray-100);border-top-color:var(--ink);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;"></div>
         <p data-en="Loading messages..." style="font-family:var(--font);font-size:0.82rem;color:var(--muted);letter-spacing:0.08em;font-weight:600;">Cargando mensajes...</p>
       </div>
 

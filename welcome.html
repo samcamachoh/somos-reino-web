@@ -10,9 +10,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400..900;1,400..900&family=Inter:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet" />
+  <meta name="color-scheme" content="light dark" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    :root { --black:#111; --white:#fff; --cream:#F6F4F1; --orange:#F7746D; --text:#171412; --muted:#6E6862; --line:#E2DED9; --action:var(--orange); }
+    :root { --black:#111; --white:#fff; --cream:#F6F4F1; --orange:#F7746D; --text:#171412; --muted:#6E6862; --line:#E2DED9; --surface:#fff; --subtle:#FBFAF8; --tag-bg:#FDE3E1; --tag-ink:#8A2A24; --action:var(--orange); }
     body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--text); }
     .header { background:var(--black); padding:22px 0; }
     .header .inner { max-width:700px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; }
@@ -26,11 +27,11 @@
     h1 .reg { font-weight:400; }
     h1 em { font-style:italic; color:var(--action); }
     .intro { font-size:1.02rem; line-height:1.65; color:var(--muted); max-width:520px; margin-bottom:36px; }
-    form, .thanks { background:var(--white); border-radius:18px; padding:32px; box-shadow:0 20px 48px rgba(17,17,17,.08); }
+    form, .thanks { background:var(--surface); border-radius:18px; padding:32px; box-shadow:0 20px 48px rgba(17,17,17,.08); }
     .field { margin-bottom:20px; }
     .row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
     label { display:block; font-size:.85rem; font-weight:600; margin-bottom:6px; }
-    input, select, textarea { width:100%; font:inherit; font-size:1rem; padding:12px 14px; border:1px solid var(--line); border-radius:10px; background:var(--white); color:var(--text); }
+    input, select, textarea { width:100%; font:inherit; font-size:1rem; padding:12px 14px; border:1px solid var(--line); border-radius:10px; background:var(--surface); color:var(--text); }
     input:focus, select:focus, textarea:focus { outline:2px solid var(--action); outline-offset:1px; }
     textarea { min-height:110px; resize:vertical; }
     .check { display:flex; gap:10px; align-items:flex-start; font-weight:400; }
@@ -44,6 +45,11 @@
     .thanks h2 { font-family:'Archivo',sans-serif; font-size:1.8rem; font-weight:900; margin-bottom:10px; }
     .thanks p { color:var(--muted); line-height:1.65; }
     @media (max-width:600px) { main { padding:40px 20px 56px; } form,.thanks { padding:24px 20px; } .row { grid-template-columns:1fr; gap:0; } }
+  :root { color-scheme: light dark; }
+    @media (prefers-color-scheme: dark) {
+      :root { --surface:#221F1C; --cream:#181614; --text:#F3EFEA; --muted:#ABA59E; --line:rgba(255,255,255,.14); --subtle:#2A2623; --tag-bg:#4A2522; --tag-ink:#FBD0CC; }
+      .error { color:#FF8A80; }
+    }
   </style>
 </head>
 <body>
