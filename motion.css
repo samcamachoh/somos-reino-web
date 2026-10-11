@@ -43,3 +43,21 @@ body.menu-open .menu-settings { opacity: 1; transform: none;
 @media (prefers-reduced-motion: reduce) {
   .menu-settings { opacity: 1; transform: none; transition: none; transition-delay: 0s; }
 }
+
+/* Desktop: the menu is a permanent left sidebar (phones/tablets keep the hamburger drawer). */
+@media (min-width: 901px) {
+  :root { --sidebar-w: 280px; }
+  body { padding-left: var(--sidebar-w); }
+  body #nav { left: var(--sidebar-w); }
+  body .menu-panel {
+    width: var(--sidebar-w); z-index: 250;
+    transform: none; visibility: visible; transition: none;
+    border-right: 1px solid var(--line);
+  }
+  body .nav-menu-btn, body .menu-close, body .menu-backdrop { display: none; }
+  body .menu-head, body .menu-links li, body .menu-social > .menu-label,
+  body .menu-social-list li, body .menu-foot, body .menu-settings {
+    opacity: 1; transform: none; transition: none;
+  }
+  body.menu-open { overflow: visible; }
+}
