@@ -543,6 +543,32 @@
       height: 100%;
     }
 
+    /* ── HERO LIVE INDICATOR ── solid red pill, sits above the stream */
+    .hero-live-wrap { position: absolute; top: 108px; left: 0; right: 0; z-index: 16; pointer-events: none; }
+    .hero-live-pill {
+      display: none;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 16px 9px 14px;
+      border-radius: 999px;
+      background: #E53E3E;
+      color: #fff;
+      font-family: var(--font);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      pointer-events: auto;
+      box-shadow: 0 6px 18px rgba(229,62,62,0.35);
+      transition: transform 0.3s var(--ease), box-shadow 0.3s ease;
+    }
+    @media (hover: hover) { .hero-live-pill:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(229,62,62,0.45); } }
+    .hero-live-pill:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+    .hero-live-dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: livePulse 1.5s ease-in-out infinite; }
+    @media (prefers-reduced-motion: reduce) { .hero-live-dot { animation: none; } }
+    @media (max-width: 900px) { .hero-live-wrap { top: 20px; } }
+
     .hero-unmute-btn {
       position: absolute;
       top: 110px;
@@ -2422,17 +2448,21 @@
       <span id="hero-unmute-label" data-en="Turn On Sound">Activar Sonido</span>
     </button>
 
+    <!-- Live indicator — hidden until the channel is live; stays on top of the stream -->
+    <div class="hero-live-wrap">
+      <div class="container">
+        <a id="live-badge" class="hero-live-pill" href="#live-chat" target="_blank" rel="noopener" aria-label="Ver transmisión en vivo" data-en-label="Watch the live stream">
+          <span class="hero-live-dot" aria-hidden="true"></span>
+          <span data-en="Live">En vivo</span>
+        </a>
+      </div>
+    </div>
+
     <div class="hero-overlay"></div>
 
     <div class="hero-content" style="width:100%;">
       <div class="container">
         <div class="hero-left">
-          <!-- Live badge — hidden by default, shown when live -->
-          <div id="live-badge" style="display:none;align-items:center;gap:10px;margin-bottom:22px;">
-            <div style="width:10px;height:10px;border-radius:50%;background:#E53E3E;animation:livePulse 1.5s ease-in-out infinite;"></div>
-            <span data-en="Live Now" style="font-family:var(--font);font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:#E53E3E;">En Vivo Ahora</span>
-          </div>
-
           <!-- Upcoming stream badge — hidden by default, shown when a stream is scheduled and we're not live -->
           <a id="upcoming-badge" href="#" target="_blank" rel="noopener" style="display:none;align-items:center;gap:10px;margin-bottom:22px;text-decoration:none;">
             <div style="width:10px;height:10px;border-radius:50%;background:var(--action);"></div>
@@ -3155,9 +3185,10 @@
     function handleLiveStatus(data) {
       if (data.live) {
         if (window.stopHeroCarousel) window.stopHeroCarousel();
-        // Show live badge
+        // Show the live pill; it links straight to the stream
         const badge = document.getElementById('live-badge');
-        badge.style.display = 'flex';
+        if (data.url) badge.href = data.url; else { badge.removeAttribute('target'); }
+        badge.style.display = 'inline-flex';
 
 
         // Turn the hero background into the live stream, muted, after 5s
