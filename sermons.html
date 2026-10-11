@@ -284,10 +284,6 @@
     }
     .lang-option.active { background: var(--action); color: var(--white); }
     .lang-option:not(.active):hover { color: var(--white); }
-    header.site-header .lang-toggle-nav { margin-left: 10px; background: var(--cream); border-color: var(--rule); }
-    header.site-header .lang-toggle-nav .lang-option { padding: 5px 11px; color: var(--muted); }
-    header.site-header .lang-toggle-nav .lang-option:not(.active):hover { color: var(--ink); }
-    header.site-header .lang-toggle-nav .lang-option.active { background: var(--ink); color: var(--surface); }
     .footer-bottom {
       border-top: 1px solid rgba(255,255,255,0.1); padding-top: 28px;
       display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
@@ -343,6 +339,7 @@
     body.menu-open .menu-panel { transform: none; visibility: visible; transition-delay: 0s; }
     .menu-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
     .menu-head img { display: block; width: 40px; height: 40px; }
+    .menu-head .lang-toggle { margin: 0 auto 0 14px; }
     .menu-close {
       width: 40px; height: 40px; border: 0; background: none; cursor: pointer;
       font-size: 2rem; line-height: 1; color: var(--ink);
@@ -445,10 +442,6 @@
       <div class="nav-left">
         <button type="button" class="nav-menu-btn" id="menu-btn" aria-label="Menú" data-en-label="Menu" aria-controls="menu-panel" aria-expanded="false"><span></span><span></span><span></span></button>
         <a href="/" class="nav-logo"><img src="logo-mark.png" alt="Somos Reino" width="40" height="40" /></a>
-        <div class="lang-toggle lang-toggle-nav" role="group" aria-label="Language selector">
-          <button type="button" class="lang-option active" data-lang="es">ES</button>
-          <button type="button" class="lang-option" data-lang="en">EN</button>
-        </div>
       </div>
       <ul class="nav-links">
         <li><a href="/sermons.html" aria-current="page" data-en="Sermons">Sermones</a></li>
@@ -477,6 +470,10 @@
   <aside class="menu-panel" id="menu-panel" aria-label="Menú" data-en-label="Menu">
     <div class="menu-head">
       <a href="/"><img src="logo-mark.png" alt="Somos Reino" width="40" height="40" /></a>
+      <div class="lang-toggle" role="group" aria-label="Language selector">
+        <button type="button" class="lang-option active" data-lang="es">ES</button>
+        <button type="button" class="lang-option" data-lang="en">EN</button>
+      </div>
       <button type="button" class="menu-close" id="menu-close" aria-label="Cerrar menú" data-en-label="Close menu">&times;</button>
     </div>
     <ul class="menu-links">
@@ -499,13 +496,6 @@
       <li><a href="https://www.tiktok.com/@somosreinofl?_r=1&_t=ZT-95coSNg4ni2" target="_blank" rel="noopener"><span class="ico"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg></span><span>TikTok</span></a></li>
       <li><a href="https://whatsapp.com/channel/0029VaQlt7T2ZjCpaaXFOK0P" target="_blank" rel="noopener"><span class="ico"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.82 9.82 0 016.988 2.898 9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></span><span>WhatsApp</span></a></li>
       </ul>
-    </div>
-    <div class="menu-foot">
-      <span class="menu-label" data-en="Language">Idioma</span>
-      <div class="lang-toggle" role="group" aria-label="Language selector">
-        <button type="button" class="lang-option active" data-lang="es">ES</button>
-        <button type="button" class="lang-option" data-lang="en">EN</button>
-      </div>
     </div>
   </aside>
 
