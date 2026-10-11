@@ -264,6 +264,10 @@
     }
     .lang-option.active { background: var(--action); color: var(--white); }
     .lang-option:not(.active):hover { color: var(--white); }
+    header.site-header .lang-toggle-nav { margin-left: 10px; background: var(--cream); border-color: var(--rule); }
+    header.site-header .lang-toggle-nav .lang-option { padding: 5px 11px; color: var(--muted); }
+    header.site-header .lang-toggle-nav .lang-option:not(.active):hover { color: var(--ink); }
+    header.site-header .lang-toggle-nav .lang-option.active { background: var(--ink); color: var(--surface); }
     .footer-bottom {
       border-top: 1px solid rgba(255,255,255,0.1); padding-top: 28px;
       display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
@@ -421,6 +425,10 @@
       <div class="nav-left">
         <button type="button" class="nav-menu-btn" id="menu-btn" aria-label="Menú" data-en-label="Menu" aria-controls="menu-panel" aria-expanded="false"><span></span><span></span><span></span></button>
         <a href="https://somosreino.org/" class="nav-logo"><img src="/logo-mark.png" alt="Somos Reino" width="40" height="40" /></a>
+        <div class="lang-toggle lang-toggle-nav" role="group" aria-label="Language selector">
+          <button type="button" class="lang-option active" data-lang="es">ES</button>
+          <button type="button" class="lang-option" data-lang="en">EN</button>
+        </div>
       </div>
       <ul class="nav-links">
         <li><a href="https://somosreino.org/#sermones" data-en="Sermons">Sermones</a></li>

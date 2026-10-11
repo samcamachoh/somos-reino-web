@@ -2134,7 +2134,18 @@
     .nav-profile:active { transform: scale(0.94); }
     body.hero-light #nav:not(.scrolled) .nav-profile { color: #5b1724; }
 
-    /* Language switch lives in the footer now */
+
+    /* Language switch next to the logo. Light-on-dark over the hero, ink-on-white on the mobile header. */
+    .lang-toggle-nav { margin-left: 10px; }
+    .lang-toggle-nav .lang-option { padding: 5px 11px; }
+    @media (max-width: 900px) {
+      #nav .lang-toggle-nav, body.hero-light #nav:not(.scrolled) .lang-toggle-nav { background: var(--cream); border-color: var(--rule); }
+      #nav .lang-toggle-nav .lang-option:not(.active), body.hero-light #nav:not(.scrolled) .lang-toggle-nav .lang-option:not(.active) { color: var(--muted); }
+      #nav .lang-toggle-nav .lang-option:not(.active):hover { color: var(--ink); }
+      #nav .lang-toggle-nav .lang-option.active, body.hero-light #nav:not(.scrolled) .lang-toggle-nav .lang-option.active { background: var(--ink); color: var(--surface); }
+    }
+
+    /* Language switch also lives in the footer */
     .footer-lang { margin-top: 28px; }
     .footer-lang .footer-col-title { margin-bottom: 12px; }
     footer .lang-toggle { display: inline-flex; }
@@ -2383,6 +2394,10 @@
         <a href="/" class="nav-logo">
           <img src="logo-mark.png" alt="Somos Reino" width="40" height="40" style="height:40px;width:40px;display:block;" />
         </a>
+        <div class="lang-toggle lang-toggle-nav" role="group" aria-label="Language selector">
+          <button type="button" class="lang-option active" data-lang="es">ES</button>
+          <button type="button" class="lang-option" data-lang="en">EN</button>
+        </div>
       </div>
       <ul class="nav-links">
         <li><a href="#sermones" data-en="Sermons">Sermones</a></li>
