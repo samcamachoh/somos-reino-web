@@ -2246,7 +2246,20 @@
     body.menu-open .menu-panel { transform: none; visibility: visible; transition-delay: 0s; }
     .menu-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
     .menu-head img { display: block; width: 40px; height: 40px; }
-    .menu-head .lang-toggle { margin: 0 auto 0 14px; }
+    .menu-head .lang-select { margin: 0 auto 0 14px; }
+    .lang-select {
+      appearance: none; -webkit-appearance: none;
+      font-family: var(--font); font-size: 0.82rem; font-weight: 600; color: var(--ink);
+      background-color: var(--cream);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%238a847d' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a847d' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat, no-repeat; background-position: 12px center, right 11px center; background-size: 18px, 16px;
+      border: 1px solid var(--rule); border-radius: 12px;
+      padding: 10px 36px 10px 38px; cursor: pointer;
+      transition: border-color 0.25s ease;
+    }
+    @media (hover: hover) { .lang-select:hover { border-color: var(--ink-faint); } }
+    .lang-select:focus-visible { outline: 2px solid var(--action); outline-offset: 2px; }
+    footer .lang-select { background-color: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.16); color: #fff; }
     .menu-close {
       width: 40px; height: 40px; border: 0; background: none; cursor: pointer;
       font-size: 2rem; line-height: 1; color: var(--ink);
@@ -2413,10 +2426,10 @@
   <aside class="menu-panel" id="menu-panel" aria-label="Menú" data-en-label="Menu">
     <div class="menu-head">
       <a href="/"><img src="logo-mark.png" alt="Somos Reino" width="40" height="40" /></a>
-      <div class="lang-toggle" role="group" aria-label="Language selector">
-        <button type="button" class="lang-option active" data-lang="es">ES</button>
-        <button type="button" class="lang-option" data-lang="en">EN</button>
-      </div>
+      <select class="lang-select" aria-label="Idioma / Language" data-lang-select>
+        <option value="es">Español</option>
+        <option value="en">English</option>
+      </select>
       <button type="button" class="menu-close" id="menu-close" aria-label="Cerrar menú" data-en-label="Close menu">&times;</button>
     </div>
     <ul class="menu-links">
@@ -2801,10 +2814,10 @@
           </div>
           <div class="footer-lang">
             <span class="footer-col-title" data-en="Language">Idioma</span>
-            <div class="lang-toggle" id="lang-toggle" role="group" aria-label="Language selector">
-              <button type="button" class="lang-option active" data-lang="es">ES</button>
-              <button type="button" class="lang-option" data-lang="en">EN</button>
-            </div>
+            <select class="lang-select" aria-label="Idioma / Language" data-lang-select>
+        <option value="es">Español</option>
+        <option value="en">English</option>
+      </select>
           </div>
         </div>
 
@@ -2892,18 +2905,16 @@
         el.setAttribute('aria-label', lang === 'en' ? el.dataset.enLabel : el.dataset.esLabel);
       });
 
-      document.querySelectorAll('.lang-option').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.lang === lang);
-      });
+      document.querySelectorAll('.lang-select').forEach(sel => { sel.value = lang; });
 
       // The copyright year is re-injected because the swap above replaces it
       const year = new Date().getFullYear();
       document.querySelectorAll('.yr').forEach(el => { el.textContent = year; });
     }
 
-    document.querySelectorAll('.lang-option').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const lang = btn.dataset.lang;
+    document.querySelectorAll('.lang-select').forEach(sel => {
+      sel.addEventListener('change', () => {
+        const lang = sel.value;
         try { localStorage.setItem(LANG_KEY, lang); } catch {}
         applyLanguage(lang);
       });
