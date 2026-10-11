@@ -337,6 +337,8 @@
       font-weight: 700;
       color: var(--rose-ink);
     }
+    /* Pill sitting next to the title on regular (photo-less) rows */
+    .event-special-inline { margin: 0 0 0 10px; padding: 4px 10px; vertical-align: middle; position: relative; top: -2px; }
     .event-row-special .event-title {
       max-width: 18ch;
       margin: 0 0 10px;
@@ -747,8 +749,7 @@
             <span class="event-date-month">NOV</span>
           </div>
           <div class="event-info">
-            <span class="event-special-label" data-en="Special">Especial</span>
-            <h3 class="event-title">Ayuno Congregacional</h3>
+            <h3 class="event-title">Ayuno Congregacional <span class="event-special-label event-special-inline" data-en="Special">Especial</span></h3>
             <p class="event-details" data-en="Sunday · 6:00 AM – 9:30 AM">Domingo · 6:00 AM – 9:30 AM</p>
           </div>
         </div>
@@ -759,8 +760,7 @@
             <span class="event-date-month">NOV</span>
           </div>
           <div class="event-info">
-            <span class="event-special-label" data-en="Special">Especial</span>
-            <h3 class="event-title">Gracias Por Servir</h3>
+            <h3 class="event-title">Gracias Por Servir <span class="event-special-label event-special-inline" data-en="Special">Especial</span></h3>
             <p class="event-details" data-en="Wednesday · Special Event · 7:30 PM">Miércoles · Evento Especial · 7:30 PM</p>
           </div>
         </div>
@@ -886,7 +886,7 @@
       function events() {
         return [...document.querySelectorAll('#events-list-view [data-date], #events-list-view [data-dow]')].map(el => ({
           date: el.dataset.date, dow: el.dataset.dow,
-          title: el.querySelector('.event-title').textContent,
+          title: [...el.querySelector('.event-title').childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join('').trim(),
           details: el.querySelector('.event-details').textContent,
           href: (el.querySelector('a.event-tag-special') || {}).href
         }));
