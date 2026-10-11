@@ -2201,6 +2201,24 @@
     h2.display { line-height: 1.04; }
     .hero-body { font-size: 1.05rem; line-height: 1.5; max-width: 400px; margin-bottom: 0; }
     .hero-actions { gap: 12px; }
+    /* Under "New Here": plays the newest sermon from the channel */
+    .hero-actions { flex-direction: column; align-items: flex-start; }
+    .hero-sermon-link {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--font); font-size: 0.9rem; font-weight: 600; letter-spacing: -0.005em;
+      color: rgba(255,255,255,0.92); text-decoration: none;
+      transition: color 0.25s ease;
+    }
+    .hero-sermon-link svg {
+      width: 30px; height: 30px; padding: 8px; flex: none; fill: currentColor;
+      border: 1px solid rgba(255,255,255,0.4); border-radius: 50%;
+      transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+    @media (hover: hover) {
+      .hero-sermon-link:hover { color: var(--white); }
+      .hero-sermon-link:hover svg { background: var(--action); border-color: var(--action); }
+    }
+    .hero-sermon-link:focus-visible { outline: 2px solid var(--action); outline-offset: 4px; border-radius: 4px; }
     .section-lead { font-size: 1rem; line-height: 1.55; margin-top: 14px; max-width: 440px; }
     .visit-text, .dar-body, .contacto-intro { line-height: 1.55; }
     @media (max-width: 600px) {
@@ -2516,6 +2534,7 @@
 
           <div class="hero-actions">
             <a class="btn-primary" href="/welcome.html" data-en="New Here">Primera vez aquí</a>
+            <a class="hero-sermon-link" id="latest-sermon-link" href="#sermones"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><span data-en="Listen to our latest sermon">Escucha nuestro último sermón</span></a>
           </div>
 
         </div>
@@ -3334,6 +3353,12 @@
         const videos = Array.isArray(data.videos)
           ? data.videos.filter(video => video && /^[\w-]{11}$/.test(video.videoId)).slice(0, 6) : [];
         if (!videos.length) throw new Error('No videos');
+        // "Listen to our latest sermon" (hero) plays the newest video; until then it scrolls to the sermons
+        const latest = document.getElementById('latest-sermon-link');
+        if (latest) {
+          latest.href = 'https://www.youtube.com/watch?v=' + videos[0].videoId;
+          latest.addEventListener('click', (e) => { e.preventDefault(); openVideoModal(videos[0].videoId); });
+        }
         grid.innerHTML = videos.map(buildCard).join('');
         loading.style.display = 'none';
         grid.style.display = 'grid';
