@@ -1537,23 +1537,10 @@
     #whatsapp .container { position: relative; z-index: 1; }
 
     .whatsapp-card {
-      transition: transform 0.4s var(--ease), border-color 0.4s ease;
-    }
-
-    .whatsapp-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(37,211,102,0.35);
-    }
-
-    .whatsapp-card {
       display: grid;
       grid-template-columns: auto 1fr auto;
       align-items: center;
       gap: 40px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 24px;
-      padding: 48px 52px;
     }
 
     .whatsapp-icon {
@@ -1779,7 +1766,6 @@
       .whatsapp-card {
         grid-template-columns: 1fr;
         gap: 24px;
-        padding: 36px 28px;
         text-align: left;
       }
 
