@@ -575,6 +575,7 @@
           <label class="check"><input type="checkbox" name="interests" value="Prayer" /><span data-es="Oración" data-en="Prayer">Oración</span></label>
           <label class="check"><input type="checkbox" name="interests" value="Discipleship" /><span data-es="Discipulado" data-en="Discipleship">Discipulado</span></label>
         </div>
+        <input id="interestsOther" name="interestsOther" maxlength="33" style="margin-top:12px" placeholder="Otro (escribe aquí)" data-es-placeholder="Otro (escribe aquí)" data-en-placeholder="Other (type here)" aria-label="Otro" />
       </div>
       <div class="field">
         <label for="contactMethod" data-es="¿Cómo prefieres que te contactemos?" data-en="Preferred way to be contacted">¿Cómo prefieres que te contactemos?</label>
@@ -692,6 +693,9 @@
         if (el.dataset.es === undefined) el.dataset.es = el.innerHTML;
         el.innerHTML = next === 'en' ? el.dataset.en : el.dataset.es;
       });
+      document.querySelectorAll('[data-en-placeholder]').forEach(el => {
+        el.placeholder = next === 'en' ? el.dataset.enPlaceholder : el.dataset.esPlaceholder;
+      });
       document.querySelectorAll('[data-en-label]').forEach(el => {
         if (el.dataset.esLabel === undefined) el.dataset.esLabel = el.getAttribute('aria-label') || '';
         el.setAttribute('aria-label', next === 'en' ? el.dataset.enLabel : el.dataset.esLabel);
@@ -735,6 +739,7 @@
       err.textContent = '';
       const fd = new FormData(form), d = Object.fromEntries(fd);
       d.interests = fd.getAll('interests');
+      if (d.interestsOther && d.interestsOther.trim()) d.interests.push('Other: ' + d.interestsOther.trim());
       d.followUp = form.elements.followUp.checked;
       if (!d.name.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email.trim())) { err.textContent = msgs[lang].required; return; }
       btn.disabled = true;
