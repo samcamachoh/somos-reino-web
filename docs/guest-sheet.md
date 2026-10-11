@@ -1,7 +1,7 @@
 # Guest form → Google Sheet
 
 1. Create a Google Sheet (any name) with this header row in row 1:
-   `Timestamp | Name | Phone | Email | Address / ZIP | Adults | Children | Children ages | Visit status | Looking for a church home | Attends another church | Interests | Preferred contact | Best time | Birthday | Heard about us | Invited by | Wants follow-up | Message`
+   `Timestamp | Name | Phone | Email | Address / ZIP | Adults | Children | Children ages | Visit status | Looking for a church home | Attends another church | Interests | Preferred contact | Best time | Birthday | Heard about us | Invited by | Wants follow-up | Message | Talents & abilities`
 2. In the sheet: Extensions → Apps Script. Replace the code with:
 
 ```js
@@ -21,7 +21,7 @@ function doPost(e) {
       new Date(), d.name, d.phone, d.email, d.address, d.adults, d.kids,
       d.kidsAges, d.visit, d.churchHome, d.otherChurch, d.interests,
       d.contactMethod, d.bestTime, d.birthday, d.source, d.invitedBy,
-      d.followUp, d.message,
+      d.followUp, d.message, d.talents,
     ].map(v => typeof v === 'string' && /^[=+\-@]/.test(v) ? "'" + v : v));
     return out({ ok: true });
   } catch (err) {
