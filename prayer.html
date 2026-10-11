@@ -326,13 +326,22 @@
     }
     .menu-links { list-style: none; display: flex; flex-direction: column; }
     .menu-links a {
-      display: block; padding: 14px 0;
-      font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em;
+      display: flex; align-items: center; gap: 14px; padding: 9px 0;
+      font-size: 1rem; font-weight: 600; letter-spacing: -0.01em;
       color: var(--ink); text-decoration: none;
-      border-bottom: 1px solid var(--line);
-      transition: color 0.25s ease, padding-left 0.35s var(--ease);
+      transition: color 0.25s ease;
     }
-    @media (hover: hover) { .menu-links a:hover { color: var(--action); padding-left: 6px; } }
+    .menu-links .ico {
+      display: grid; place-items: center; flex: none;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--cream); color: var(--ink);
+      transition: background 0.3s ease, color 0.3s ease, transform 0.4s var(--ease-back);
+    }
+    .menu-links .ico svg { width: 18px; height: 18px; }
+    @media (hover: hover) {
+      .menu-links a:hover { color: var(--action); }
+      .menu-links a:hover .ico { background: var(--action); color: var(--white); transform: translateY(-2px); }
+    }
     .menu-foot { margin-top: auto; padding-top: 32px; }
     .menu-label {
       display: block; margin-bottom: 12px;
@@ -392,12 +401,12 @@
     .menu-head { --i: 0; }
     .menu-links li:nth-child(1) { --i: 1; } .menu-links li:nth-child(2) { --i: 2; } .menu-links li:nth-child(3) { --i: 3; }
     .menu-links li:nth-child(4) { --i: 4; } .menu-links li:nth-child(5) { --i: 5; } .menu-links li:nth-child(6) { --i: 6; }
-    .menu-links li:nth-child(7) { --i: 7; }
-    .menu-social > .menu-label { --i: 8; }
-    .menu-social-list li:nth-child(1) { --i: 9; }  .menu-social-list li:nth-child(2) { --i: 10; }
-    .menu-social-list li:nth-child(3) { --i: 11; } .menu-social-list li:nth-child(4) { --i: 12; }
-    .menu-social-list li:nth-child(5) { --i: 13; }
-    .menu-foot { --i: 14; }
+    .menu-links li:nth-child(7) { --i: 7; } .menu-links li:nth-child(8) { --i: 8; } .menu-links li:nth-child(9) { --i: 9; }
+    .menu-social > .menu-label { --i: 10; }
+    .menu-social-list li:nth-child(1) { --i: 11; } .menu-social-list li:nth-child(2) { --i: 12; }
+    .menu-social-list li:nth-child(3) { --i: 13; } .menu-social-list li:nth-child(4) { --i: 14; }
+    .menu-social-list li:nth-child(5) { --i: 15; }
+    .menu-foot { --i: 16; }
     @media (prefers-reduced-motion: reduce) {
       .menu-head, .menu-links li, .menu-social > .menu-label, .menu-social-list li, .menu-foot {
         opacity: 1; transform: none; transition: none; transition-delay: 0s;
@@ -444,15 +453,15 @@
       <button type="button" class="menu-close" id="menu-close" aria-label="Cerrar menú" data-en-label="Close menu">&times;</button>
     </div>
     <ul class="menu-links">
-      <li><a href="https://somosreino.org/" data-en="Home">Inicio</a></li>
-      <li><a href="https://somosreino.org/sermons.html" data-en="Sermons">Sermones</a></li>
-      <li><a href="https://somosreino.org/events.html" data-en="Events">Eventos</a></li>
-      <li><a href="https://somosreino.org/#esencial">Podcast</a></li>
-      <li><a href="https://somosreino.org/welcome.html" data-en="New Here">Primera vez aquí</a></li>
-      <li><a href="https://somosreino.org/prayer.html" data-en="Prayer request">Petición de oración</a></li>
-      <li><a href="https://somosreino.org/give.html" data-en="Give">Dar</a></li>
-      <li><a href="https://somosreino.org/#contacto" data-en="Contact">Contacto</a></li>
-      <li><a href="https://casafamiliar.churchtrac.com/sign-in" target="_blank" rel="noopener" data-en="My profile">Mi perfil</a></li>
+      <li><a href="https://somosreino.org/"><span class="ico"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 11 12 4l8.5 7M5.5 9.5V20h13V9.5M10 20v-5.5h4V20"/></svg></span><span data-en="Home">Inicio</span></a></li>
+      <li><a href="https://somosreino.org/sermons.html"><span class="ico"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5-6-3.5Z" fill="currentColor"/></svg></span><span data-en="Sermons">Sermones</span></a></li>
+      <li><a href="https://somosreino.org/events.html"><span class="ico"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span><span data-en="Events">Eventos</span></a></li>
+      <li><a href="https://somosreino.org/#esencial"><span class="ico"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg></span><span>Podcast</span></a></li>
+      <li><a href="https://somosreino.org/welcome.html"><span class="ico"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c.6-3.4 3.2-5.5 6.5-5.5s5.9 2.1 6.5 5.5M19 8v6M16 11h6"/></svg></span><span data-en="New Here">Primera vez aquí</span></a></li>
+      <li><a href="https://somosreino.org/prayer.html"><span class="ico"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.5a8 8 0 0 1-11.8 7L3.5 20l1.5-4.6A8 8 0 1 1 20.5 11.5Z"/></svg></span><span data-en="Prayer request">Petición de oración</span></a></li>
+      <li><a href="https://somosreino.org/give.html"><span class="ico"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9.6C12 7.3 9 6.2 7.6 8.2 6.3 10 7.7 11.6 12 15c4.3-3.4 5.7-5 4.4-6.8C15 6.2 12 7.3 12 9.6Z" transform="translate(0 -3)"/><path d="M3 15h4l3 1.5h4a1.5 1.5 0 0 1 0 3H9.5M7 15v5.5H3M14 19.5l5-2a1.6 1.6 0 0 1 1.7 2.7L14 22l-4.5-.5"/></svg></span><span data-en="Give">Dar</span></a></li>
+      <li><a href="https://somosreino.org/#contacto"><span class="ico"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><span data-en="Contact">Contacto</span></a></li>
+      <li><a href="https://casafamiliar.churchtrac.com/sign-in" target="_blank" rel="noopener"><span class="ico"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c.6-3.7 3.7-6 7.5-6s6.9 2.3 7.5 6"/></svg></span><span data-en="My profile">Mi perfil</span></a></li>
     </ul>
     <div class="menu-social">
       <span class="menu-label" data-en="Follow us">Síguenos</span>
