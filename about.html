@@ -451,6 +451,13 @@
     .about-card p { margin-top: 8px; font-size: 0.95rem; line-height: 1.6; color: var(--muted); }
     .about-card .when { display: block; margin-top: 14px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--action-dark); }
     @media (prefers-color-scheme: dark) { .about-card .when { color: var(--action); } }
+    .about-story-num { display: block; font-size: clamp(3.4rem, 9vw, 6rem); font-weight: 800; letter-spacing: -0.04em; line-height: 0.9; color: var(--action); }
+    .about-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 36px; counter-reset: step; }
+    .about-step { position: relative; padding: 26px 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; }
+    .about-step::before { counter-increment: step; content: "0" counter(step); display: block; margin-bottom: 14px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; color: var(--action-dark); }
+    @media (prefers-color-scheme: dark) { .about-step::before { color: var(--action); } }
+    .about-step h3 { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.01em; color: var(--ink); }
+    .about-step p { margin-top: 8px; font-size: 0.95rem; line-height: 1.6; color: var(--muted); }
     .about-verse { padding: 72px 0; background: var(--black); text-align: center; }
     .about-verse blockquote { max-width: 760px; margin: 0 auto; font-size: clamp(1.5rem, 3.6vw, 2.4rem); font-weight: 700; letter-spacing: -0.025em; line-height: 1.2; color: var(--white); text-wrap: balance; }
     .about-verse cite { display: block; margin-top: 20px; font-style: normal; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--label-dark); }
@@ -555,6 +562,29 @@
           <span class="eyebrow" data-en="About us">Nosotros</span>
           <h1 data-en="A Kingdom<br><em>Family.</em>">Una familia<br><em>de reino.</em></h1>
           <p class="about-lead" data-en="Somos Reino is a church family in Kissimmee, Florida. A place where worship is real, relationships run deep, and no one walks alone. Whoever you are, however you arrive, there’s room for you here.">Somos Reino es una familia de fe en Kissimmee, Florida. Un lugar donde la adoración es real, las relaciones son profundas y nadie camina solo. Seas quien seas, vengas como vengas, aquí hay lugar para ti.</p>
+        </div>
+      </section>
+
+      <section class="about-section">
+        <div class="container">
+          <span class="about-eyebrow" data-en="Our story">Nuestra historia</span>
+          <span class="about-story-num" data-en="12 years">12 años</span>
+          <h2 style="margin-top:18px;" data-en="Twelve years in the making.">Doce años en preparación.</h2>
+          <p class="body" data-en="Somos Reino didn’t begin overnight. For twelve years God has been shaping this family: through seasons of planting and waiting, of prayer and perseverance, of faithful people showing up week after week. Every one of those years mattered.">Somos Reino no nació de la noche a la mañana. Durante doce años Dios ha estado formando a esta familia: en temporadas de siembra y de espera, de oración y de perseverancia, de personas fieles que llegaron semana tras semana. Cada uno de esos años contó.</p>
+          <div class="about-steps">
+            <div class="about-step">
+              <h3 data-en="Casa Familiar de Restauración">Casa Familiar de Restauración</h3>
+              <p data-en="We began as Casa Familiar de Restauración: a house for families, built on the belief that God restores what is broken. That was our foundation, and it still is.">Comenzamos como Casa Familiar de Restauración: una casa para las familias, edificada sobre la convicción de que Dios restaura lo que está quebrado. Ese fue nuestro cimiento, y lo sigue siendo.</p>
+            </div>
+            <div class="about-step">
+              <h3 data-en="A call to something new">Un llamado a algo nuevo</h3>
+              <p data-en="After years of faithfulness, God spoke. He called us to a new name and a fresh start, not to leave our past behind, but to step into everything it had prepared us for.">Después de años de fidelidad, Dios habló. Nos llamó a un nuevo nombre y a un nuevo comienzo; no para dejar atrás nuestro pasado, sino para entrar en todo aquello para lo que nos había preparado.</p>
+            </div>
+            <div class="about-step">
+              <h3 data-en="Somos Reino">Somos Reino</h3>
+              <p data-en="We answered, and Somos Reino was born: a family that seeks the Kingdom first. Same heart, same people, a new chapter.">Respondimos, y nació Somos Reino: una familia que busca primero el Reino. El mismo corazón, la misma gente, un nuevo capítulo.</p>
+            </div>
+          </div>
         </div>
       </section>
 
