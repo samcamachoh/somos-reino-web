@@ -2942,7 +2942,7 @@
           <span class="footer-col-title" data-en="Resources">Recursos</span>
           <ul class="footer-links">
             <li><a href="#esencial">Podcast — Esencial</a></li>
-            <li><a href="mailto:hola@somosreino.org" data-en="Prayer Request">Petición de Oración</a></li>
+            <li><a href="/prayer.html" data-en="Prayer Request">Petición de Oración</a></li>
             <li><a href="https://whatsapp.com/channel/0029VaQlt7T2ZjCpaaXFOK0P" target="_blank" rel="noopener" data-en="WhatsApp Channel">Canal de WhatsApp</a></li>
             <li><a href="give.html" data-en="Give Online">Dar en Línea</a></li>
           </ul>
@@ -3124,6 +3124,16 @@
       const total = dots.length;
       let current = 0;
 
+      // No second slide (or dots already removed): skip rotation so `% 0` never yields NaN
+      if (total < 2) {
+        window.stopHeroCarousel = function() {
+          hero.dataset.slide = '0';
+          document.body.classList.remove('hero-light');
+          hero.classList.add('hero-live');
+        };
+        return;
+      }
+
       function restartFill() {
         dots.forEach(d => d.classList.remove('run'));
         if (motionReduced() || hero.classList.contains('hero-live')) return;
@@ -3277,8 +3287,18 @@
 
     function startHeroLiveVideo(videoId) {
       pendingLiveVideoId = videoId;
-      if (ytApiReady) initHeroPlayer(videoId);
-      else if (!document.getElementById('youtube-api')) {
+      // If the IFrame API was already loaded (cached script / prior visit),
+      // onYouTubeIframeAPIReady will not fire again — start immediately.
+      if (window.YT && typeof window.YT.Player === 'function') {
+        ytApiReady = true;
+        initHeroPlayer(videoId);
+        return;
+      }
+      if (ytApiReady) {
+        initHeroPlayer(videoId);
+        return;
+      }
+      if (!document.getElementById('youtube-api')) {
         const tag = document.createElement('script');
         tag.id = 'youtube-api';
         tag.src = 'https://www.youtube.com/iframe_api';
@@ -3442,10 +3462,11 @@
 
       // Prefer this site's own /api/videos (pulls straight from the YouTube
       // playlist feed); fall back to the legacy external API if unavailable.
-      fetchJSON('/api/videos')
+      // Request 6 — the grid slices to that many cards.
+      fetchJSON('/api/videos?limit=6')
         .then(renderVideos)
         .catch(() => {
-          fetchJSON('https://somos-reino-api.vercel.app/api/videos')
+          fetchJSON('https://somos-reino-api.vercel.app/api/videos?limit=6')
             .then(renderVideos)
             .catch(() => {
               loading.style.display = 'none';

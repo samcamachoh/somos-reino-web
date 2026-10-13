@@ -136,7 +136,10 @@
           if (open === i) {
             html += '<tr class="detail"><td colspan="5"><dl>' + LABELS.map(function (l) {
               return g[l[0]] ? '<div><dt>' + l[1] + '</dt><dd>' + esc(g[l[0]]) + '</dd></div>' : '';
-            }).join('') + (g.message ? '<div class="wide"><dt>Message</dt><dd>' + esc(g.message) + '</dd></div>' : '') + '</dl></td></tr>';
+            }).join('') +
+              (g.message ? '<div class="wide"><dt>Message</dt><dd>' + esc(g.message) + '</dd></div>' : '') +
+              (g.talents ? '<div class="wide"><dt>Talents &amp; abilities</dt><dd>' + esc(g.talents) + '</dd></div>' : '') +
+              '</dl></td></tr>';
           }
         });
         $('list').innerHTML = html + '</tbody></table>';

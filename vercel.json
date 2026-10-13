@@ -1,4 +1,18 @@
 {
+  "headers": [
+    {
+      "source": "/:file(.*)\\.(webp|png|jpg|jpeg|gif|ico|svg|woff2?)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/motion.(js|css)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }
+      ]
+    }
+  ],
   "routes": [
     {
       "src": "/",

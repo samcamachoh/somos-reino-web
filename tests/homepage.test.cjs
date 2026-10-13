@@ -11,7 +11,7 @@ function setup(videos = [{ videoId: 'abcdefghijk', title: '<img src=x onerror=al
   }
   const requests = [];
   const document = { documentElement: {scrollHeight: 2000}, body: {style:{}}, head: {appendChild(tag){elements.set(tag.id,tag);}}, getElementById(id){return id === 'youtube-api' ? elements.get(id) : element(id);},querySelectorAll(){return [];},querySelector(){return element('query');},addEventListener(){},createElement(){return {};}};
-  const context = vm.createContext({document, window: {scrollY:0,innerHeight:800,matchMedia(){return {matches:false};},addEventListener(){}},localStorage:{getItem(){throw Error('Storage blocked');},setItem(){throw Error('Storage blocked');}},AbortController,setTimeout,clearTimeout,requestAnimationFrame(){},fetch:async url=>{requests.push(url);return {ok:true,json:async()=>url.endsWith('/videos')?{videos}:url.endsWith('/upcoming')?{upcoming:null}:{live:false}};}});
+  const context = vm.createContext({document, window: {scrollY:0,innerHeight:800,matchMedia(){return {matches:false};},addEventListener(){}},localStorage:{getItem(){throw Error('Storage blocked');},setItem(){throw Error('Storage blocked');}},AbortController,setTimeout,clearTimeout,requestAnimationFrame(){},fetch:async url=>{requests.push(url);return {ok:true,json:async()=>String(url).includes('/api/videos')?{videos}:String(url).includes('/upcoming')?{upcoming:null}:{live:false}};}});
   vm.runInContext(source,context);
   return {context,elements,requests};
 }

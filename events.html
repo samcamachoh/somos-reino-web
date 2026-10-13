@@ -889,6 +889,20 @@
       applyLanguage(sel.value);
     }));
 
+    // Events carry a data-end date (last day, church time). Once it passes the
+    // event drops off the page by itself instead of lingering as stale news.
+    // Must run before the calendar so #calendario never paints expired rows.
+    (function() {
+      const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+      let removed = false;
+      document.querySelectorAll('[data-end]').forEach(el => {
+        if (el.dataset.end < today) { el.remove(); removed = true; }
+      });
+      if (removed && !document.querySelector('#events-upcoming .event-row, #events-upcoming .event-row-special')) {
+        document.getElementById('events-empty').style.display = 'block';
+      }
+    })();
+
     // ── CALENDAR VIEW ──
     // Built from the same rows as the list: data-date = one-off, data-dow = weekly (0 = Sunday).
     (function() {
@@ -902,6 +916,8 @@
       const todayISO = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
       const pad = n => String(n).padStart(2, '0');
       const iso = (y, m, d) => y + '-' + pad(m + 1) + '-' + pad(d);
+      // Day-of-week in church time (America/New_York), not the browser's local zone.
+      const dowNY = (y, m, d) => String(new Date(Date.UTC(y, m, d, 16)).getUTCDay());
       let [vy, vm] = todayISO.split('-').map(Number); vm -= 1;
       let selected = todayISO;
       const loc = () => (lang === 'en' ? 'en-US' : 'es-US');
@@ -915,7 +931,7 @@
         }));
       }
       const onDay = (evs, y, m, d) => {
-        const key = iso(y, m, d), dow = String(new Date(y, m, d).getDay());
+        const key = iso(y, m, d), dow = dowNY(y, m, d);
         return evs.filter(e => e.date === key || e.dow === dow);
       };
 
@@ -999,18 +1015,6 @@
       document.getElementById('menu-backdrop').addEventListener('click', () => setOpen(false));
       panel.querySelectorAll('.menu-links a').forEach(a => a.addEventListener('click', () => setOpen(false)));
       document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.body.classList.contains('menu-open')) setOpen(false); });
-    })();
-    // Events carry a data-end date (last day, church time). Once it passes the
-    // event drops off the page by itself instead of lingering as stale news.
-    (function() {
-      const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
-      let removed = false;
-      document.querySelectorAll('[data-end]').forEach(el => {
-        if (el.dataset.end < today) { el.remove(); removed = true; }
-      });
-      if (removed && !document.querySelector('#events-upcoming .event-row, #events-upcoming .event-row-special')) {
-        document.getElementById('events-empty').style.display = 'block';
-      }
     })();
     applyLanguage(lang);
   </script>
