@@ -63,8 +63,9 @@ module.exports = async function handler(req, res) {
     const r = await fetch(GUEST_SHEET_WEBHOOK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ secret: GUEST_SHEET_SECRET, ...data }),
+      body: JSON.stringify({ ...data, secret: GUEST_SHEET_SECRET }),
       redirect: 'follow',
+      signal: AbortSignal.timeout(8000),
     });
     const out = await r.json().catch(() => ({}));
     if (!r.ok || !out.ok) return res.status(502).json({ error: 'Could not save.' });

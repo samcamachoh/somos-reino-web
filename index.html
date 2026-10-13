@@ -294,6 +294,10 @@
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.5; transform: scale(0.8); }
     }
+    @keyframes liveRing {
+      0%   { transform: scale(0.7); opacity: 0.7; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
 
     @keyframes spin {
       to { transform: rotate(360deg); }
@@ -549,31 +553,81 @@
       height: 100%;
     }
 
-    /* ── HERO LIVE INDICATOR ── solid red pill, sits above the stream */
-    .hero-live-wrap { position: absolute; top: 108px; left: 0; right: 0; z-index: 16; pointer-events: none; }
+    /* ── HERO LIVE INDICATOR ── pulsing red pill; hidden until live / going live */
+    .hero-live-wrap {
+      position: absolute; top: 28px; left: 0; right: 0; z-index: 16;
+      pointer-events: none;
+    }
     .hero-live-pill {
       display: none;
       align-items: center;
-      gap: 9px;
-      padding: 9px 16px 9px 14px;
+      gap: 10px;
+      max-width: min(100%, 420px);
+      padding: 11px 18px 11px 14px;
       border-radius: 999px;
       background: #E53E3E;
       color: #fff;
       font-family: var(--font);
-      font-size: 0.72rem;
+      font-size: 0.78rem;
       font-weight: 700;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       text-decoration: none;
+      line-height: 1.2;
       pointer-events: auto;
-      box-shadow: 0 6px 18px rgba(229,62,62,0.35);
-      transition: transform 0.3s var(--ease), box-shadow 0.3s ease;
+      box-shadow: 0 8px 28px rgba(229,62,62,0.42);
+      transition: transform 0.3s var(--ease), box-shadow 0.3s ease, background 0.3s ease;
     }
-    @media (hover: hover) { .hero-live-pill:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(229,62,62,0.45); } }
+    .hero-live-pill.is-soon {
+      background: #C53030;
+      box-shadow: 0 8px 28px rgba(197,48,48,0.4);
+    }
+    @media (hover: hover) {
+      .hero-live-pill:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(229,62,62,0.5); }
+    }
     .hero-live-pill:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
-    .hero-live-dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: livePulse 1.5s ease-in-out infinite; }
-    @media (prefers-reduced-motion: reduce) { .hero-live-dot { animation: none; } }
-    @media (max-width: 900px) { .hero-live-wrap { top: 20px; } }
+    .hero-live-dot {
+      position: relative;
+      flex: none;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #fff;
+      animation: livePulse 1.4s ease-in-out infinite;
+    }
+    .hero-live-dot::after {
+      content: '';
+      position: absolute; inset: -4px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.85);
+      animation: liveRing 1.6s ease-out infinite;
+    }
+    .hero-live-label { white-space: nowrap; }
+    .hero-live-meta {
+      display: none;
+      margin-left: 2px;
+      padding-left: 10px;
+      border-left: 1px solid rgba(255,255,255,0.35);
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      text-transform: none;
+      font-weight: 600;
+      opacity: 0.95;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .hero-live-pill.is-soon .hero-live-meta { display: inline; }
+    html.reduce-motion .hero-live-dot,
+    html.reduce-motion .hero-live-dot::after { animation: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-live-dot, .hero-live-dot::after { animation: none; }
+    }
+    /* Phone/tablet keep the top nav, so sit the pill below it */
+    @media (max-width: 900px) { .hero-live-wrap { top: 88px; } }
+    @media (max-width: 600px) {
+      .hero-live-pill { font-size: 0.72rem; padding: 10px 14px 10px 12px; letter-spacing: 0.12em; }
+      .hero-live-meta { display: none !important; }
+    }
 
     .hero-unmute-btn {
       position: absolute;
@@ -1935,7 +1989,6 @@
       .hero-body { margin-bottom: 28px; }
       .hero-content { padding: 112px 0 96px; }
       .hero-eyebrow { letter-spacing: 0.1em; line-height: 1.6; }
-      #upcoming-badge { line-height: 1.6; }
     }
 
     /* ────────────────────────────────────────
@@ -2501,12 +2554,13 @@
       <span id="hero-unmute-label" data-en="Turn On Sound">Activar Sonido</span>
     </button>
 
-    <!-- Live indicator — hidden until the channel is live; stays on top of the stream -->
+    <!-- Live / going-live indicator — hidden until /api/live or /api/upcoming says so -->
     <div class="hero-live-wrap">
       <div class="container">
-        <a id="live-badge" class="hero-live-pill" href="#live-chat" target="_blank" rel="noopener" aria-label="Ver transmisión en vivo" data-en-label="Watch the live stream">
+        <a id="live-badge" class="hero-live-pill" href="#live-chat" hidden aria-hidden="true" aria-label="Ver transmisión en vivo" data-en-label="Watch the live stream">
           <span class="hero-live-dot" aria-hidden="true"></span>
-          <span data-en="Live">En vivo</span>
+          <span class="hero-live-label" data-en="Live">En vivo</span>
+          <span class="hero-live-meta" id="live-badge-meta" aria-hidden="true"></span>
         </a>
       </div>
     </div>
@@ -2516,11 +2570,6 @@
     <div class="hero-content" style="width:100%;">
       <div class="container">
         <div class="hero-left">
-          <!-- Upcoming stream badge — hidden by default, shown when a stream is scheduled and we're not live -->
-          <a id="upcoming-badge" href="#" target="_blank" rel="noopener" style="display:none;align-items:center;gap:10px;margin-bottom:22px;text-decoration:none;">
-            <div style="width:10px;height:10px;border-radius:50%;background:var(--action);"></div>
-            <span id="upcoming-badge-text" style="font-family:var(--font);font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--action);"></span>
-          </a>
 
 
           <h1 class="hero-title">
@@ -2942,7 +2991,7 @@
           <span class="footer-col-title" data-en="Resources">Recursos</span>
           <ul class="footer-links">
             <li><a href="#esencial">Podcast — Esencial</a></li>
-            <li><a href="mailto:hola@somosreino.org" data-en="Prayer Request">Petición de Oración</a></li>
+            <li><a href="/prayer.html" data-en="Prayer Request">Petición de Oración</a></li>
             <li><a href="https://whatsapp.com/channel/0029VaQlt7T2ZjCpaaXFOK0P" target="_blank" rel="noopener" data-en="WhatsApp Channel">Canal de WhatsApp</a></li>
             <li><a href="give.html" data-en="Give Online">Dar en Línea</a></li>
           </ul>
@@ -3124,6 +3173,16 @@
       const total = dots.length;
       let current = 0;
 
+      // No second slide (or dots already removed): skip rotation so `% 0` never yields NaN
+      if (total < 2) {
+        window.stopHeroCarousel = function() {
+          hero.dataset.slide = '0';
+          document.body.classList.remove('hero-light');
+          hero.classList.add('hero-live');
+        };
+        return;
+      }
+
       function restartFill() {
         dots.forEach(d => d.classList.remove('run'));
         if (motionReduced() || hero.classList.contains('hero-live')) return;
@@ -3277,8 +3336,18 @@
 
     function startHeroLiveVideo(videoId) {
       pendingLiveVideoId = videoId;
-      if (ytApiReady) initHeroPlayer(videoId);
-      else if (!document.getElementById('youtube-api')) {
+      // If the IFrame API was already loaded (cached script / prior visit),
+      // onYouTubeIframeAPIReady will not fire again — start immediately.
+      if (window.YT && typeof window.YT.Player === 'function') {
+        ytApiReady = true;
+        initHeroPlayer(videoId);
+        return;
+      }
+      if (ytApiReady) {
+        initHeroPlayer(videoId);
+        return;
+      }
+      if (!document.getElementById('youtube-api')) {
         const tag = document.createElement('script');
         tag.id = 'youtube-api';
         tag.src = 'https://www.youtube.com/iframe_api';
@@ -3308,14 +3377,72 @@
       label.textContent = t(label.dataset.es, label.dataset.en);
     });
 
-    function handleLiveStatus(data) {
-      if (data.live) {
-        if (window.stopHeroCarousel) window.stopHeroCarousel();
-        // Show the live pill; it links straight to the stream
-        const badge = document.getElementById('live-badge');
-        if (data.url) badge.href = data.url; else { badge.removeAttribute('target'); }
-        badge.style.display = 'inline-flex';
+    function setLiveBadge(opts) {
+      const badge = document.getElementById('live-badge');
+      const label = badge && badge.querySelector('.hero-live-label');
+      const meta = document.getElementById('live-badge-meta');
+      if (!badge || !label) return;
 
+      const mode = opts.mode; // 'live' | 'soon'
+      const url = opts.url || '';
+      const live = mode === 'live';
+
+      label.dataset.es = live ? 'En vivo' : 'Pronto';
+      label.dataset.en = live ? 'Live' : 'Soon';
+      label.textContent = t(label.dataset.es, label.dataset.en);
+
+      badge.classList.toggle('is-soon', !live);
+      badge.dataset.esLabel = live ? 'Ver transmisión en vivo' : 'Ver la próxima transmisión';
+      badge.dataset.enLabel = live ? 'Watch the live stream' : 'Watch the upcoming stream';
+      badge.setAttribute('aria-label', t(badge.dataset.esLabel, badge.dataset.enLabel));
+
+      if (meta) {
+        if (!live && opts.when) {
+          meta.dataset.es = formatUpcoming(opts.when, 'es');
+          meta.dataset.en = formatUpcoming(opts.when, 'en');
+          meta.textContent = t(meta.dataset.es, meta.dataset.en);
+          meta.removeAttribute('aria-hidden');
+        } else {
+          meta.textContent = '';
+          meta.removeAttribute('data-es');
+          meta.removeAttribute('data-en');
+          meta.setAttribute('aria-hidden', 'true');
+        }
+      }
+
+      if (url && /^https?:\/\//i.test(url)) {
+        badge.href = url;
+        badge.target = '_blank';
+        badge.rel = 'noopener';
+      } else {
+        badge.href = '#live-chat';
+        badge.removeAttribute('target');
+        badge.removeAttribute('rel');
+      }
+
+      badge.hidden = false;
+      badge.removeAttribute('aria-hidden');
+      badge.style.display = 'inline-flex';
+    }
+
+    function hideLiveBadge() {
+      const badge = document.getElementById('live-badge');
+      if (!badge) return;
+      badge.hidden = true;
+      badge.setAttribute('aria-hidden', 'true');
+      badge.style.display = 'none';
+      badge.classList.remove('is-soon');
+    }
+
+    function showUpcomingBadge(upcoming) {
+      if (!upcoming || !upcoming.url) return;
+      setLiveBadge({ mode: 'soon', url: upcoming.url, when: upcoming.scheduledStartTime });
+    }
+
+    function handleLiveStatus(data) {
+      if (data && data.live) {
+        if (window.stopHeroCarousel) window.stopHeroCarousel();
+        setLiveBadge({ mode: 'live', url: data.url });
 
         // Turn the hero background into the live stream, muted, after 5s
         const videoId = extractYouTubeId(data.url);
@@ -3323,32 +3450,43 @@
           setTimeout(() => startHeroLiveVideo(videoId), 5000);
           showLiveChat(videoId);
         }
-      } else {
-        // Not live — check for a best-effort "upcoming" scheduled stream
-        fetchJSON('/api/upcoming')
-          .then(upData => {
-            if (!upData.upcoming) return;
-            const badge = document.getElementById('upcoming-badge');
-            const text = document.getElementById('upcoming-badge-text');
-            text.dataset.es = `Próxima Transmisión · ${formatUpcoming(upData.upcoming.scheduledStartTime, 'es')}`;
-            text.dataset.en = `Upcoming Stream · ${formatUpcoming(upData.upcoming.scheduledStartTime, 'en')}`;
-            text.textContent = t(text.dataset.es, text.dataset.en);
-            badge.href = upData.upcoming.url;
-            badge.style.display = 'flex';
-          })
-          .catch(() => {});
+        return;
       }
+
+      hideLiveBadge();
+
+      // Not live — check for a best-effort "going live" / scheduled stream
+      fetchJSON('/api/upcoming')
+        .then(upData => { if (upData && upData.upcoming) showUpcomingBadge(upData.upcoming); })
+        .catch(() => {});
     }
 
-    // Prefer this site's own /api/live (no dependency on an external
-    // service's uptime); fall back to the legacy external API if it fails.
-    fetchJSON('/api/live')
-      .then(handleLiveStatus)
-      .catch(() => {
-        fetchJSON('https://somos-reino-api.vercel.app/api/live')
-          .then(handleLiveStatus)
-          .catch(() => {});
-      });
+    // Prefer this site's own /api/live (CDN-cached); fall back to the legacy
+    // external API if it fails. Localhost ?preview=live|soon mocks the badge
+    // only (no player) so it can be reviewed without a real broadcast.
+    (function bootLiveIndicator() {
+      const preview = (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)
+        && new URLSearchParams(location.search).get('preview')) || '';
+      const demoUrl = 'https://www.youtube.com/@SomosReino/live';
+      if (preview === 'live') {
+        setLiveBadge({ mode: 'live', url: demoUrl });
+        return;
+      }
+      if (preview === 'soon') {
+        showUpcomingBadge({
+          url: demoUrl,
+          scheduledStartTime: new Date(Date.now() + 90 * 60 * 1000).toISOString(),
+        });
+        return;
+      }
+      fetchJSON('/api/live')
+        .then(handleLiveStatus)
+        .catch(() => {
+          fetchJSON('https://somos-reino-api.vercel.app/api/live')
+            .then(handleLiveStatus)
+            .catch(() => { hideLiveBadge(); });
+        });
+    })();
 
     // ── VIDEO MODAL (inline sermon playback) ──
     const videoModal = document.getElementById('video-modal');
@@ -3442,10 +3580,11 @@
 
       // Prefer this site's own /api/videos (pulls straight from the YouTube
       // playlist feed); fall back to the legacy external API if unavailable.
-      fetchJSON('/api/videos')
+      // Request 6 — the grid slices to that many cards.
+      fetchJSON('/api/videos?limit=6')
         .then(renderVideos)
         .catch(() => {
-          fetchJSON('https://somos-reino-api.vercel.app/api/videos')
+          fetchJSON('https://somos-reino-api.vercel.app/api/videos?limit=6')
             .then(renderVideos)
             .catch(() => {
               loading.style.display = 'none';

@@ -25,4 +25,8 @@ test('?limit raises the count up to the 15 the feed holds', async () => {
 test('a bad ?limit falls back to the default', async () => {
   assert.equal(await count({ limit: 'abc' }), 3);
   assert.equal(await count({ limit: '0' }), 3);
+  assert.equal(await count({ limit: '-5' }), 3);
+});
+test('home page can request 6 videos', async () => {
+  assert.equal(await count({ limit: '6' }), 6);
 });

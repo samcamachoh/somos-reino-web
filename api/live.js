@@ -18,6 +18,7 @@
 // ordering isn't a stable contract, so anchoring to it is fragile.
 const PLAYLIST_ID = 'PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7';
 const FEED_URL = `https://www.youtube.com/feeds/videos.xml?playlist_id=${PLAYLIST_ID}`;
+const FETCH_MS = 8000;
 
 function extractAll(xml, tag) {
   const re = new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`, 'g');
@@ -35,20 +36,36 @@ function extractChannelId(xml) {
 }
 
 function readLiveBroadcastDetails(html) {
-  const objMatch = html.match(/"liveBroadcastDetails":\{([^}]*)\}/);
-  if (!objMatch) return { found: false, isLiveNow: false };
-  const inner = objMatch[1];
-  return { found: true, isLiveNow: /"isLiveNow":true/.test(inner) };
+  const start = html.indexOf('"liveBroadcastDetails":{');
+  if (start < 0) return { found: false, isLiveNow: false };
+  let i = start + '"liveBroadcastDetails":'.length;
+  if (html[i] !== '{') return { found: false, isLiveNow: false };
+  let depth = 0;
+  for (let j = i; j < html.length && j < i + 4000; j++) {
+    const c = html[j];
+    if (c === '{') depth++;
+    else if (c === '}') {
+      depth--;
+      if (depth === 0) {
+        const inner = html.slice(i + 1, j);
+        return { found: true, isLiveNow: /"isLiveNow":true/.test(inner) };
+      }
+    }
+  }
+  return { found: false, isLiveNow: false };
 }
 
 async function fetchPage(url) {
-  const res = await fetch(url, { headers: { 'Accept-Language': 'en-US,en;q=0.9' } });
+  const res = await fetch(url, {
+    headers: { 'Accept-Language': 'en-US,en;q=0.9' },
+    signal: AbortSignal.timeout(FETCH_MS),
+  });
   const html = res.ok ? await res.text() : '';
   return { status: res.status, ok: res.ok, html };
 }
 
 async function fetchFeed() {
-  const feedRes = await fetch(FEED_URL);
+  const feedRes = await fetch(FEED_URL, { signal: AbortSignal.timeout(FETCH_MS) });
   if (!feedRes.ok) throw new Error(`YouTube feed returned ${feedRes.status}`);
   return feedRes.text();
 }
@@ -56,6 +73,11 @@ async function fetchFeed() {
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=120');
+
+  if (req.method && req.method !== 'GET' && req.method !== 'HEAD') {
+    res.setHeader('Allow', 'GET, HEAD');
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
   const debug = req.query && (req.query.debug === '1' || req.query.debug === 'true');
   const trace = { channelId: null, channelCheck: null, fallbackChecks: [] };
@@ -111,7 +133,7 @@ module.exports = async (req, res) => {
     const payload = { live: false };
     return res.status(200).json(debug ? { ...payload, debug: trace } : payload);
   } catch (err) {
-    const payload = { live: false, error: err.message };
-    return res.status(200).json(debug ? { ...payload, debug: trace } : payload);
+    const payload = { live: false, error: 'Upstream unavailable' };
+    return res.status(200).json(debug ? { ...payload, debug: trace, detail: err.message } : payload);
   }
 };

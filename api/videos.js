@@ -3,6 +3,7 @@
 // The feed is already ordered newest-first by YouTube.
 const PLAYLIST_ID = 'PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7';
 const FEED_URL = `https://www.youtube.com/feeds/videos.xml?playlist_id=${PLAYLIST_ID}`;
+const FETCH_MS = 8000;
 
 function extractAll(xml, tag) {
   const re = new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`, 'g');
@@ -13,14 +14,18 @@ function extractAll(xml, tag) {
 }
 
 function decodeEntities(str) {
-  return str
-    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
-    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(parseInt(dec, 10)))
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'");
+  try {
+    return str
+      .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+      .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(parseInt(dec, 10)))
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'");
+  } catch (e) {
+    return str;
+  }
 }
 
 function parseEntry(entry) {
@@ -47,13 +52,19 @@ module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
 
+  if (req.method && req.method !== 'GET' && req.method !== 'HEAD') {
+    res.setHeader('Allow', 'GET, HEAD');
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
   try {
-    const feedRes = await fetch(FEED_URL);
+    const feedRes = await fetch(FEED_URL, { signal: AbortSignal.timeout(FETCH_MS) });
     if (!feedRes.ok) throw new Error(`YouTube feed returned ${feedRes.status}`);
     const xml = await feedRes.text();
 
-    // Home page asks for the default 3; the sermons page asks for more (the feed holds the latest 15).
-    const limit = Math.min(Math.max(parseInt((req.query || {}).limit, 10) || 3, 1), 15);
+    // Home page asks for 6; sermons page asks for more (the feed holds the latest 15).
+    const raw = parseInt((req.query || {}).limit, 10);
+    const limit = Math.min(Math.max(Number.isFinite(raw) && raw > 0 ? raw : 3, 1), 15);
 
     const videos = extractAll(xml, 'entry')
       .slice(0, limit)
@@ -62,6 +73,6 @@ module.exports = async (req, res) => {
 
     return res.status(200).json({ videos });
   } catch (err) {
-    return res.status(500).json({ videos: [], error: err.message });
+    return res.status(500).json({ videos: [], error: 'Upstream unavailable' });
   }
 };

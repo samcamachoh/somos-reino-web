@@ -18,8 +18,8 @@ beforeEach(() => {
   global.fetch = async (url, opts) => {
     calls.push({ url, opts });
     return { ok: true, json: async () => ({ ok: true, rows: [
-      ['2026-10-01T14:08:36.000Z', 'Sam', 4079290320, 's@x.co', '1 Main St', 2, 0, '', 'Returning', 'Yes', 'No', 'Serving', 'Call', '', '2001-08-13', 'Instagram', '', 'Yes'],
-      ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+      ['2026-10-01T14:08:36.000Z', 'Sam', 4079290320, 's@x.co', '1 Main St', 2, 0, '', 'Returning', 'Yes', 'No', 'Serving', 'Call', '', '2001-08-13', 'Instagram', '', 'Yes', 'Hello', 'Guitar'],
+      ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
       ['2026-10-02T10:00:00.000Z', 'Ana', '', 'a@x.co'],
     ] }) };
   };
@@ -53,7 +53,10 @@ test('valid key returns non-empty guests newest first as strings', async () => {
   assert.deepEqual(res.body.guests.map(g => g.name), ['Ana', 'Sam']);
   assert.equal(res.body.guests[1].phone, '4079290320');
   assert.equal(res.body.guests[1].followUp, 'Yes');
+  assert.equal(res.body.guests[1].message, 'Hello');
+  assert.equal(res.body.guests[1].talents, 'Guitar');
   assert.equal(res.body.guests[0].message, '');
+  assert.equal(res.body.guests[0].talents, '');
   assert.equal(res.headers['Cache-Control'], 'no-store');
   assert.equal(JSON.parse(calls[0].opts.body).action, 'list');
   assert.equal(JSON.parse(calls[0].opts.body).secret, 's3cret');
