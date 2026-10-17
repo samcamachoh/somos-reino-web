@@ -697,6 +697,20 @@
         </div>
         <div class="cal-grid" id="cal-grid" role="grid"></div>
         <div class="cal-detail" id="cal-detail" aria-live="polite"></div>
+        <!-- Not shown in the list. The calendar reads these rows, and the
+             expiry pass skips this container so Oct 16 stays after it ends. -->
+        <div id="calendar-only-events" hidden>
+          <div class="event-row" data-end="2026-10-16" data-date="2026-10-16">
+            <div class="event-date-box">
+              <span class="event-date-num">16</span>
+              <span class="event-date-month">OCT</span>
+            </div>
+            <div class="event-info">
+              <h3 class="event-title">Eikon Men</h3>
+              <p class="event-details" data-en="Friday · Men's Event · 7:30 PM">Viernes · Evento de Hombres · 7:30 PM</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div id="events-list-view">
@@ -709,17 +723,6 @@
             <p class="event-details" data-en="Friday, November 13 · 7:00 PM">Viernes, 13 de noviembre · 7:00 PM</p>
           </div>
           <a class="event-tag event-tag-special" href="https://casafamiliar.churchtrac.com/connect?ei=ADCNQ99" target="_blank" rel="noopener" data-en="Register">Registrarse</a>
-        </div>
-
-        <div class="event-row" data-end="2026-10-16" data-date="2026-10-16">
-          <div class="event-date-box">
-            <span class="event-date-num">16</span>
-            <span class="event-date-month">OCT</span>
-          </div>
-          <div class="event-info">
-            <h3 class="event-title">Eikon Men</h3>
-            <p class="event-details" data-en="Friday · Men's Event · 7:30 PM">Viernes · Evento de Hombres · 7:30 PM</p>
-          </div>
         </div>
 
         <div class="event-row" data-end="2026-10-23" data-date="2026-10-23">
@@ -890,12 +893,14 @@
     }));
 
     // Events carry a data-end date (last day, church time). Once it passes the
-    // event drops off the page by itself instead of lingering as stale news.
-    // Must run before the calendar so #calendario never paints expired rows.
+    // event drops off upcoming listings instead of lingering as stale news.
+    // #calendar-only-events is exempt so the calendar can still show those
+    // dates after they end, including the October 16 entry.
     (function() {
       const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
       let removed = false;
       document.querySelectorAll('[data-end]').forEach(el => {
+        if (el.closest('#calendar-only-events')) return;
         if (el.dataset.end < today) { el.remove(); removed = true; }
       });
       if (removed && !document.querySelector('#events-upcoming .event-row, #events-upcoming .event-row-special')) {
@@ -923,7 +928,7 @@
       const loc = () => (lang === 'en' ? 'en-US' : 'es-US');
 
       function events() {
-        return [...document.querySelectorAll('#events-list-view [data-date], #events-list-view [data-dow]')].map(el => ({
+        return [...document.querySelectorAll('#events-list-view [data-date], #events-list-view [data-dow], #calendar-only-events [data-date]')].map(el => ({
           date: el.dataset.date, dow: el.dataset.dow,
           title: [...el.querySelector('.event-title').childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join('').trim(),
           details: el.querySelector('.event-details').textContent,
