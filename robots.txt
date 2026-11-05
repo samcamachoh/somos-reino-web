@@ -1,0 +1,46 @@
+# Somos Reino Church — https://somosreino.org
+# Everyone is welcome to crawl the public site, including search and AI crawlers.
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /d/
+
+# AI search / assistant crawlers: explicitly welcome so the church can be found and cited.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://somosreino.org/sitemap.xml
