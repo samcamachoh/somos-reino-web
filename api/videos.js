@@ -1,6 +1,6 @@
 // Serverless function: returns the latest sermon videos (3 by default, up to 15 with ?limit=) from the church's
 // YouTube playlist, read from YouTube's public RSS feed (no API key needed).
-// The feed is already ordered newest-first by YouTube.
+// Entries are sorted newest-first by published date here (the feed order follows the playlist).
 const PLAYLIST_ID = 'PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7';
 const FEED_URL = `https://www.youtube.com/feeds/videos.xml?playlist_id=${PLAYLIST_ID}`;
 const FETCH_MS = 8000;
@@ -39,6 +39,7 @@ function parseEntry(entry) {
 
   return {
     videoId,
+    publishedAt: publishedDate && !isNaN(publishedDate) ? publishedDate.getTime() : 0,
     title: title ? decodeEntities(title) : 'Sermón',
     url: `https://www.youtube.com/watch?v=${videoId}`,
     thumbnail: thumbnail || `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
@@ -66,10 +67,14 @@ module.exports = async (req, res) => {
     const raw = parseInt((req.query || {}).limit, 10);
     const limit = Math.min(Math.max(Number.isFinite(raw) && raw > 0 ? raw : 3, 1), 15);
 
+    // Playlist feeds follow the playlist's own order, not upload date, so sort
+    // by published date (newest first) before taking the top N.
     const videos = extractAll(xml, 'entry')
-      .slice(0, limit)
       .map(parseEntry)
-      .filter(Boolean);
+      .filter(Boolean)
+      .sort((a, b) => b.publishedAt - a.publishedAt)
+      .slice(0, limit)
+      .map(({ publishedAt, ...video }) => video);
 
     return res.status(200).json({ videos });
   } catch (err) {
