@@ -2091,11 +2091,17 @@
       section[id] { scroll-margin-top: 84px; }
 
       .nav-tabs {
-        display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
+        display: flex;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x proximity;
+        scrollbar-width: none;
         background: var(--surface);
       }
+      .nav-tabs::-webkit-scrollbar { display: none; }
       .nav-tabs a {
+        flex: 0 0 76px; scroll-snap-align: start;
         position: relative;
         display: flex;
         flex-direction: column;
@@ -2542,6 +2548,7 @@
         </a>
       </div>
       <ul class="nav-links">
+        <li><a href="/about" data-en="About us">Nosotros</a></li>
         <li><a href="/sermons" data-en="Sermons">Sermones</a></li>
         <li><a href="/events" data-en="Events">Eventos</a></li>
         <li><a href="#esencial">Podcast</a></li>
@@ -2555,6 +2562,7 @@
     <!-- Mobile tab bar — always in view, like an app -->
     <div class="nav-tabs" role="navigation" aria-label="Secciones" data-en-label="Sections">
       <a href="#hero"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7M5.5 9.5V20h13V9.5M10 20v-5.5h4V20"/></svg><span data-en="Home">Inicio</span></a>
+      <a href="/about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8v.1"/></svg><span data-en="About us">Nosotros</span></a>
       <a href="/sermons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5-6-3.5Z" fill="currentColor"/></svg><span data-en="Sermons">Sermones</span></a>
       <a href="/events"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span data-en="Events">Eventos</span></a>
       <a href="#esencial"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg><span>Podcast</span></a>
