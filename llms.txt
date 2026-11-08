@@ -16,11 +16,11 @@
 ## Pages
 
 - [Home](https://somosreino.org/): service times, location, what to expect, latest sermons and upcoming events
-- [About us](https://somosreino.org/about.html): mission, values and how the church gathers
-- [Events](https://somosreino.org/events.html): upcoming special events and weekly gatherings
-- [Sermons](https://somosreino.org/sermons.html): recent messages, also on YouTube
-- [Give](https://somosreino.org/give.html): online giving
-- [Prayer request](https://somosreino.org/prayer.html): share a prayer request with the church
+- [About us](https://somosreino.org/about): mission, values and how the church gathers
+- [Events](https://somosreino.org/events): upcoming special events and weekly gatherings
+- [Sermons](https://somosreino.org/sermons): recent messages, also on YouTube
+- [Give](https://somosreino.org/give): online giving
+- [Prayer request](https://somosreino.org/prayer): share a prayer request with the church
 
 ## Elsewhere
 

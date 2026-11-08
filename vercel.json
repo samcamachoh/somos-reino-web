@@ -1,4 +1,5 @@
 {
+  "cleanUrls": true,
   "headers": [
     {
       "source": "/:file(.*)\\.(webp|png|jpg|jpeg|gif|ico|svg|woff2?)",
@@ -11,23 +12,22 @@
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }
       ]
+    },
+    {
+      "source": "/d/:key",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "Referrer-Policy", "value": "no-referrer" }
+      ]
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/",
+      "source": "/",
       "has": [{ "type": "host", "value": "(welcome|visit)\\..*" }],
-      "dest": "/welcome.html"
+      "destination": "/welcome"
     },
-    {
-      "src": "/d/[^/]+/?",
-      "headers": {
-        "X-Robots-Tag": "noindex, nofollow",
-        "Cache-Control": "no-store",
-        "Referrer-Policy": "no-referrer"
-      },
-      "dest": "/dashboard.html"
-    },
-    { "handle": "filesystem" }
+    { "source": "/d/:key", "destination": "/dashboard" }
   ]
 }

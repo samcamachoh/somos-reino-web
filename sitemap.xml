@@ -7,31 +7,31 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://somosreino.org/about.html</loc>
+    <loc>https://somosreino.org/about</loc>
     <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://somosreino.org/events.html</loc>
+    <loc>https://somosreino.org/events</loc>
     <lastmod>2026-11-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://somosreino.org/sermons.html</loc>
+    <loc>https://somosreino.org/sermons</loc>
     <lastmod>2026-11-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://somosreino.org/give.html</loc>
+    <loc>https://somosreino.org/give</loc>
     <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://somosreino.org/prayer.html</loc>
+    <loc>https://somosreino.org/prayer</loc>
     <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

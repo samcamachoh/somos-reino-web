@@ -1,6 +1,6 @@
 # Prayer request form → Google Sheet
 
-The form at `/prayer.html` posts to `/api/prayer`, which appends a row to a Google Sheet.
+The form at `/prayer` posts to `/api/prayer`, which appends a row to a Google Sheet.
 This is a separate sheet from the guest form, so prayer requests stay out of the guest dashboard.
 
 1. Create a Google Sheet (any name, e.g. "Prayer requests") with this header row in row 1:
