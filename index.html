@@ -1599,7 +1599,7 @@
     }
 
     /* Slow-drifting glows so the dark sections aren't flat black */
-    #whatsapp::before, #esencial::before, #esencial::after {
+    #whatsapp::before {
       content: '';
       position: absolute;
       border-radius: 50%;
@@ -1612,20 +1612,6 @@
       width: 560px; height: 560px;
       top: -220px; right: -160px;
       background: radial-gradient(circle, rgba(37,211,102,0.16), transparent 66%);
-    }
-
-    #esencial::before {
-      width: 620px; height: 620px;
-      top: -240px; left: -180px;
-      background: radial-gradient(circle, rgba(255,255,255,0.09), transparent 66%);
-    }
-
-    #esencial::after {
-      width: 480px; height: 480px;
-      bottom: -200px; right: -140px;
-      background: radial-gradient(circle, rgba(131,43,193,0.2), transparent 66%);
-      animation-duration: 28s;
-      animation-direction: alternate-reverse;
     }
 
     #whatsapp .container { position: relative; z-index: 1; }
@@ -2439,23 +2425,24 @@
     .hero-bg-img.on { opacity: 1; }
     @media (prefers-reduced-motion: reduce) { .hero-bg-img { transition: none; } }
 
-    /* ── PODCAST: just a nudge to listen, and the links ── */
-    #esencial { padding: var(--section-pad); background: var(--black); position: relative; overflow: hidden; }
-    .podcast-inner { max-width: 560px; }
-    #esencial h2.display { color: var(--white); }
-    .podcast-lead { margin-top: 14px; font-size: 1rem; line-height: 1.55; color: rgba(255,255,255,0.62); }
-    .podcast-links { display: flex; flex-direction: column; gap: 12px; margin-top: 36px; }
+    /* ── PODCAST: a nudge to listen, and the links ── */
+    #esencial { padding: var(--section-pad); background: var(--surface); border-top: 1px solid var(--line); position: relative; overflow: hidden; }
+    .podcast-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .podcast-inner > * { min-width: 0; }
+    .podcast-lead { margin-top: 24px; font-size: 1.02rem; line-height: 1.75; color: var(--muted); max-width: 440px; }
+    .podcast-links { display: flex; flex-direction: column; gap: 12px; }
     .podcast-link {
       display: flex; align-items: center; gap: 16px;
       padding: 16px 20px; border-radius: 16px;
-      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
-      color: var(--white); text-decoration: none;
-      transition: background 0.3s ease, border-color 0.3s ease, transform 0.4s var(--ease);
+      background: var(--cream); border: 1px solid var(--rule);
+      color: var(--text); text-decoration: none;
+      transition: border-color 0.3s ease, transform 0.4s var(--ease);
     }
+    @media (max-width: 900px) { .podcast-inner { grid-template-columns: 1fr; gap: 40px; } }
     .podcast-ico { display: grid; place-items: center; flex: none; width: 40px; height: 40px; border-radius: 10px; }
     .podcast-ico svg { width: 22px; height: 22px; fill: white; }
     .podcast-name { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; }
-    .podcast-go { margin-left: auto; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.45); transition: color 0.3s ease; }
+    .podcast-go { margin-left: auto; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--label); transition: color 0.3s ease; }
     .podcast-name, .podcast-go { white-space: nowrap; }
     /* On phones the prompt text drops away and just the arrow stays */
     @media (max-width: 480px) {
@@ -2463,7 +2450,7 @@
       .podcast-go::after { content: '\2192'; font-size: 1.1rem; letter-spacing: 0; }
     }
     @media (hover: hover) {
-      .podcast-link:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.18); transform: translateX(4px); }
+      .podcast-link:hover { border-color: var(--ink); transform: translateX(4px); }
       .podcast-link:hover .podcast-go { color: var(--action); }
     }
   </style>
@@ -2943,8 +2930,10 @@
   <section id="esencial">
     <div class="container">
       <div class="podcast-inner">
+        <div class="podcast-left">
         <h2 class="display reveal" data-en="Listen to our podcast">Escucha nuestro podcast</h2>
         <p class="podcast-lead reveal" data-en="New episodes are out now — pick your favorite app and press play.">Nuevos episodios disponibles — elige tu app favorita y dale play.</p>
+        </div>
         <div class="podcast-links" data-stagger>
         <a class="podcast-link reveal" href="https://open.spotify.com/show/7hPqVVCSXma0FkD6zP0R1G?si=clq1VjnhSemF-9fD8qQT2g" target="_blank" rel="noopener">
           <span class="podcast-ico" style="background:#1DB954;"><svg aria-hidden="true" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg></span>
