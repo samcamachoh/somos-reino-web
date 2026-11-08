@@ -18,3 +18,11 @@
     }
   };
 })();
+
+// Mobile tab bar scrolls sideways: bring the current page's tab into view on load.
+document.addEventListener('DOMContentLoaded', function () {
+  var bar = document.querySelector('.nav-tabs');
+  var cur = bar && bar.querySelector('a[aria-current="true"]');
+  if (!cur || bar.scrollWidth <= bar.clientWidth) return;
+  bar.scrollLeft = cur.offsetLeft - (bar.clientWidth - cur.offsetWidth) / 2;
+});
