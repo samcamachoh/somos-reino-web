@@ -104,25 +104,22 @@ test('blocked storage and unavailable IntersectionObserver do not stop initializ
   const { context, elements, requests } = setup();
   await new Promise(setImmediate);
   assert.equal(vm.runInContext('currentLang', context), 'es');
-  assert.equal(elements.get('sermons-grid').style.display, 'grid');
+  assert.equal(elements.get('latest-sermon-link').href, 'https://www.youtube.com/watch?v=abcdefghijk');
   assert.ok(requests.includes('/api/live'));
   assert.ok(!elements.has('youtube-api'));
 });
 
-test('sermon text is escaped before entering HTML', async () => {
-  const { elements } = setup();
+test('hero latest-sermon link points at the newest video', async () => {
+  const { elements, requests } = setup();
   await new Promise(setImmediate);
-  const html = elements.get('sermons-grid').innerHTML;
-  assert.ok(html.includes('&lt;img src=x onerror=alert(1)&gt; &quot;Faith&quot;'));
-  assert.ok(html.includes('&lt;b&gt;Today&lt;/b&gt;'));
-  assert.ok(!html.includes('<img src=x'));
+  assert.ok(requests.includes('/api/videos?limit=1'));
+  assert.equal(elements.get('latest-sermon-link').href, 'https://www.youtube.com/watch?v=abcdefghijk');
 });
 
-test('invalid video IDs fall through to a visible error state', async () => {
+test('invalid video IDs leave the hero link alone', async () => {
   const { elements } = setup({ videos: [{ videoId: 'bad" onclick="alert(1)', title: 'Bad' }] });
   await new Promise(setImmediate);
-  assert.equal(elements.get('sermons-error').style.display, 'block');
-  assert.equal(elements.get('sermons-loading').style.display, 'none');
+  assert.equal(elements.get('latest-sermon-link').href, undefined);
 });
 
 test('YouTube API is requested only when a live player is needed', () => {

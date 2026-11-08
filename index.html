@@ -2649,7 +2649,7 @@
 
           <div class="hero-actions">
             <a class="btn-primary" href="/welcome" data-en="New Here">Primera vez aquí</a>
-            <a class="hero-sermon-link" id="latest-sermon-link" href="#sermones"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><span data-en="Listen to our latest sermon">Escucha nuestro último sermón</span></a>
+            <a class="hero-sermon-link" id="latest-sermon-link" href="/sermons"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><span data-en="Listen to our latest sermon">Escucha nuestro último sermón</span></a>
           </div>
 
         </div>
@@ -2860,38 +2860,6 @@
   </section>
 
   <!-- ── SERMONES ── -->
-  <section id="sermones">
-    <div class="container">
-      <div class="row-top reveal">
-        <div>
-          <h2 class="display" data-en="A word <em>that stays with you</em>">Palabra <em>que permanece</em></h2>
-          <p class="section-lead" data-en="Missed Sunday, or want to hear it again? Every message, right here.">
-            ¿Te perdiste el domingo o quieres volver a escucharlo? Cada mensaje, aquí mismo.
-          </p>
-        </div>
-      </div>
-
-      <!-- Loading state -->
-      <div id="sermons-loading" style="text-align:center;padding:60px 0;">
-        <div style="width:40px;height:40px;border:2px solid var(--gray-100);border-top-color:var(--ink);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;"></div>
-        <p data-en="Loading messages..." style="font-family:var(--font);font-size:0.82rem;color:var(--muted);letter-spacing:0.08em;font-weight:600;">Cargando mensajes...</p>
-      </div>
-
-      <!-- Error / fallback -->
-      <div id="sermons-error" style="display:none;text-align:center;padding:32px 0;">
-        <p data-en="The list is taking a moment — you can watch every message on YouTube." style="font-size:0.9rem;color:var(--muted);margin-bottom:20px;">La lista está tardando — puedes ver todos los mensajes en YouTube.</p>
-        <a href="https://youtube.com/playlist?list=PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7" target="_blank" rel="noopener" class="btn-primary" data-en="View Playlist →" style="display:inline-block;">Ver Playlist →</a>
-      </div>
-
-      <!-- Dynamic grid injected by JS -->
-      <div class="sermons-grid" id="sermons-grid" data-stagger style="display:none;"></div>
-
-      <div style="text-align:center;margin-top:48px;">
-        <a href="https://youtube.com/playlist?list=PLsHpz1KAchvrgZdyP_RYCzfQDhkvn5Bd7" target="_blank" rel="noopener" class="link-arrow" data-en="View All on YouTube" style="justify-content:center;">Ver todos en YouTube</a>
-      </div>
-    </div>
-  </section>
-
   <!-- ── VIDEO MODAL — inline sermon playback ── -->
   <div class="video-modal" id="video-modal" role="dialog" aria-modal="true" aria-label="Reproductor de sermón">
     <div class="video-modal-backdrop" id="video-modal-backdrop"></div>
@@ -3570,82 +3538,28 @@
       if (e.key === 'Escape' && videoModal.classList.contains('open')) closeVideoModal();
     });
 
-    // ── YOUTUBE PLAYLIST LOADER ──
+    // ── LATEST SERMON (hero button) ──
+    // "Listen to our latest sermon" plays the newest video in the modal. Until
+    // the video loads (or if it can't), the link goes to the sermons page.
     (function() {
-      const loading = document.getElementById('sermons-loading');
-      const grid = document.getElementById('sermons-grid');
-      const error = document.getElementById('sermons-error');
+      const latest = document.getElementById('latest-sermon-link');
+      if (!latest) return;
 
-      function escapeHTML(value) {
-        return String(value ?? '').replace(/[&<>"']/g, char => ({
-          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        })[char]);
-      }
-      function buildCard(video) {
-        const title = escapeHTML(String(video.title || 'Sermón').split('|')[0].trim());
-        return `
-          <button type="button" class="sermon-card reveal" data-video-id="${video.videoId}" aria-label="Reproducir: ${title}">
-            <div class="sermon-thumb">
-              <img
-                src="https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg"
-                alt="${title}"
-                loading="lazy"
-                style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"
-              />
-              <div class="sermon-scrim">
-                <span class="sermon-play">
-                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                </span>
-              </div>
-            </div>
-            <div class="sermon-body">
-              <span class="sermon-series">Somos Reino</span>
-              <h3 class="sermon-title">${title}</h3>
-              <div class="sermon-meta">
-                <span>${escapeHTML(video.date)}</span>
-                <span>·</span>
-                <span data-en="Play →" style="color:var(--action);">Reproducir →</span>
-              </div>
-            </div>
-          </button>`;
+      function wire(data) {
+        const video = Array.isArray(data.videos)
+          ? data.videos.find(v => v && /^[\w-]{11}$/.test(v.videoId)) : null;
+        if (!video) throw new Error('No videos');
+        latest.href = 'https://www.youtube.com/watch?v=' + video.videoId;
+        latest.addEventListener('click', (e) => { e.preventDefault(); openVideoModal(video.videoId); });
       }
 
-      function renderVideos(data) {
-        const videos = Array.isArray(data.videos)
-          ? data.videos.filter(video => video && /^[\w-]{11}$/.test(video.videoId)).slice(0, 6) : [];
-        if (!videos.length) throw new Error('No videos');
-        // "Listen to our latest sermon" (hero) plays the newest video; until then it scrolls to the sermons
-        const latest = document.getElementById('latest-sermon-link');
-        if (latest) {
-          latest.href = 'https://www.youtube.com/watch?v=' + videos[0].videoId;
-          latest.addEventListener('click', (e) => { e.preventDefault(); openVideoModal(videos[0].videoId); });
-        }
-        grid.innerHTML = videos.map(buildCard).join('');
-        loading.style.display = 'none';
-        grid.style.display = 'grid';
-        applyStagger(grid.parentElement);
-        observeReveals(grid);
-        applyLanguage(currentLang);
-      }
-
-      // Play a sermon inline instead of leaving the site
-      grid.addEventListener('click', (e) => {
-        const card = e.target.closest('.sermon-card');
-        if (card && card.dataset.videoId) openVideoModal(card.dataset.videoId);
-      });
-
-      // Prefer this site's own /api/videos (pulls straight from the YouTube
-      // playlist feed); fall back to the legacy external API if unavailable.
-      // Request 6 — the grid slices to that many cards.
-      fetchJSON('/api/videos?limit=6')
-        .then(renderVideos)
+      // Prefer this site's own /api/videos; fall back to the legacy external API.
+      fetchJSON('/api/videos?limit=1')
+        .then(wire)
         .catch(() => {
-          fetchJSON('https://somos-reino-api.vercel.app/api/videos?limit=6')
-            .then(renderVideos)
-            .catch(() => {
-              loading.style.display = 'none';
-              error.style.display = 'block';
-            });
+          fetchJSON('https://somos-reino-api.vercel.app/api/videos?limit=1')
+            .then(wire)
+            .catch(() => {});
         });
     })();
 
