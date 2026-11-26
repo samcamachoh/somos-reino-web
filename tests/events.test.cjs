@@ -97,10 +97,11 @@ test('other events stay on the upcoming list', () => {
     'Gracias Por Servir',
     'Frutos',
     'Ensanchamiento 2027',
+    'La Imagen de Dios',
   ]) {
     assert.ok(list.includes(title), title);
   }
-  for (const date of ['2026-11-13', '2026-10-23', '2026-11-06', '2026-11-08', '2026-11-25', '2026-12-23', '2026-12-27']) {
+  for (const date of ['2026-11-13', '2026-10-23', '2026-11-06', '2026-11-08', '2026-11-25', '2026-12-23', '2026-12-27', '2027-01-15']) {
     assert.ok(list.includes(`data-date="${date}"`), date);
   }
   assert.match(between(eventsHtml, 'id="events-recurring"', '</main>'), /data-dow="1"/);
